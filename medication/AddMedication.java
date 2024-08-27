@@ -1,0 +1,16 @@
+package medication;
+
+import javax.swing.JPanel;
+
+public class AddMedication extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Create the panel.
+	 */
+	public AddMedication(Medications m) {
+
+	}
+
+}

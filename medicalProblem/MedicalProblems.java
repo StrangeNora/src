@@ -1,0 +1,64 @@
+package medicalProblem;
+
+import javax.swing.JPanel;
+
+
+import java.awt.Frame;
+import java.util.HashMap;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
+import control.Hospital;
+import model.*;
+import panels.GenericListPanel;
+
+
+
+public class MedicalProblems extends JPanel {
+
+
+		private static final long serialVersionUID = 1L;
+		private GenericListPanel<MedicalProblem> genericListPanel;
+	    private DefaultListModel<MedicalProblem> listModel;
+
+	  ;
+
+	    public MedicalProblems(String sectionName, DefaultListModel<MedicalProblem> listModel) {
+	        this.listModel = listModel;
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeMedicalProblemtFromHospital, this::showAddMedicalProblemDialog);
+	        loadMedicalProblemsFromHospital();
+	    }
+
+	    public JPanel getPanel() {
+	        return genericListPanel.getPanel();
+	    }
+
+	    private void loadMedicalProblemsFromHospital() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<String, MedicalProblem> MedicalProblem = hospital.getMedicalProblems();
+	        for (MedicalProblem v : MedicalProblem.values()) {
+	            listModel.addElement(v);
+	        }
+	    }
+
+	    public void refreshList() {
+	        listModel.clear();
+	        loadMedicalProblemsFromHospital();
+	    }
+
+	    private void removeMedicalProblemtFromHospital(MedicalProblem v) {
+	        Hospital.getInstance().removeMedicalProblem(v);
+	    }
+
+	    private void showAddMedicalProblemDialog() {
+	       AddMedicalProblem addMedicalProblem = new AddMedicalProblem(this);
+	        JDialog dialog = new JDialog((Frame) null, "Add MedicalProblem", true);
+	        dialog.getContentPane().add(addMedicalProblem);
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+	    }
+	}
+
