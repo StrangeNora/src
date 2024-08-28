@@ -18,6 +18,7 @@ public class UpdateMedication extends JPanel {
     private JTextField textField_2;
     private JTextField textField_3;
     private JComboBox<String> comboBox;
+    private JPanel cardPanel;
 
     /**
      * Create the panel.
@@ -50,7 +51,8 @@ public class UpdateMedication extends JPanel {
         add(panel_3, gbc_panel_3);
 
         comboBox = new JComboBox<>();
-        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Code", "Name", "Dosage", "Number Of Doses"}));
+        comboBox.setBackground(TEXTFIELD_BACKGROUND_COLOR);
+        comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Code", "Name", "Dosage", "Number Of Doses"}));
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.gridwidth = 7;
         gbc_comboBox.insets = new Insets(0, 10, 5, 5);
@@ -59,8 +61,9 @@ public class UpdateMedication extends JPanel {
         gbc_comboBox.gridy = 6;
         add(comboBox, gbc_comboBox);
 
-        JPanel cardPanel = new JPanel();
+        cardPanel = new JPanel();
         cardPanel.setLayout(new CardLayout());
+        cardPanel.setVisible(false);  // Initially hide the cardPanel
         GridBagConstraints gbc_cardPanel = new GridBagConstraints();
         gbc_cardPanel.gridwidth = 9;
         gbc_cardPanel.insets = new Insets(0, 0, 5, 5);
@@ -90,8 +93,12 @@ public class UpdateMedication extends JPanel {
 
         btnUpdate.addActionListener(e -> {
             try {
-            	
-            	String selectedItem = (String) comboBox.getSelectedItem();
+                String selectedItem = (String) comboBox.getSelectedItem();
+
+                if (selectedItem == null || selectedItem.isEmpty()) {
+                    throw new InvalidUserDetails("Please select an option to update.");
+                }
+
                 JTextField currentTextField;
 
                 switch (selectedItem) {
@@ -99,7 +106,6 @@ public class UpdateMedication extends JPanel {
                         currentTextField = textField;
                         if (currentTextField.getText().isEmpty()) {
                             throw new InvalidUserDetails("Field cannot be empty.");
-                            
                         }
                         if (!isInteger(currentTextField.getText())) {
                             throw new InvalidUserDetails("Code must contain only numbers.");
@@ -130,8 +136,8 @@ public class UpdateMedication extends JPanel {
                         }
                         break;
                 }
-                    JOptionPane.showMessageDialog(null, "Medication updated successfully.");
-            	
+                JOptionPane.showMessageDialog(null, "Medication updated successfully.");
+
             } catch (InvalidUserDetails ex) {
                 showErrorMessage(ex.getMessage());
             }
@@ -147,7 +153,12 @@ public class UpdateMedication extends JPanel {
                 case "Number Of Doses" -> "Number Of Doses";
                 default -> "Code";
             };
-            cl.show(cardPanel, panelName);
+            if (selectedItem == null || selectedItem.isEmpty()) {
+                cardPanel.setVisible(false);  // Hide cardPanel if no valid selection
+            } else {
+                cardPanel.setVisible(true);  // Show cardPanel when a valid option is selected
+                cl.show(cardPanel, panelName);
+            }
         });
     }
 
@@ -168,7 +179,6 @@ public class UpdateMedication extends JPanel {
         return panel;
     }
 
-   
     private boolean isInteger(String text) {
         try {
             Integer.parseInt(text);
