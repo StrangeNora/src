@@ -26,7 +26,7 @@ public class AddMedicalProblem extends JPanel {
     private JButton saveButton;
     private ButtonGroup group;
 
-    public AddMedicalProblem() {
+    public AddMedicalProblem(MedicalProblems m) {
     	
         this.setBackground(new Color(0xA9BED2));
 
@@ -243,7 +243,7 @@ public class AddMedicalProblem extends JPanel {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(500, 360);
             frame.setLocationRelativeTo(null);
-            frame.add(new AddMedicalProblem());
+            frame.add(new AddMedicalProblem(null));
             frame.setVisible(true);
         });
     }

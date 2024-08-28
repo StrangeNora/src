@@ -79,7 +79,7 @@ public class AddVisit extends JPanel {
 		add(panel_1, gbc_panel_1);
 		
 		JLabel lblNewLabel = new JLabel("Add A Visit");
-		lblNewLabel.setFont(new Font("Traditional Arabic", Font.BOLD | Font.ITALIC, 22));
+		lblNewLabel.setFont(new Font("Traditional Arabic", Font.BOLD, 22));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridheight = 3;
 		gbc_lblNewLabel.gridwidth = 14;
@@ -98,7 +98,7 @@ public class AddVisit extends JPanel {
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		textField = new JTextField();
-		textField.setBackground(new Color(0x698DB0)); // Set the background color of the text field
+		textField.setBackground(new Color(0x698DB0)); 
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.gridwidth = 9;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
