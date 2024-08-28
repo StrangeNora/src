@@ -46,7 +46,7 @@ public class AddStaffMember extends JPanel {
     private JRadioButton otherRadioButton;
     private ButtonGroup  trueOrFalseGroup;
     private ButtonGroup genderGroup;
-    private JComboBox<String> specializationComboBox;
+    private JComboBox<Specialization> specializationComboBox;
     private JComboBox<Department> departmentsComboBox;
     
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
