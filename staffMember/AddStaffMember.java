@@ -5,9 +5,14 @@ import com.toedter.calendar.JDateChooser;
 
 import Patient.AddPatient;
 import control.Hospital;
+import enums.HealthFund;
+import enums.*;
 import exceptions.ObjectAlreadyExistsException;
 import model.Department;
+import model.Doctor;
+import model.Nurse;
 import model.Patient;
+import utils.UtilsMethods;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -79,10 +84,12 @@ public class AddStaffMember extends JPanel {
         JLabel selectLabel = new JLabel("Select:");
         comboBoxPanel.add(selectLabel);
         comboBoxPanel.add(attributeComboBox);
+        comboBoxPanel.setBackground(new Color (0xA9BED2));
 
         // Initialize the input panel
         inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
+        inputPanel.setBackground(new Color(0xA9BED2));
 
         // Initialize components
         birthDateChooser = new JDateChooser();
@@ -107,9 +114,9 @@ public class AddStaffMember extends JPanel {
         
         
         
-        String[] SpecializationFundOptions = {"Neurology", "Cardiology", "Otolaryngology", "Orthopedics", "Surgery", "Ophthalmology", "Pulmonology", "IntensiveCare", "Other"};
-        specializationComboBox = new JComboBox<>(SpecializationFundOptions);
-        
+        specializationComboBox = new JComboBox<>();
+       
+        specializationComboBox.setModel(new DefaultComboBoxModel<>(Specialization.values()));
         
         departmentsComboBox = new JComboBox<>();
         Collection<Department> departments = Hospital.getInstance().getDepartments().values();
@@ -143,13 +150,16 @@ public class AddStaffMember extends JPanel {
         inputPanel.add(departmentsComboBox, gbc_departmentsComboBox);
 
         genderMaleRadioButton = new JRadioButton("Male");
+        genderMaleRadioButton.setActionCommand("Male");
         genderFemaleRadioButton = new JRadioButton("Female");
+        genderFemaleRadioButton.setActionCommand("Female");
         otherRadioButton = new JRadioButton("Other");
+        otherRadioButton.setActionCommand("Other");
         genderGroup = new ButtonGroup();
         genderGroup.add(genderMaleRadioButton);
         genderGroup.add(genderFemaleRadioButton);
         genderGroup.add(otherRadioButton);
-
+        
         
 
         // Add the combo box panel above the input panel
@@ -177,18 +187,60 @@ public class AddStaffMember extends JPanel {
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         southPanel.add(saveButton);
         add(southPanel, BorderLayout.SOUTH);
+        southPanel.setBackground(new Color (0xA9BED2));
+
 //this is a note
-        
+       
         // Add action listener to the Save button
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    validateInput();
-                  //  StaffMember patient = new Patient(id, firstName, lastName, selectedDate, address, phoneNumber, email, selectedGender[0], healthFund, selectedSex[0]);
+                	validateInput();
+                	
+                    int id= Integer.parseInt(idField.getText());
+                    String firstName = firstNameField.getText();
+                    String lastName = lastNameField.getText();
+                    Date selectedDate = birthDateChooser.getDate();
+                    String address = addressField.getText();
+                    String phoneNumber = phoneField.getText();
+                    String email = emailField.getText();
+                    Double salary=Double.parseDouble(salaryField.getText());
+                    int licenseNumber=Integer.parseInt(licenseNumberField.getText());
+                    String userName= userNameField.getText();
+                    String password= passwordField.getText();
+                  
+                   
+                    String gender=genderGroup.getSelection().getActionCommand();
+                    String selectedOption = (String) attributeComboBox.getSelectedItem();
+                    if (selectedOption.equals("Add Doctor")) {
+                    	Specialization specialization=(Specialization) specializationComboBox.getSelectedItem();
+                    	 boolean isFinishInternShip = false;
+                    	if(trueOrFalseGroup.getSelection().equals("True")) {
+                    	 isFinishInternShip=true;
+                    	}
+                  	Doctor doctor = new Doctor(id,firstName,lastName,birthDateChooser.getDate(),
+								address,phoneNumber,email,gender,
+								workStartDateChooser.getDate(),userName, password, salary,licenseNumber,
+								isFinishInternShip,specialization);			
+						Hospital.getInstance().addStaffMember(doctor);
+						JOptionPane.showMessageDialog(null, "Doctor Added Successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+						
 
-                   // Hospital.getInstance().addStaffMember(staffMember);
+                    }
+                    if (selectedOption.equals("Add Nurse")) {
+                  
+                 	Nurse nurse = new Nurse(id,firstName,lastName,birthDateChooser.getDate(),
+								address,phoneNumber,email,gender,
+								workStartDateChooser.getDate(),userName, password, salary,licenseNumber);			
+						Hospital.getInstance().addStaffMember(nurse);
+						JOptionPane.showMessageDialog(null, "Nurse Added Successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+                   }
                     staffMembers.refreshList();
+                    Window window = SwingUtilities.getWindowAncestor(AddStaffMember.this);
+                    if (window != null) {
+                        window.dispose();
+                    }
                 } catch (ObjectAlreadyExistsException o) {
                     JOptionPane.showMessageDialog(null, "Object Already Exists!");
                 } catch (Exception ex) {
@@ -233,7 +285,7 @@ public class AddStaffMember extends JPanel {
             addComponent(new JLabel("License Number:"), licenseNumberField, gbc, 12);
             addComponent(new JLabel("Username:"), userNameField, gbc, 13);
             addComponent(new JLabel("Password:"), passwordField, gbc, 14);
-            addComponent(new JLabel("Department:"), departmentsComboBox, gbc, 15);
+          //  addComponent(new JLabel("Department:"), departmentsComboBox, gbc, 15);
         } else if ("Add Nurse".equals(selectedOption)) {
             addComponent(new JLabel("ID:"), idField, gbc, 0);
             addComponent(new JLabel("First Name:"), firstNameField, gbc, 1);
@@ -247,7 +299,7 @@ public class AddStaffMember extends JPanel {
             addComponent(new JLabel("Works In Intensive Care"), createTrueOrFalsePanel(), gbc, 9);
             addComponent(new JLabel("Salary:"), salaryField, gbc, 10);
             addComponent(new JLabel("License Number:"), licenseNumberField, gbc, 11);
-            addComponent(new JLabel("Department:"), departmentsComboBox, gbc, 12);
+      //      addComponent(new JLabel("Department:"), departmentsComboBox, gbc, 12);
             addComponent(new JLabel("Username:"), userNameField, gbc, 13);
             addComponent(new JLabel("Password:"), passwordField, gbc, 14);
             
@@ -262,6 +314,7 @@ public class AddStaffMember extends JPanel {
         JPanel genderPanel = new JPanel();
         genderPanel.add(genderMaleRadioButton);
         genderPanel.add(genderFemaleRadioButton);
+        genderPanel.add(otherRadioButton);
         return genderPanel;
     }
     
@@ -299,8 +352,8 @@ public class AddStaffMember extends JPanel {
             workStartDateChooser.getDate()==null||
             userNameField.getText().trim().isEmpty()||
             passwordField.getText().trim().isEmpty()||
-            trueOrFalseGroup.getSelection()==null||
-            departmentsComboBox.getSelectedItem()==null
+            trueOrFalseGroup.getSelection()==null
+            
             
  ) {
             throw new Exception("All fields must be filled.");
@@ -350,7 +403,7 @@ public class AddStaffMember extends JPanel {
                 userNameField.getText().trim().isEmpty()||
                 passwordField.getText().trim().isEmpty()||
                 trueOrFalseGroup.getSelection()==null||
-                departmentsComboBox.getSelectedItem()==null||
+                
                 specializationComboBox.getSelectedItem()==null
                 
      ) {
