@@ -182,7 +182,7 @@ public class AddDepartment extends JPanel {
             int y = (screenHeight - windowHeight) / 2;
             frame.setLocation(x, y);
 
-            frame.setSize(new Dimension(500, 300));
+            frame.setSize(new Dimension(420, 280));
             frame.getContentPane().add(new AddDepartment(null));
             frame.setVisible(true);
         });
