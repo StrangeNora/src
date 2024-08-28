@@ -1,151 +1,198 @@
 package medicalProblem;
 
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
 
-import visit.AddVisit;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.Dimension;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import control.Hospital;
+import model.Department;
 
 public class AddMedicalProblem extends JPanel {
-
-	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-
-	/**
-	 * Create the panel.
-	 */
-	public AddMedicalProblem(MedicalProblems m) {
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 36, 211, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 55, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
-		
-		JLabel lblNewLabel = new JLabel("Add A Medical Problem");
-		lblNewLabel.setFont(new Font("Traditional Arabic", Font.PLAIN, 22));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridwidth = 2;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 5;
-		gbc_lblNewLabel.gridy = 1;
-		add(lblNewLabel, gbc_lblNewLabel);
-		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 6;
-		gbc_panel_1.gridy = 2;
-		add(panel_1, gbc_panel_1);
-		
-		JLabel lblNewLabel_1 = new JLabel("Code:\r\n");
-		lblNewLabel_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 5;
-		gbc_lblNewLabel_1.gridy = 3;
-		add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 6;
-		gbc_textField.gridy = 3;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Name:");
-		lblNewLabel_1_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_1.gridx = 5;
-		gbc_lblNewLabel_1_1.gridy = 4;
-		add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
-		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 6;
-		gbc_textField_1.gridy = 4;
-		add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
-		JLabel lblNewLabel_1_2 = new JLabel("Department:");
-		lblNewLabel_1_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1_2 = new GridBagConstraints();
-		gbc_lblNewLabel_1_2.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_2.gridx = 5;
-		gbc_lblNewLabel_1_2.gridy = 5;
-		add(lblNewLabel_1_2, gbc_lblNewLabel_1_2);
-		
-		JLabel lblNewLabel_1_3 = new JLabel("Treatments");
-		lblNewLabel_1_3.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1_3 = new GridBagConstraints();
-		gbc_lblNewLabel_1_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_3.gridx = 5;
-		gbc_lblNewLabel_1_3.gridy = 6;
-		add(lblNewLabel_1_3, gbc_lblNewLabel_1_3);
-		
-		JButton btnNewButton = new JButton("Save");
-		btnNewButton.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 7;
-		gbc_btnNewButton.gridy = 10;
-		add(btnNewButton, gbc_btnNewButton);
-		
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 9;
-		gbc_panel.gridy = 10;
-		add(panel, gbc_panel);
-
-	}
 	
-	public static void main(String[] args) {
+	
+
+    private static final long serialVersionUID = 1L;
+    private JTextField nameField;
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JComboBox<Department> departmentsComboBox;
+    private JComboBox<String> optionsComboBox;
+    private JPanel fieldsPanel;
+    private JButton saveButton;
+
+    public AddMedicalProblem() {
+    	
+        this.setBackground(new Color(0xA9BED2));
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel titleLabel = new JLabel("Add A Medical Problem");
+        titleLabel.setFont(new Font("Traditional Arabic", Font.PLAIN, 22));
+        gbc.gridwidth = 3;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(titleLabel, gbc);
+
+        JLabel selectLabel = new JLabel("Select:");
+        selectLabel.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        gbc.gridwidth = 1;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        add(selectLabel, gbc);
+
+        optionsComboBox = new JComboBox<>(new String[] {"", "Fracture", "Injury", "Disease"});
+        gbc.gridx = 1;
+        gbc.gridwidth = 10;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        add(optionsComboBox, gbc);
+        optionsComboBox.setBackground(new Color(0x698DB0));
+
+        fieldsPanel = new JPanel();
+        fieldsPanel.setBackground(new Color(0xA9BED2));
+        fieldsPanel.setLayout(new GridBagLayout());
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(fieldsPanel, gbc);
+
+        saveButton = new JButton("Save");
+        gbc.gridy = 3;
+        gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        add(saveButton, gbc);
+
+        optionsComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateFields();
+            }
+        });
+
+        updateFields(); // Initialize fields based on default selection
+    }
+
+    private void updateFields() {
+        // Clear the fields panel
+        fieldsPanel.removeAll();
+
+        String selectedOption = (String) optionsComboBox.getSelectedItem();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        if (!selectedOption.isEmpty()) {
+            JLabel departmentLabel = new JLabel("Department:");
+            departmentLabel.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+            gbc.anchor = GridBagConstraints.EAST;  // Align the label to the right
+            fieldsPanel.add(departmentLabel, gbc);
+
+            Collection<Department> departments = Hospital.getInstance().getDepartments().values();
+            Department[] departmentArray = departments.toArray(new Department[0]);
+            departmentsComboBox = new JComboBox<>(departmentArray);
+            gbc.gridx = 1;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.anchor = GridBagConstraints.WEST;  // Align the combo box to the left
+            fieldsPanel.add(departmentsComboBox, gbc);
+            departmentsComboBox.setBackground(new Color(0x698DB0));
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+        }
+
+        if ("Fracture".equals(selectedOption)) {
+            fieldsPanel.add(createLabel("Name:"), gbc);
+            nameField = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(nameField, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            fieldsPanel.add(createLabel("Location:"), gbc);
+            textField1 = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(textField1, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            fieldsPanel.add(createLabel("Requires Cast:"), gbc);
+            JPanel castPanel = new JPanel();
+            JRadioButton trueButton = new JRadioButton("True");
+            JRadioButton falseButton = new JRadioButton("False");
+            ButtonGroup group = new ButtonGroup();
+            group.add(trueButton);
+            group.add(falseButton);
+            castPanel.add(trueButton);
+            castPanel.add(falseButton);
+            gbc.gridx = 1;
+            fieldsPanel.add(castPanel, gbc);
+
+        } else if ("Disease".equals(selectedOption)) {
+            fieldsPanel.add(createLabel("Name:"), gbc);
+            nameField = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(nameField, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            fieldsPanel.add(createLabel("Description:"), gbc);
+            textField2 = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(textField2, gbc);
+
+        } else if ("Injury".equals(selectedOption)) {
+            fieldsPanel.add(createLabel("Name:"), gbc);
+            nameField = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(nameField, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            fieldsPanel.add(createLabel("Location:"), gbc);
+            textField1 = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(textField1, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            fieldsPanel.add(createLabel("Common Recovery Time:"), gbc);
+            textField3 = createTextField();
+            gbc.gridx = 1;
+            fieldsPanel.add(textField3, gbc);
+        }
+
+        fieldsPanel.revalidate();
+        fieldsPanel.repaint();
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+        label.setHorizontalAlignment(SwingConstants.RIGHT); // Align label text to the right
+        return label;
+    }
+
+    private JTextField createTextField() {
+        JTextField textField = new JTextField(20);
+		textField.setBackground(new Color(0x698DB0)); 
+
+        return textField;
+    }
+
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Add Medical Problem");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  // Set the desired size (width x height)
-
-            // Get screen size and calculate window location
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
-
-            // Center the window on the screen
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
-
-            frame.setSize(new Dimension(500, 300));
-            frame.getContentPane().add(new AddMedicalProblem(null));
+            frame.setSize(500, 360);
+            frame.setLocationRelativeTo(null);
+            frame.add(new AddMedicalProblem());
             frame.setVisible(true);
         });
     }
-
 }

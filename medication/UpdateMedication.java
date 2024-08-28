@@ -198,6 +198,8 @@ public class UpdateMedication extends JPanel {
         }
     }
 
+    
+    
     private void showErrorMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
