@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 
 import control.Hospital;
+import exceptions.FutureDateException;
+import exceptions.InvalidUserDetails;
 import model.Department;
 
 public class AddMedicalProblem extends JPanel {
@@ -22,6 +24,7 @@ public class AddMedicalProblem extends JPanel {
     private JComboBox<String> optionsComboBox;
     private JPanel fieldsPanel;
     private JButton saveButton;
+    private ButtonGroup group;
 
     public AddMedicalProblem() {
     	
@@ -72,9 +75,58 @@ public class AddMedicalProblem extends JPanel {
                 updateFields();
             }
         });
+        
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String selectedItem = (String) optionsComboBox.getSelectedItem();
+
+                    if (selectedItem == null || selectedItem.isEmpty()) {
+                        throw new InvalidUserDetails("Please select a medical problem to add.");
+                    }
+
+                    switch (selectedItem) {
+                        case "Fracture":
+                            if (nameField.getText().isEmpty() || textField1.getText().trim().isEmpty() || group.getSelection() == null) {
+                                throw new InvalidUserDetails("Field cannot be empty.");
+                            }
+                            break;
+
+                        case "Disease":
+                            if (nameField.getText().isEmpty() || textField2.getText().trim().isEmpty()) {
+                                throw new InvalidUserDetails("Field cannot be empty.");
+                            }
+                            break;
+
+                        case "Injury":
+                            if (nameField.getText().isEmpty() || textField1.getText().trim().isEmpty() || textField3.getText().trim().isEmpty()) {
+                                throw new InvalidUserDetails("Field cannot be empty.");
+                            }
+                            if (!textField3.getText().matches("\\d+\\.\\d*") || !textField3.getText().matches("\\d+")) {
+                                throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
+                            }
+                            break;
+                    }
+                    JOptionPane.showMessageDialog(null, "Medical Problem updated successfully.");
+
+                } catch (InvalidUserDetails ex) {
+                    showErrorMessage(ex.getMessage());
+                } catch (FutureDateException ec) {
+                    JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+                }
+            }
+        });
+
+        
 
         updateFields(); // Initialize fields based on default selection
     }
+    
+    private void showErrorMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
 
     private void updateFields() {
         // Clear the fields panel
@@ -125,7 +177,7 @@ public class AddMedicalProblem extends JPanel {
             JPanel castPanel = new JPanel();
             JRadioButton trueButton = new JRadioButton("True");
             JRadioButton falseButton = new JRadioButton("False");
-            ButtonGroup group = new ButtonGroup();
+            group = new ButtonGroup();  // Initialize the class-level ButtonGroup
             group.add(trueButton);
             group.add(falseButton);
             castPanel.add(trueButton);
