@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import control.Hospital;
+import enums.Role;
 import model.*;
 import panels.GenericListPanel;
 import visit.*;
@@ -23,13 +24,18 @@ public class Visits extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private GenericListPanel<Visit> genericListPanel;
 	    private DefaultListModel<Visit> listModel;
+	    private Role userRole;
 
-	  ;
-
-	    public Visits(String sectionName, DefaultListModel<Visit> listModel) {
+	    public Visits(Role userRole, String sectionName, DefaultListModel<Visit> listModel) {
+	    	this.userRole = userRole;
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeVisittFromHospital, this::showAddVisitDialog,
-	        		this::showUpdateVisitDialog);
+	        genericListPanel = new GenericListPanel<>(
+	        		sectionName,
+	        		listModel, 
+	        		canRemove() ? this::removeVisitFromHospital : null,
+	        		canAdd() ? this::showAddVisitDialog : null,
+	        		canUpdate() ? this::showUpdateVisitDialog : null
+	        	);
 	        loadVisitsFromHospital();
 	    }
 
@@ -50,7 +56,7 @@ public class Visits extends JPanel {
 	        loadVisitsFromHospital();
 	    }
 
-	    private void removeVisittFromHospital(Visit v) {
+	    private void removeVisitFromHospital(Visit v) {
 	        Hospital.getInstance().removeVisit(v);
 	    }
 
@@ -69,6 +75,18 @@ public class Visits extends JPanel {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	    }
+	    
+	    private boolean canAdd() {
+	    	return userRole != Role.Doctor;
+	    }
+	    
+	    private boolean canRemove() {
+	    	return userRole != Role.Doctor;
+	    }
+	    
+	    private boolean canUpdate() {
+	    	return userRole != Role.Doctor;
 	    }
 	}
 

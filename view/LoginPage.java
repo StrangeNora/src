@@ -20,6 +20,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import exceptions.*;
 import control.*;
+import enums.Role;
 import model.*;
 
 
@@ -131,16 +132,16 @@ public class LoginPage extends JFrame {
             }
             if (userID==1) {
                 // Redirect to AdminPage
-                new AdminPage().setVisible(true);
+                new UserPage(Role.Admin).setVisible(true);
                 dispose();
 
             } else if (Hospital.getInstance().getStaffMember(userID)instanceof Doctor) {
                 
-                new DoctorPage().setVisible(true);
+                new UserPage(Role.Doctor).setVisible(true);
                 dispose();
             } else if (Hospital.getInstance().getStaffMember(userID)instanceof Nurse) {
                 // Redirect to NursePage
-                new NursePage().setVisible(true);
+                new UserPage(Role.Nurse).setVisible(true);
                 dispose();
            
         }
