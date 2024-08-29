@@ -71,7 +71,7 @@ public class AddVisit extends JPanel {
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
 		JPanel panel_1 = new JPanel();
@@ -180,48 +180,7 @@ public class AddVisit extends JPanel {
 		add(endDateChooser, gbc_endDateChooser);
 		Date selectedDate_1 = endDateChooser.getDate();
 		JTextField dateTextField_1 = (JTextField) endDateChooser.getDateEditor().getUiComponent();
-		dateTextField_1.setBackground(new Color(0x698DB0)); 
-
-
-		JLabel lblNewLabel_1_1_1_2 = new JLabel("Medical Problems:");
-		lblNewLabel_1_1_1_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1_1_1_2 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1_1_2.gridwidth = 5;
-		gbc_lblNewLabel_1_1_1_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_1_1_2.gridx = 2;
-		gbc_lblNewLabel_1_1_1_2.gridy = 10;
-		add(lblNewLabel_1_1_1_2, gbc_lblNewLabel_1_1_1_2);
-
-		JComboBox medicalProblemComboBox = new JComboBox();
-		medicalProblemComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "one"}));
-		GridBagConstraints gbc_medicalProblemComboBox = new GridBagConstraints();
-		medicalProblemComboBox.setBackground(new Color(0x698DB0)); 
-		gbc_medicalProblemComboBox.gridwidth = 9;
-		gbc_medicalProblemComboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_medicalProblemComboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_medicalProblemComboBox.gridx = 7;
-		gbc_medicalProblemComboBox.gridy = 10;
-		add(medicalProblemComboBox, gbc_medicalProblemComboBox);
-
-		JLabel lblNewLabel_1_1_1_3 = new JLabel("Treatments:");
-		lblNewLabel_1_1_1_3.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-		GridBagConstraints gbc_lblNewLabel_1_1_1_3 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1_1_3.gridwidth = 5;
-		gbc_lblNewLabel_1_1_1_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1_1_1_3.gridx = 2;
-		gbc_lblNewLabel_1_1_1_3.gridy = 11;
-		add(lblNewLabel_1_1_1_3, gbc_lblNewLabel_1_1_1_3);
-
-		JComboBox treatmentComboBox = new JComboBox();
-		treatmentComboBox.setModel(new DefaultComboBoxModel(new String[] {" ", "two"}));
-		treatmentComboBox.setBackground(new Color(0x698DB0)); 
-		GridBagConstraints gbc_treatmentComboBox = new GridBagConstraints();
-		gbc_treatmentComboBox.gridwidth = 9;
-		gbc_treatmentComboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_treatmentComboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_treatmentComboBox.gridx = 7;
-		gbc_treatmentComboBox.gridy = 11;
-		add(treatmentComboBox, gbc_treatmentComboBox);
+		dateTextField_1.setBackground(new Color(0x698DB0));
 
 		JButton btnNewButton = new JButton("Save\r\n");
 		btnNewButton.setFont(new Font("Times New Roman", Font.ITALIC, 15));
@@ -236,15 +195,22 @@ public class AddVisit extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(number.getText().trim().isEmpty() || patientID.getText().trim().isEmpty() || startDateChooser.getDate()==null 
-							|| endDateChooser.getDate()==null || medicalProblemComboBox.getSelectedItem()==null || treatmentComboBox.getSelectedItem()==null) {
+							|| endDateChooser.getDate()==null) {
 						throw new InvalidUserDetails("All Fields Must Be Filled.");
 					}
-					if (!number.getText().matches("\\d+")) {
+					if (!number.getText().matches("\\d+") ) {
 						throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
+					}
+					if(!patientID.getText().matches("\\d+")) {
+						throw new InvalidUserDetails("ID Field Must Only Contain Numbers.");
+
 					}
 					if(startDateChooser.getDate().after(MAX_DATE) || endDateChooser.getDate().after(MAX_DATE)) {
 						throw new FutureDateException(MAX_DATE);
 					}
+					
+					JOptionPane.showMessageDialog(null, "Visit Added Successfully!");
+
 
 				} catch (InvalidUserDetails ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
