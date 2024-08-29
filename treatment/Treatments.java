@@ -11,6 +11,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import control.Hospital;
+import enums.Role;
 import model.*;
 import panels.GenericListPanel;
 import treatment.*;
@@ -19,16 +20,21 @@ import treatment.*;
 
 
 public class Treatments extends JPanel {
-
-
 		private static final long serialVersionUID = 1L;
 		private GenericListPanel<Treatment> genericListPanel;
 	    private DefaultListModel<Treatment> listModel;
-
-	    public Treatments(String sectionName, DefaultListModel<Treatment> listModel) {
+	    private Role userRole;
+	    
+	    public Treatments(Role userRole, String sectionName, DefaultListModel<Treatment> listModel) {
+	    	this.userRole = userRole;
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<Treatment>(sectionName, listModel, this:: removeTreatmentFromHospital, this::showAddTreatmentDialog
-	        		,this::showUpdateTreatmenttDialog);
+	        genericListPanel = new GenericListPanel<>(
+	        		sectionName,
+	        		listModel, 
+	        		canRemove() ? this::removeTreatmentFromHospital : null,
+	        		canAdd() ? this::showAddTreatmentDialog : null,
+	        		canUpdate() ? this::showUpdateTreatmenttDialog : null
+	        	);
 	        loadTreatmentsFromHospital();
 	    }
 
@@ -68,6 +74,18 @@ public class Treatments extends JPanel {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	    }
+	    
+	    private boolean canAdd() {
+	    	return userRole != Role.Nurse;
+	    }
+	    
+	    private boolean canRemove() {
+	    	return userRole == Role.Admin;
+	    }
+	    
+	    private boolean canUpdate() {
+	    	return userRole == Role.Admin;
 	    }
 	}
 

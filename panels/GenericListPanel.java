@@ -3,6 +3,8 @@ package panels;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
+import enums.Role;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,32 +39,39 @@ public class GenericListPanel<T> {
 
         // Create the popup menu and the "Remove" item
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem removeMenuItem = new JMenuItem("Remove");
-        JMenuItem updateMenuItem = new JMenuItem("Update");
-        popupMenu.add(removeMenuItem);
-        popupMenu.add(updateMenuItem);
+        
+        // Update menu item button
+        if(updateCallback != null) {
+	        JMenuItem updateMenuItem = new JMenuItem("Update");
+	        popupMenu.add(updateMenuItem);
+	        // Add action listener to "Update" menu item
+	        updateMenuItem.addActionListener(e -> {
+	            int selectedIndex = list.getSelectedIndex();
+	            if (selectedIndex != -1) {
+	                T selectedItem = listModel.getElementAt(selectedIndex);
+	                updateCallback.accept(selectedItem); // Call the update logic
+	            }
+	        });
+        }
 
-        // Add action listener to "Remove" menu item
-        removeMenuItem.addActionListener(e -> {
-            int selectedIndex = list.getSelectedIndex();
-            if (selectedIndex != -1) {
-                T selectedItem = listModel.getElementAt(selectedIndex);
-                removeCallback.accept(selectedItem); // Call the removal logic
-                listModel.remove(selectedIndex);
-                JOptionPane.showMessageDialog(null, sectionName + " Removed Successfully");
-            }
-        });
+        // Remove menu item button
+        if(removeCallback != null) {
+	        JMenuItem removeMenuItem = new JMenuItem("Remove");
+	        popupMenu.add(removeMenuItem);
+	        // Add action listener to "Remove" menu item
+	        removeMenuItem.addActionListener(e -> {
+	            int selectedIndex = list.getSelectedIndex();
+	            if (selectedIndex != -1) {
+	                T selectedItem = listModel.getElementAt(selectedIndex);
+	                removeCallback.accept(selectedItem); // Call the removal logic
+	                listModel.remove(selectedIndex);
+	                JOptionPane.showMessageDialog(null, sectionName + " Removed Successfully");
+	            }
+	        });
+        }
 
-        // Add action listener to "Update" menu item
-        updateMenuItem.addActionListener(e -> {
-            int selectedIndex = list.getSelectedIndex();
-            if (selectedIndex != -1) {
-                T selectedItem = listModel.getElementAt(selectedIndex);
-                updateCallback.accept(selectedItem); // Call the update logic
-            }
-        });
-
-        // Add mouse listener to show popup menu on right-click
+        boolean shouldShowMenu = updateCallback != null || removeCallback != null;
+        // Add mouse listener to show pop-up menu on right-click
         list.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 showPopup(evt);
@@ -73,7 +82,7 @@ public class GenericListPanel<T> {
             }
 
             private void showPopup(java.awt.event.MouseEvent evt) {
-                if (evt.isPopupTrigger()) { // This is true for right-clicks
+                if (shouldShowMenu && evt.isPopupTrigger()) { // This is true for right-clicks
                     int index = list.locationToIndex(evt.getPoint());
                     list.setSelectedIndex(index); // Select the item that was right-clicked
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
@@ -83,6 +92,10 @@ public class GenericListPanel<T> {
 
         // Add action listener for the "Add" button
         addButton.addActionListener(e -> addCallback.run());
+        
+        if(addCallback == null) {
+        	addButton.setVisible(false);
+        }
 
         // Add action listener for the "Search" button
         searchButton.addActionListener(e -> {

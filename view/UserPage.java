@@ -5,6 +5,7 @@ import treatment.Treatments;
 import visit.Visits;
 import control.*;
 import department.Departments;
+import enums.Role;
 import exceptions.*;
 import javax.swing.*;
 import Patient.*;
@@ -26,6 +27,7 @@ public class UserPage extends JFrame {
 	private JToolBar toolBar;
 	private JPanel rightPanel;
 	private int buttonWidth = 260;
+	private Role userRole;
 
 	// DefaultListModels for each page
 	private DefaultListModel<StaffMember> staffMembersListModel = new DefaultListModel<>();
@@ -37,15 +39,17 @@ public class UserPage extends JFrame {
 	private DefaultListModel<Visit> visitsListModel = new DefaultListModel<>();
 	private DefaultListModel<Patient> patientListModel = new DefaultListModel<>();
 
-	public UserPage() {
-		JPanel staffMemberPanel = new StaffMembers("StaffMembers", staffMembersListModel).getPanel();
+	public UserPage(Role role) {
+		this.userRole = role;
+		
+		JPanel staffMemberPanel = new StaffMembers(userRole, "StaffMembers", staffMembersListModel).getPanel();
 //		JPanel nursesPanel = new Nurses("Nurses", nursesListModel).getPanel();
-		JPanel patientsPanel = new Patients("Patient", patientListModel).getPanel();
-		JPanel medicationsPanel = new Medications("Medications", medicationsListModel).getPanel();
-		JPanel medicalProblemsPanel = new MedicalProblems("Medical Problems", medicalProblemsListModel).getPanel();
-		JPanel departmentsPanel = new Departments("Departments", departmentsListModel).getPanel();
-		JPanel treatmentsPanel = new Treatments("Treatments", treatmentsListModel).getPanel();
-		JPanel visitsPanel = new Visits("Visits", visitsListModel).getPanel();
+		JPanel patientsPanel = new Patients(userRole, "Patient", patientListModel).getPanel();
+		JPanel medicationsPanel = new Medications(userRole, "Medications", medicationsListModel).getPanel();
+		JPanel medicalProblemsPanel = new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel).getPanel();
+		JPanel departmentsPanel = new Departments(userRole, "Departments", departmentsListModel).getPanel();
+		JPanel treatmentsPanel = new Treatments(userRole, "Treatments", treatmentsListModel).getPanel();
+		JPanel visitsPanel = new Visits(userRole, "Visits", visitsListModel).getPanel();
 		
 		createToolBar();
 		
@@ -138,112 +142,12 @@ public class UserPage extends JFrame {
 		departmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Departments"));
 		treatmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Treatments"));
 		visitsButton.addActionListener(e -> cardLayout.show(contentPanel, "Visits"));
-	}
-
-
-	private JPanel createSearchPanel(String sectionName, DefaultListModel<String> listModel) {
-		JPanel panel = new JPanel(new BorderLayout());
-		JPanel searchPanel = new JPanel();
-		JTextField searchField = new JTextField(15);
-		JButton searchButton = new JButton("Search");
-		JButton addButton = new JButton("Add");
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-		searchPanel.add(searchField);
-		searchPanel.add(searchButton);
-		searchPanel.add(addButton);
-
-		// List and scroll pane
-		JList<String> list = new JList<>(listModel);
-		JScrollPane listScrollPane = new JScrollPane(list);
-
-		panel.add(searchPanel, BorderLayout.NORTH);
-		panel.add(listScrollPane, BorderLayout.CENTER);
-
-		// Create the popup menu and the "Remove" item
-		JPopupMenu popupMenu = new JPopupMenu();
-		JMenuItem removeMenuItem = new JMenuItem("Remove");
-		popupMenu.add(removeMenuItem);
-
-		// Add action listener to "Remove" menu item
-		removeMenuItem.addActionListener(e -> {
-			int selectedIndex = list.getSelectedIndex();
-			if (selectedIndex != -1) {
-				listModel.remove(selectedIndex);
-			}
-		});
-
-		// Add mouse listener to show popup menu on right-click
-		list.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				showPopup(evt);
-			}
-
-			public void mouseReleased(java.awt.event.MouseEvent evt) {
-				showPopup(evt);
-			}
-
-			private void showPopup(java.awt.event.MouseEvent evt) {
-				if (evt.isPopupTrigger()) { // This is true for right-clicks
-					int index = list.locationToIndex(evt.getPoint());
-					list.setSelectedIndex(index); // Select the item that was right-clicked
-					popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
-				}
-			}
-		});
-
-		// Add action listener for the "Add" button
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String text = searchField.getText().trim();
-				if (!text.isEmpty()) {
-					if (listModel.contains(text)) {
-						try {
-							throw new ObjectAlreadyExistsException(text, sectionName);
-						} catch (ObjectAlreadyExistsException ex) {
-							JOptionPane.showMessageDialog(null, "The Item Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-					} else {
-						listModel.addElement(text);
-						searchField.setText(""); // Clear the text field after adding
-					}
-				}
-			}
-		});
-
-		// Add action listener for the "Search" button
-		searchButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String searchText = searchField.getText().trim();
-				if (listModel.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "The List Is Empty At The Moment", "Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				boolean found = false;
-				for (int i = 0; i < listModel.size(); i++) {
-					if (listModel.get(i).equalsIgnoreCase(searchText)) {
-						list.ensureIndexIsVisible(i);
-						list.setSelectedIndex(i);
-						list.setSelectionBackground(Color.decode("#7F9DBB")); // Use the desired color
-						found = true;
-						break;
-					}
-				}
-
-				if (!found) {
-					JOptionPane.showMessageDialog(null, "The Item Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-
-		return panel;
+		
+		// hide other staff members buttons if its not an admin
+		if(userRole != Role.Admin) {
+			staffMemberButton.setVisible(false);
+			nursesButton.setVisible(false);
+		}
 	}
 
 
@@ -344,6 +248,6 @@ public class UserPage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new UserPage());
+		SwingUtilities.invokeLater(() -> new UserPage(Role.Doctor));
 	}
 }
