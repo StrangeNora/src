@@ -32,6 +32,7 @@ public class UpdateTreatment extends JPanel {
     private JLabel serialNumberLabel;
     private JLabel descriptionLabel;
     private JButton updateButton;
+    private String selectedItem;
 
     public UpdateTreatment() {
     	
@@ -128,9 +129,28 @@ public class UpdateTreatment extends JPanel {
         	public void actionPerformed(ActionEvent e) {
         		
         		try {
+        			selectedItem = (String) comboBox.getSelectedItem();
+        			if(selectedItem == null || selectedItem.isEmpty()) {
+        				throw new InvalidUserDetails("Please select an option to update.");
+        			}
+        			if(selectedItem == "Serial Number") {
+        				if(serialNumberField.getText().trim().isEmpty()) {
+        					throw new InvalidUserDetails("Field Must Be Filled.");
+        				}
+        				if(!serialNumberField.getText().matches("\\d+")) {
+        					throw new InvalidUserDetails("This Field Can Only Contain Numbers");
+        				}
+        			}
+        			if(selectedItem == "Description") {
+        				if(descriptionField.getText().trim().isEmpty()) {
+        					throw new InvalidUserDetails("Field Must Be Filled.");
+        				}
+        			}
+        			JOptionPane.showMessageDialog(null, "Treatment Updated Successfully!" );
+
         			
         		}catch(InvalidUserDetails ex) {
-        			JOptionPane.showMessageDialog(UpdateTreatment.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+        			JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 
         		}catch(ObjectAlreadyExistsException ec) {
         			JOptionPane.showMessageDialog(UpdateTreatment.this, ec.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -174,21 +194,5 @@ public class UpdateTreatment extends JPanel {
         });
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Update Treatment");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(470, 250);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int x = (screenWidth - frame.getWidth()) / 2;
-            int y = (screenHeight - frame.getHeight()) / 2;
-            frame.setLocation(x, y);
-
-            frame.getContentPane().add(new UpdateTreatment());
-            frame.setVisible(true);
-        });
-    }
+   
 }
