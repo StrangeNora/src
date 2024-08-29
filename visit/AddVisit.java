@@ -30,6 +30,7 @@ import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Patient;
 import model.Visit;
+import panels.MedicalProblemPanel;
 import utils.UtilsMethods;
 
 import javax.swing.UIManager;
@@ -217,6 +218,8 @@ public class AddVisit extends JPanel {
 				}
 				catch(FutureDateException ec) {
 					JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+				}catch(ObjectAlreadyExistsException ex) {
+        			JOptionPane.showMessageDialog(AddVisit.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 
 				}
 
