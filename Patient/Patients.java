@@ -63,7 +63,7 @@ public class Patients extends JPanel {
     }
 
     private void showUpdatePatientDialog(Patient patient) {
-        UpdatePatient updatePatient = new UpdatePatient(this);
+        UpdatePatient updatePatient = new UpdatePatient(this,patient);
         JDialog dialog = new JDialog((Frame) null, "Update Patient", true);
         dialog.getContentPane().add(updatePatient);
         dialog.pack();

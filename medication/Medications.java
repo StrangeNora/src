@@ -70,7 +70,7 @@ public class Medications extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    private void showUpdateMedicationDialog(Medication m) {
-	        UpdateMedication updateMedication = new UpdateMedication(this);
+	        UpdateMedication updateMedication = new UpdateMedication(this,m);
 	        JDialog dialog = new JDialog((Frame) null, "Update Medication", true);
 	        dialog.getContentPane().add(updateMedication);
 	        dialog.pack();
