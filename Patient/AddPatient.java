@@ -1,10 +1,10 @@
 
 package Patient;
+
 import enums.*;
 import control.*;
 import exceptions.*;
 import model.*;
-
 import utils.*;
 import view.AdminPage;
 
@@ -389,7 +389,7 @@ public class AddPatient extends JPanel {
                                     Hospital.getInstance().addPatient(patient);
                                     patients.refreshList();
                                     if(Hospital.getInstance().getRealPatient(patient.getId())!=null) {
-                                    	 JOptionPane.showMessageDialog(null, "Employee added successfully:\n" );
+                                    	 JOptionPane.showMessageDialog(null, "Patient added successfully:\n" );
                                     }
                                     Window window = SwingUtilities.getWindowAncestor(AddPatient.this);
                                     if (window != null) {
@@ -399,12 +399,16 @@ public class AddPatient extends JPanel {
                                     JOptionPane.showMessageDialog(null, "Invalid ID format. Please enter a valid number.");
                                 } catch (InvalidUserDetails ex) {
                                     JOptionPane.showMessageDialog(null, ex.getMessage());
-				}catch (FutureDateException ec) {
+			                 	}catch (FutureDateException ec) {
                                     JOptionPane.showMessageDialog(null, "Invalid Date Input!");
-				}
+				                }catch(ObjectAlreadyExistsException ex) {
+				        			JOptionPane.showMessageDialog(AddPatient.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				                }
+				                }
                                 
-                            }
+                            
                         });
+    
                         
                         
                                 GridBagConstraints gbc_SaveButton = new GridBagConstraints();
