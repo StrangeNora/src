@@ -3,22 +3,15 @@ package panels;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
-public class SystemQueries extends JPanel {
+public class SystemQueries {
 
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create the panel.
-	 * @param systemQueriesListModel 
-	 * @param string 
-	 */
 	public SystemQueries(String string, DefaultListModel<String> systemQueriesListModel) {
-
+		// TODO Auto-generated constructor stub
 	}
 
 	public JPanel getPanel() {
-		return this;
-	
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
