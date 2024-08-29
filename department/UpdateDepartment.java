@@ -21,7 +21,7 @@ public class UpdateDepartment extends JPanel {
     private JTextField locationField;
     private JComboBox<Specialization> specializationComboBox;
 
-    public UpdateDepartment() {
+    public UpdateDepartment(Departments d) {
     	this.setBackground(new Color(0xA9BED2));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -184,7 +184,7 @@ public class UpdateDepartment extends JPanel {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(350, 200);
             frame.setLocationRelativeTo(null);
-            frame.getContentPane().add(new UpdateDepartment());
+            frame.getContentPane().add(new UpdateDepartment(null));
             frame.setVisible(true);
         });
     }
