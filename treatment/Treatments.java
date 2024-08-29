@@ -63,10 +63,10 @@ public class Treatments extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
-	    private void showUpdateTreatmentDialog(Treatment t) {
-	     //   UpdateTreatment updateTreatment = new UpdateTreatment(this);
+	    private void showUpdateTreatmenttDialog(Treatment t) {
+	   //     UpdateTreatment updateTreatment = new UpdateTreatment(this);
 	        JDialog dialog = new JDialog((Frame) null, "Update Treatment", true);
-	      //  dialog.getContentPane().add(updateTreatment);
+	     //   dialog.getContentPane().add(updateTreatment);
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);

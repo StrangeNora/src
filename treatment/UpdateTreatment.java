@@ -32,6 +32,13 @@ public class UpdateTreatment extends JPanel {
 	private JLabel serialNumberLabel;
 	private JLabel descriptionLabel;
 	private JButton updateButton;
+    private static final long serialVersionUID = 1L;
+    private JTextField serialNumberField;
+    private JTextField descriptionField;
+    private JLabel serialNumberLabel;
+    private JLabel descriptionLabel;
+    private JButton updateButton;
+    private String selectedItem;
 
 	public UpdateTreatment() {
 
@@ -122,6 +129,34 @@ public class UpdateTreatment extends JPanel {
 		add(descriptionField, gbc_descriptionField);
 		descriptionField.setColumns(10);
 		descriptionField.setVisible(false);
+        updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		try {
+        			selectedItem = (String) comboBox.getSelectedItem();
+        			if(selectedItem == null || selectedItem.isEmpty()) {
+        				throw new InvalidUserDetails("Please select an option to update.");
+        			}
+        			if(selectedItem == "Serial Number") {
+        				if(serialNumberField.getText().trim().isEmpty()) {
+        					throw new InvalidUserDetails("Field Must Be Filled.");
+        				}
+        				if(!serialNumberField.getText().matches("\\d+")) {
+        					throw new InvalidUserDetails("This Field Can Only Contain Numbers");
+        				}
+        			}
+        			if(selectedItem == "Description") {
+        				if(descriptionField.getText().trim().isEmpty()) {
+        					throw new InvalidUserDetails("Field Must Be Filled.");
+        				}
+        			}
+        			JOptionPane.showMessageDialog(null, "Treatment Updated Successfully!" );
+
+        			
+        		}catch(InvalidUserDetails ex) {
+        			JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+
 
 		updateButton = new JButton("Update");
 		updateButton.addActionListener(new ActionListener() {
@@ -131,6 +166,7 @@ public class UpdateTreatment extends JPanel {
 
 				}catch(InvalidUserDetails ex) {
 					JOptionPane.showMessageDialog(UpdateTreatment.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+
 
 				}catch(ObjectAlreadyExistsException ec) {
 					JOptionPane.showMessageDialog(UpdateTreatment.this, ec.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
@@ -191,4 +227,5 @@ public class UpdateTreatment extends JPanel {
 			frame.setVisible(true);
 		});
 	}
+
 }
