@@ -197,7 +197,7 @@ public class UpdateMedication extends JPanel {
             return true;
         } catch (NumberFormatException e) {
             return false;
-            //bghjk
+         
         }
     }
 
