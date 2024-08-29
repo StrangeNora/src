@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 
 import enums.Specialization;
 import exceptions.InvalidUserDetails;
+import exceptions.ObjectAlreadyExistsException;
 import visit.AddVisit;
 
 import javax.swing.JComboBox;
@@ -135,6 +136,9 @@ public class AddDepartment extends JPanel {
 
 				}catch(InvalidUserDetails ex){
                     JOptionPane.showMessageDialog(null, ex.getMessage());
+				}catch(ObjectAlreadyExistsException ec) {
+					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
 				}
 
 			}
