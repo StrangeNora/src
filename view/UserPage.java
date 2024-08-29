@@ -74,7 +74,6 @@ public class UserPage extends JFrame {
 		// Add content panels
 		contentPanel.add(createHomePanel(), "Home");
 		contentPanel.add(staffMemberPanel,"StaffMembers");
-	
 		contentPanel.add(patientsPanel,"Patients");
 		contentPanel.add(medicationsPanel,"Medications");
 		contentPanel.add(medicalProblemsPanel,"Medical Problems");
