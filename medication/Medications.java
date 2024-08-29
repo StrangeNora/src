@@ -3,6 +3,7 @@ package medication;
 
 import javax.swing.JPanel;
 
+import Patient.UpdatePatient;
 
 import java.awt.Frame;
 import java.util.HashMap;
@@ -28,7 +29,8 @@ public class Medications extends JPanel {
 
 	    public Medications(String sectionName, DefaultListModel<Medication> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeMedicationtFromHospital, this::showAddMedicationDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeMedicationtFromHospital, this::showAddMedicationDialog
+	        		,this::showUpdateMedicationDialog);
 	        loadMedicationsFromHospital();
 	    }
 
@@ -57,6 +59,14 @@ public class Medications extends JPanel {
 	       AddMedication addMedication = new AddMedication(this);
 	        JDialog dialog = new JDialog((Frame) null, "Add Medication", true);
 	        dialog.getContentPane().add(addMedication);
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+	    }
+	    private void showUpdateMedicationDialog(Medication m) {
+	        UpdateMedication updateMedication = new UpdateMedication(this);
+	        JDialog dialog = new JDialog((Frame) null, "Update Medication", true);
+	        dialog.getContentPane().add(updateMedication);
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);

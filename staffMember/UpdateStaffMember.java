@@ -1,19 +1,38 @@
 package staffMember;
 
-import javax.swing.*;
-import com.toedter.calendar.JDateChooser;
-
-import exceptions.FutureDateException;
-import enums.Specialization;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UpdateStaffMemberPanel extends JPanel {
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import com.toedter.calendar.JDateChooser;
+
+import enums.Specialization;
+import exceptions.FutureDateException;
+
+public class UpdateStaffMember extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JPanel inputPanel;
@@ -33,7 +52,7 @@ public class UpdateStaffMemberPanel extends JPanel {
     private JRadioButton trueRadioButton;
     private JRadioButton falseRadioButton;
     private JComboBox<Specialization> specializationComboBox;
-
+    private StaffMembers s;
     static {
         try {
             LIMIT_DATE = sdf.parse("30/04/2024");
@@ -45,7 +64,7 @@ public class UpdateStaffMemberPanel extends JPanel {
     /**
      * Create the panel.
      */
-    public UpdateStaffMemberPanel() {
+    public UpdateStaffMember(StaffMembers s) {
         this.setBackground(new Color(0xA9BED2));
         setLayout(new BorderLayout());
 
@@ -419,5 +438,28 @@ public class UpdateStaffMemberPanel extends JPanel {
     }
 
    
-   
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Update Staff Member Panel");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(200, 200);  // Set the desired size (width x height)
+
+            // Get screen size and calculate window location
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Dimension screenSize = toolkit.getScreenSize();
+            int screenWidth = screenSize.width;
+            int screenHeight = screenSize.height;
+            int windowWidth = 300;
+            int windowHeight = 200;
+
+            // Center the window on the screen
+            int x = (screenWidth - windowWidth) / 2;
+            int y = (screenHeight - windowHeight) / 2;
+            frame.setLocation(x, y);
+
+            frame.setSize(new Dimension(400, 200));
+            frame.add(new UpdateStaffMemberPanel());
+            frame.setVisible(true);
+        });
+    }
 }

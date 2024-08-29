@@ -55,7 +55,7 @@ public class UpdateVisit extends JPanel {
         }
     }
 
-    public UpdateVisit() {
+    public UpdateVisit(Visits visits) {
         this.setBackground(new Color(0xA9BED2));
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -330,28 +330,5 @@ public class UpdateVisit extends JPanel {
 
 
 	
-	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Update Visit");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  
-
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
-
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
-
-            frame.setSize(new Dimension(450, 250));
-            frame.getContentPane().add(new UpdateVisit());
-            frame.setVisible(true);
-        });
-    }
-
 
 }

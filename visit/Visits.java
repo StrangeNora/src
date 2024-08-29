@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import control.Hospital;
 import model.*;
 import panels.GenericListPanel;
+import visit.*;
 
 
 
@@ -27,7 +28,8 @@ public class Visits extends JPanel {
 
 	    public Visits(String sectionName, DefaultListModel<Visit> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeVisittFromHospital, this::showAddVisitDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeVisittFromHospital, this::showAddVisitDialog,
+	        		this::showUpdateVisitDialog);
 	        loadVisitsFromHospital();
 	    }
 
@@ -60,5 +62,14 @@ public class Visits extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
+	    private void showUpdateVisitDialog(Visit stf) {
+	        UpdateVisit updateVisit = new UpdateVisit(this);
+	        JDialog dialog = new JDialog((Frame) null, "Update Visit", true);
+	        dialog.getContentPane().add(updateVisit);
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+	    }
 	}
+
 

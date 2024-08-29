@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import control.Hospital;
 import model.*;
 import panels.GenericListPanel;
+import treatment.*;
+
 
 
 
@@ -27,7 +29,8 @@ public class Treatments extends JPanel {
 
 	    public Treatments(String sectionName, DefaultListModel<Treatment> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeTreatmenttFromHospital, this::showAddTreatmentDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeTreatmenttFromHospital, this::showAddTreatmentDialog
+	        		,this::showUpdateTreatmenttDialog);
 	        loadTreatmentsFromHospital();
 	    }
 
@@ -56,6 +59,14 @@ public class Treatments extends JPanel {
 	       AddTreatment addTreatment = new AddTreatment(this);
 	        JDialog dialog = new JDialog((Frame) null, "Add Treatment", true);
 	        dialog.getContentPane().add(addTreatment);
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+	    }
+	    private void showUpdateTreatmenttDialog(Treatment t) {
+	        UpdateTreatment updateTreatment = new UpdateTreatment(this);
+	        JDialog dialog = new JDialog((Frame) null, "Update Treatment", true);
+	        dialog.getContentPane().add(updateTreatment);
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);

@@ -9,7 +9,9 @@ import java.util.Collection;
 import control.Hospital;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
+import medication.UpdateMedication;
 import model.Department;
+import model.Medication;
 
 public class AddMedicalProblem extends JPanel {
 	
@@ -236,15 +238,7 @@ public class AddMedicalProblem extends JPanel {
 
         return textField;
     }
+   
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Add Medical Problem");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 360);
-            frame.setLocationRelativeTo(null);
-            frame.add(new AddMedicalProblem(null));
-            frame.setVisible(true);
-        });
-    }
+   
 }

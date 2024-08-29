@@ -27,7 +27,9 @@ public class MedicalProblems extends JPanel {
 
 	    public MedicalProblems(String sectionName, DefaultListModel<MedicalProblem> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeMedicalProblemtFromHospital, this::showAddMedicalProblemDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeMedicalProblemtFromHospital,
+	        		this::showAddMedicalProblemDialog
+	,this::showUpdateMedicalProblemDialog);
 	        loadMedicalProblemsFromHospital();
 	    }
 
@@ -56,6 +58,14 @@ public class MedicalProblems extends JPanel {
 	       AddMedicalProblem addMedicalProblem = new AddMedicalProblem(this);
 	        JDialog dialog = new JDialog((Frame) null, "Add MedicalProblem", true);
 	        dialog.getContentPane().add(addMedicalProblem);
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+	    }
+	    private void showUpdateMedicalProblemDialog(MedicalProblem m) {
+	    	UpdateMedicalProblem updateMedicalProblem = new UpdateMedicalProblem(this);
+	        JDialog dialog = new JDialog((Frame) null, "Update MedicalProblem", true);
+	        dialog.getContentPane().add(updateMedicalProblem);
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);

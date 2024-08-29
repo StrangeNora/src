@@ -23,7 +23,7 @@ public class UpdateMedication extends JPanel {
     /**
      * Create the panel.
      */
-    public UpdateMedication() {
+    public UpdateMedication(Medications m) {
         setBackground(BACKGROUND_COLOR);
 
         GridBagLayout gridBagLayout = new GridBagLayout();
@@ -204,26 +204,5 @@ public class UpdateMedication extends JPanel {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Update Medication");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  
-
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
-
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
-
-            frame.setSize(new Dimension(470, 250));
-            frame.getContentPane().add(new UpdateMedication());
-            frame.setVisible(true);
-        });
-    }
+   
 }

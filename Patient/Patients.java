@@ -10,20 +10,16 @@ import javax.swing.JPanel;
 import control.Hospital;
 import model.*;
 import panels.GenericListPanel;
+
 public class Patients extends JPanel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private GenericListPanel<Patient> genericListPanel;
+    private static final long serialVersionUID = 1L;
+    private GenericListPanel<Patient> genericListPanel;
     private DefaultListModel<Patient> listModel;
-
-  ;
 
     public Patients(String sectionName, DefaultListModel<Patient> listModel) {
         this.listModel = listModel;
-        genericListPanel = new GenericListPanel<>(sectionName, listModel, this::removePatientFromHospital, this::showAddPatientDialog);
+        genericListPanel = new GenericListPanel<>(sectionName, listModel, this::removePatientFromHospital, this::showAddPatientDialog, this::showUpdatePatientDialog);
         loadPatientsFromHospital();
     }
 
@@ -52,6 +48,15 @@ public class Patients extends JPanel {
         AddPatient addPatient = new AddPatient(this);
         JDialog dialog = new JDialog((Frame) null, "Add Patient", true);
         dialog.getContentPane().add(addPatient);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
+    private void showUpdatePatientDialog(Patient patient) {
+        UpdatePatient updatePatient = new UpdatePatient(this);
+        JDialog dialog = new JDialog((Frame) null, "Update Patient", true);
+        dialog.getContentPane().add(updatePatient);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);

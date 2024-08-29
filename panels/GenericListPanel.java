@@ -16,7 +16,7 @@ public class GenericListPanel<T> {
     private JTextField searchField;
     private JList<T> list;
 
-    public GenericListPanel(String sectionName, DefaultListModel<T> listModel, Consumer<T> removeCallback, Runnable addCallback) {
+    public GenericListPanel(String sectionName, DefaultListModel<T> listModel, Consumer<T> removeCallback, Runnable addCallback, Consumer<T> updateCallback) {
         this.listModel = listModel;
         panel = new JPanel(new BorderLayout());
         JPanel searchPanel = new JPanel();
@@ -38,7 +38,9 @@ public class GenericListPanel<T> {
         // Create the popup menu and the "Remove" item
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem removeMenuItem = new JMenuItem("Remove");
+        JMenuItem updateMenuItem = new JMenuItem("Update");
         popupMenu.add(removeMenuItem);
+        popupMenu.add(updateMenuItem);
 
         // Add action listener to "Remove" menu item
         removeMenuItem.addActionListener(e -> {
@@ -48,6 +50,15 @@ public class GenericListPanel<T> {
                 removeCallback.accept(selectedItem); // Call the removal logic
                 listModel.remove(selectedIndex);
                 JOptionPane.showMessageDialog(null, sectionName + " Removed Successfully");
+            }
+        });
+
+        // Add action listener to "Update" menu item
+        updateMenuItem.addActionListener(e -> {
+            int selectedIndex = list.getSelectedIndex();
+            if (selectedIndex != -1) {
+                T selectedItem = listModel.getElementAt(selectedIndex);
+                updateCallback.accept(selectedItem); // Call the update logic
             }
         });
 
