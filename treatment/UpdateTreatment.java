@@ -34,7 +34,7 @@ public class UpdateTreatment extends JPanel {
     private JButton updateButton;
     private String selectedItem;
 
-    public UpdateTreatment() {
+    public UpdateTreatment(Treatments t) {
     	
         this.setBackground(new Color(0xA9BED2));
 
