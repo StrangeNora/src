@@ -30,7 +30,6 @@ import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Patient;
 import model.Visit;
-import panels.MedicalProblemPanel;
 import utils.UtilsMethods;
 
 import javax.swing.UIManager;
