@@ -3,8 +3,10 @@ package treatment;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import control.Hospital;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import model.Treatment;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -34,7 +36,7 @@ public class UpdateTreatment extends JPanel {
     private JButton updateButton;
     private String selectedItem;
 
-    public UpdateTreatment(Treatments t) {
+    public UpdateTreatment(Treatments t,Treatment treatment) {
     	
         this.setBackground(new Color(0xA9BED2));
 
@@ -145,7 +147,9 @@ public class UpdateTreatment extends JPanel {
         				if(descriptionField.getText().trim().isEmpty()) {
         					throw new InvalidUserDetails("Field Must Be Filled.");
         				}
+        				Hospital.getInstance().getRealTreatment(treatment.getSerialNumber()).setDescription(descriptionField.getText());
         			}
+        			
         			JOptionPane.showMessageDialog(null, "Treatment Updated Successfully!" );
 
         			
