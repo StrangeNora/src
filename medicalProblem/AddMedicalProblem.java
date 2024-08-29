@@ -9,6 +9,7 @@ import java.util.Collection;
 import control.Hospital;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
+import exceptions.ObjectAlreadyExistsException;
 import medication.UpdateMedication;
 import model.Department;
 import model.Medication;
@@ -116,6 +117,9 @@ public class AddMedicalProblem extends JPanel {
 					showErrorMessage(ex.getMessage());
 				} catch (FutureDateException ec) {
 					JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+				}catch(ObjectAlreadyExistsException ex) {
+        			JOptionPane.showMessageDialog(AddMedicalProblem.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+
 				}
 			}
 		});

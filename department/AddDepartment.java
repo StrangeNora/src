@@ -139,7 +139,13 @@ public class AddDepartment extends JPanel {
 						throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
 
 					}
-					//TODO add exceptions for nameTextField and managerIDTextField
+					if(!managerIDTextField.getText().matches("\\d+")) {
+						throw new InvalidUserDetails("ID Field Must Only Contain Numbers.");
+
+					}
+					
+					JOptionPane.showMessageDialog(null, "Department Added Successfully!");
+
 
 					Doctor doctor = (Doctor) Hospital.getInstance().getStaffMember(Integer.parseInt(managerIDTextField.getText()));
 
@@ -148,7 +154,6 @@ public class AddDepartment extends JPanel {
 
 					Hospital.getInstance().addDepartment(department);
 
-					JOptionPane.showMessageDialog(null, "Department Added Successfully!");
 
 				}catch(InvalidUserDetails ex){
 					JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -221,29 +226,6 @@ public class AddDepartment extends JPanel {
 
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			JFrame frame = new JFrame("Add Department");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(200, 200);  // Set the desired size (width x height)
-
-			// Get screen size and calculate window location
-			Toolkit toolkit = Toolkit.getDefaultToolkit();
-			Dimension screenSize = toolkit.getScreenSize();
-			int screenWidth = screenSize.width;
-			int screenHeight = screenSize.height;
-			int windowWidth = 300;
-			int windowHeight = 200;
-
-			// Center the window on the screen
-			int x = (screenWidth - windowWidth) / 2;
-			int y = (screenHeight - windowHeight) / 2;
-			frame.setLocation(x, y);
-
-			frame.setSize(new Dimension(420, 280));
-			frame.getContentPane().add(new AddDepartment(null));
-			frame.setVisible(true);
-		});
-	}
+	
 
 }

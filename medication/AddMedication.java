@@ -193,29 +193,6 @@ public class AddMedication extends JPanel {
         
     }
 
-	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Add Medication");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  // Set the desired size (width x height)
-
-            // Get screen size and calculate window location
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
-
-            // Center the window on the screen
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
-
-            frame.setSize(new Dimension(400, 250));
-            frame.getContentPane().add(new AddMedication(null));
-            frame.setVisible(true);
-        });
-    }
+	
 
 }
