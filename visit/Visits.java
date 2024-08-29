@@ -68,8 +68,8 @@ public class Visits extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
-	    private void showUpdateVisitDialog(Visit stf) {
-	        UpdateVisit updateVisit = new UpdateVisit(this);
+	    private void showUpdateVisitDialog(Visit v) {
+	        UpdateVisit updateVisit = new UpdateVisit(this,v);
 	        JDialog dialog = new JDialog((Frame) null, "Update Visit", true);
 	        dialog.getContentPane().add(updateVisit);
 	        dialog.pack();

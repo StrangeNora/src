@@ -151,6 +151,7 @@ public class UpdateMedication extends JPanel {
 
 					break;
 				}
+				medications.refreshList();
 				JOptionPane.showMessageDialog(null, "Medication updated successfully.");
 
 			} catch (InvalidUserDetails ex) {

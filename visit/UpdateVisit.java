@@ -12,6 +12,7 @@ import exceptions.ObjectAlreadyExistsException;
 import model.Department;
 import model.MedicalProblem;
 import model.Treatment;
+import model.Visit;
 import staffMember.UpdateStaffMemberPanel;
 
 import java.awt.GridBagLayout;
@@ -63,7 +64,7 @@ public class UpdateVisit extends JPanel {
         }
     }
 
-    public UpdateVisit(Visits visits) {
+    public UpdateVisit(Visits visits, Visit v) {
         this.setBackground(new Color(0xA9BED2));
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -244,6 +245,7 @@ public class UpdateVisit extends JPanel {
                         if (startDateChooser.getDate().after(maxAllowedDate)) {
                             throw new FutureDateException(startDateChooser.getDate());
                         }
+                        Hospital.getInstance().getRealVisit(v.getNumber()).setStartDate(startDateChooser.getDate());
                         break;
                     case "End Date":
                         currentTextField = dateTextField;
@@ -253,7 +255,10 @@ public class UpdateVisit extends JPanel {
                         if (endDateChooser.getDate().after(maxAllowedDate)) {
                             throw new FutureDateException(endDateChooser.getDate());
                         }
+                        Hospital.getInstance().getRealVisit(v.getNumber()).setEndDate(endDateChooser.getDate());
+
                         break;
+                        //TODO : delete medical problems and treatments not needed and the number
                     case "Medical Problems":
                         String selectedMedicalProblem = (String) medicalProblemsComboBox.getSelectedItem();
                         if (selectedMedicalProblem == null || selectedMedicalProblem.isEmpty()) {
