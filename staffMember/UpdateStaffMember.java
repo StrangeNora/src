@@ -458,7 +458,7 @@ public class UpdateStaffMember extends JPanel {
             frame.setLocation(x, y);
 
             frame.setSize(new Dimension(400, 200));
-            frame.add(new UpdateStaffMemberPanel());
+            frame.add(new UpdateStaffMember(null));
             frame.setVisible(true);
         });
     }

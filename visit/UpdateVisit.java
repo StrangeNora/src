@@ -13,7 +13,6 @@ import model.Department;
 import model.MedicalProblem;
 import model.Treatment;
 import model.Visit;
-import staffMember.UpdateStaffMemberPanel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;

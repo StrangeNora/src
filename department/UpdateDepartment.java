@@ -2,11 +2,12 @@ package department;
 
 import javax.swing.*;
 
+import control.Hospital;
 import enums.Specialization;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
-
+import model.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ public class UpdateDepartment extends JPanel {
     private JTextField locationField;
     private JComboBox<Specialization> specializationComboBox;
 
-    public UpdateDepartment(Departments d) {
+    public UpdateDepartment(Departments d, Department department) {
     	this.setBackground(new Color(0xA9BED2));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -69,7 +70,9 @@ public class UpdateDepartment extends JPanel {
                         throw new NullPointerException("This Field Cannot Be Empty.");
 
                 	}
+                	Hospital.getInstance().getRealDepartment(department.getNumber()).setName(nameField.getSelectedText());
                 }
+                //TODO remove manager id
                 if(selectedItem == "Manager ID") {
                 	if(idField.getText().trim().isEmpty()) {
                         throw new NullPointerException("This Field Cannot Be Empty.");
@@ -82,7 +85,10 @@ public class UpdateDepartment extends JPanel {
                 	if(locationField.getText().trim().isEmpty()) {
                         throw new NullPointerException("This Field Cannot Be Empty.");
                 	}
+                	Hospital.getInstance().getRealDepartment(department.getNumber()).setLocation(locationField.getSelectedText());
+
                 }
+                d.refreshList();
                 
                 JOptionPane.showMessageDialog(null, "Department Updated Successfuly!");
 
@@ -178,14 +184,6 @@ public class UpdateDepartment extends JPanel {
     }
 
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Update Department");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(350, 200);
-            frame.setLocationRelativeTo(null);
-            frame.getContentPane().add(new UpdateDepartment(null));
-            frame.setVisible(true);
-        });
-    }
+   
+    
 }

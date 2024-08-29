@@ -66,7 +66,7 @@ public class Departments extends JPanel {
 	    }
 
 	    private void showUpdateDepartmentDialog(Department department) {
-	        UpdateDepartment updateDepartment = new UpdateDepartment(this);
+	        UpdateDepartment updateDepartment = new UpdateDepartment(this,department);
 	        JDialog dialog = new JDialog((Frame) null, "Update Department", true);
 	        dialog.getContentPane().add(updateDepartment);
 	        dialog.pack();

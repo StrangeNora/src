@@ -38,7 +38,6 @@ import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Patient;
-import staffMember.UpdateStaffMemberPanel;
 
 public class UpdatePatient extends JPanel {
 
