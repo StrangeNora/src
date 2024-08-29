@@ -242,7 +242,7 @@ public class AddStaffMember extends JPanel {
                         window.dispose();
                     }
                 } catch (ObjectAlreadyExistsException o) {
-                    JOptionPane.showMessageDialog(null, "Object Already Exists!");
+                    JOptionPane.showMessageDialog(null, "Staff Member Already Exists!");
                 } catch (Exception ex) {
                     showErrorDialog(ex.getMessage());
                 }

@@ -1,6 +1,9 @@
 package medication;
 
 import javax.swing.*;
+
+import Patient.UpdatePatient;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

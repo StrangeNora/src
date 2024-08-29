@@ -11,6 +11,9 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -19,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -29,6 +33,10 @@ import com.toedter.calendar.JDateChooser;
 
 import enums.BiologicalSex;
 import enums.HealthFund;
+import exceptions.FutureDateException;
+import exceptions.InvalidUserDetails;
+import exceptions.ObjectAlreadyExistsException;
+import staffMember.UpdateStaffMemberPanel;
 
 public class UpdatePatient extends JPanel {
 
@@ -41,9 +49,6 @@ public class UpdatePatient extends JPanel {
 	    private JTextField textField4;
 	    private JTextField textField5;
 	    private JTextField textField6;
-	    private JTextField textField7;
-	    private JTextField textField8;
-	    private JTextField textField9;
 	    private JRadioButton maleRadioButton;
 	    private JRadioButton femaleRadioButton;
 	    private ButtonGroup genderGroup;
@@ -52,6 +57,19 @@ public class UpdatePatient extends JPanel {
 	    private JComboBox<HealthFund> healthFundComboBox;
 	    private BiologicalSex[] selectedSex;
 	    private Patients p;
+	    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    private static Date maxAllowedDate;
+
+
+	    
+	    static {
+	        try {
+	            maxAllowedDate = sdf.parse("30/04/2024");
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	            maxAllowedDate = new Date(); // Fallback to current date if parsing fails
+	        }
+	    }
 	    
 	    public UpdatePatient(Patients p) {
 	        this.setBackground(new Color(0x698DB0));
@@ -86,6 +104,7 @@ public class UpdatePatient extends JPanel {
 
 	        String[] options = {"ID", "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"};
 	        attributeComboBox = new JComboBox<>(options);
+	        attributeComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "ID", "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"}));
 
 	        JPanel comboBoxPanel = new JPanel();
 	        comboBoxPanel.setBackground(new Color(0xA9BED2));
@@ -119,14 +138,10 @@ public class UpdatePatient extends JPanel {
 	        textField4 = new JTextField(10);
 	        textField5 = new JTextField(10);
 	        textField6 = new JTextField(10);
-	        textField7 = new JTextField(10);
-	        textField8 = new JTextField(10);
-	        textField9 = new JTextField(10);
 
 	        JComponent[] components = {
 	            birthDateChooser, textField1, textField2, textField3,
-	            textField4, textField5, textField6, textField7,
-	            textField8, textField9
+	            textField4, textField5, textField6
 	        };
 
 	        for (JComponent component : components) {
@@ -138,6 +153,91 @@ public class UpdatePatient extends JPanel {
 	        healthFundComboBox.setModel(new DefaultComboBoxModel<>(HealthFund.values()));
 
 	        JButton updateButton = new JButton("Update");
+	        updateButton.addActionListener(new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	        		
+	        		try {
+	        			String selectedItem = (String) attributeComboBox.getSelectedItem();
+	        			
+	        			if(selectedItem == null || selectedItem.isEmpty()) {
+	        				throw new InvalidUserDetails("choose an attribute to update.");
+	        			}
+	        		     
+	        			if(selectedItem == "ID") {
+	        				if(textField1.getText().trim().isEmpty())  {
+	        					throw new InvalidUserDetails("Field Cannot Be Empty.");
+	        				}
+	        				if(!textField1.getText().matches("\\d+")) {
+	        					throw new InvalidUserDetails("Feild Must Only Contain Numbers");
+	        				}
+	        			}
+	        			
+	        			if (selectedItem == "Phone Number") {
+	        				if(textField5.getText().trim().isEmpty()) {
+	        					
+	        				}
+	        				if(!textField5.getText().matches("\\d+")) {
+	        					throw new InvalidUserDetails("Feild Must Only Contain Numbers");
+	        				}
+	        			}
+	        			if(selectedItem == "First Name") {
+	        			
+	        				if(textField2.getText().trim().isEmpty()) {
+	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+	        				}
+	        			}
+	        			if(selectedItem == "Last Name") {
+	        				if(textField3.getText().trim().isEmpty() ) {
+	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+
+	        				}
+	        			}
+	        			if(selectedItem == "Address") {
+	        				if(textField4.getText().trim().isEmpty()) {
+	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+
+	        				}
+	        			}
+	        			if(selectedItem == "Email") {
+	        				if(textField6.getText().trim().isEmpty()) {
+	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+
+	        				}
+	        			}
+	        			if(selectedItem == "Gender" || selectedItem == "Biological Sex") {
+	        				if(genderGroup.getSelection() == null || selectedSex == null) {
+	        					throw new InvalidUserDetails("Field Cannot Be Empty");
+	        				}
+	        			}
+	        			if(selectedItem == "Health Fund") {
+	        				if(healthFundComboBox.getSelectedItem() == null){
+	        					throw new InvalidUserDetails("Field Cannot Be Empty");
+	        				}
+	        			}
+	        			if(selectedItem == "Birthdate") {
+	        				if(birthDateChooser.getDate() == null) {
+	        					throw new InvalidUserDetails("Field Cannot Be Empty");
+	        				}
+	        				if(birthDateChooser.getDate().after(maxAllowedDate)) {
+	        					throw new FutureDateException(maxAllowedDate);
+	        				}
+	        			}
+	        			
+	                    JOptionPane.showMessageDialog(null, "Patient updated successfully.");
+
+	        		}
+	        		
+	        		catch(InvalidUserDetails ex){
+	                    showErrorMessage(ex.getMessage());
+	        		}catch(FutureDateException ex) {
+	                    showErrorMessage(ex.getMessage());
+
+	        		}catch(ObjectAlreadyExistsException ex) {
+	                    JOptionPane.showMessageDialog(null, "Patient Already Exists!");
+
+	        		}
+	        	}
+	        });
 
 	        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	        southPanel.setBackground(new Color(0xA9BED2));
@@ -191,6 +291,12 @@ public class UpdatePatient extends JPanel {
 	        inputPanel.repaint();
 	    }
 
+	    
+	    private void showErrorMessage(String message) {
+	        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+	    }
+	    
+	    
 	    private void addLabelAndTextField(String labelText, JComponent textField, GridBagConstraints gbc, int row) {
 	        gbc.gridx = 0;
 	        gbc.gridy = row;
@@ -271,7 +377,7 @@ public class UpdatePatient extends JPanel {
 	        gbc.gridx = 1;
 	        inputPanel.add(dateChooser, gbc);
 	    }
-
+	   
 
 	    
 }

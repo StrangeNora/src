@@ -4,8 +4,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import com.toedter.calendar.JDateChooser;
 
+import control.Hospital;
+import enums.Specialization;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
+import exceptions.ObjectAlreadyExistsException;
+import model.Department;
+import model.MedicalProblem;
+import model.Treatment;
+import staffMember.UpdateStaffMemberPanel;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -14,6 +21,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.Collection;
 import java.util.Date;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,8 +42,8 @@ public class UpdateVisit extends JPanel {
     private JTextField textField;
     private JDateChooser startDateChooser;
     private JDateChooser endDateChooser;
-    private JComboBox<String> medicalProblemsComboBox;
-    private JComboBox<String> treatmentsComboBox;
+    private JComboBox<MedicalProblem> medicalProblemsComboBox;
+    private JComboBox<Treatment> treatmentsComboBox;
     private JLabel lblNumber;
     private JLabel lblStartDate;
     private JLabel lblEndDate;
@@ -172,8 +180,10 @@ public class UpdateVisit extends JPanel {
         lblMedicalProblems.setVisible(false);
 
         medicalProblemsComboBox = new JComboBox<>();
+        Collection<MedicalProblem> medicalProblems = Hospital.getInstance().getMedicalProblems().values();
+        MedicalProblem[] medicalProblemArray = medicalProblems.toArray(new MedicalProblem[0]);
+        medicalProblemsComboBox.setModel(new DefaultComboBoxModel<>(medicalProblemArray));
         medicalProblemsComboBox.setBackground(new Color(0x698DB0));
-        medicalProblemsComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Problem 1", "Problem 2", "Problem 3"}));
         GridBagConstraints gbc_medicalProblemsComboBox = new GridBagConstraints();
         gbc_medicalProblemsComboBox.gridwidth = 4;
         gbc_medicalProblemsComboBox.insets = new Insets(0, 0, 5, 5);
@@ -193,8 +203,10 @@ public class UpdateVisit extends JPanel {
         lblTreatments.setVisible(false);
 
         treatmentsComboBox = new JComboBox<>();
+        Collection<Treatment> treatments = Hospital.getInstance().getTreatments().values();
+        Treatment[] treatmentArray = treatments.toArray(new Treatment[0]);
+        treatmentsComboBox.setModel(new DefaultComboBoxModel<>(treatmentArray));
         treatmentsComboBox.setBackground(new Color(0x698DB0));
-        treatmentsComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Treatment 1", "Treatment 2", "Treatment 3"}));
         GridBagConstraints gbc_treatmentsComboBox = new GridBagConstraints();
         gbc_treatmentsComboBox.gridwidth = 4;
         gbc_treatmentsComboBox.insets = new Insets(0, 0, 5, 5);
@@ -260,6 +272,9 @@ public class UpdateVisit extends JPanel {
                 showErrorMessage(ex.getMessage());
             } catch (FutureDateException ec) {
                 JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+            }catch(ObjectAlreadyExistsException ex) {
+                JOptionPane.showMessageDialog(null, "Visit Already Exists!");
+
             }
         });
 
@@ -327,8 +342,5 @@ public class UpdateVisit extends JPanel {
         lblTreatments.setVisible(false);
         treatmentsComboBox.setVisible(false);
     }
-
-
-	
 
 }
