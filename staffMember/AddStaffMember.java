@@ -209,7 +209,7 @@ public class AddStaffMember extends JPanel {
                     int licenseNumber=Integer.parseInt(licenseNumberField.getText());
                     String userName= userNameField.getText();
                     String password= passwordField.getText();
-                  
+                  //TODO initialize nurse with isIntensivecare
                    
                     String gender=genderGroup.getSelection().getActionCommand();
                     String selectedOption = (String) attributeComboBox.getSelectedItem();

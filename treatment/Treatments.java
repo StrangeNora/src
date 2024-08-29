@@ -29,8 +29,8 @@ public class Treatments extends JPanel {
 
 	    public Treatments(String sectionName, DefaultListModel<Treatment> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeTreatmenttFromHospital, this::showAddTreatmentDialog
-	        		,this::showUpdateTreatmenttDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeTreatmentFromHospital, this::showAddTreatmentDialog
+	        		,this::showUpdateTreatmentDialog);
 	        loadTreatmentsFromHospital();
 	    }
 
@@ -51,7 +51,7 @@ public class Treatments extends JPanel {
 	        loadTreatmentsFromHospital();
 	    }
 
-	    private void removeTreatmenttFromHospital(Treatment t) {
+	    private void removeTreatmentFromHospital(Treatment t) {
 	        Hospital.getInstance().removeTreatment(t);
 	    }
 
@@ -63,10 +63,10 @@ public class Treatments extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
-	    private void showUpdateTreatmenttDialog(Treatment t) {
-	        UpdateTreatment updateTreatment = new UpdateTreatment(this);
+	    private void showUpdateTreatmentDialog(Treatment t) {
+	     //   UpdateTreatment updateTreatment = new UpdateTreatment(this);
 	        JDialog dialog = new JDialog((Frame) null, "Update Treatment", true);
-	        dialog.getContentPane().add(updateTreatment);
+	      //  dialog.getContentPane().add(updateTreatment);
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);

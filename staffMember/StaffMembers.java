@@ -24,7 +24,7 @@ public class StaffMembers extends JPanel {
 
 	    public StaffMembers(String sectionName, DefaultListModel<StaffMember> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeStaffMembertFromHospital, this::showAddStaffMemberDialog,this::showUpdateStaffMembertDialog);
+	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeStaffMemberFromHospital, this::showAddStaffMemberDialog,this::showUpdateStaffMemberDialog);
 	        loadStaffMembersFromHospital();
 	    }
 
@@ -45,7 +45,7 @@ public class StaffMembers extends JPanel {
 	        loadStaffMembersFromHospital();
 	    }
 
-	    private void removeStaffMembertFromHospital(StaffMember stf) {
+	    private void removeStaffMemberFromHospital(StaffMember stf) {
 	        Hospital.getInstance().removeStaffMember(stf);
 	    }
 
@@ -57,7 +57,7 @@ public class StaffMembers extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
-	    private void showUpdateStaffMembertDialog(StaffMember stf) {
+	    private void showUpdateStaffMemberDialog(StaffMember stf) {
 	        UpdateStaffMember updateStaffMember = new UpdateStaffMember(this);
 	        JDialog dialog = new JDialog((Frame) null, "Update StaffMember", true);
 	        dialog.getContentPane().add(updateStaffMember);

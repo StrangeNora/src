@@ -16,9 +16,11 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import control.Hospital;
 import department.AddDepartment;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import model.Treatment;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -27,15 +29,15 @@ import java.awt.event.ActionEvent;
 public class AddTreatment extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField serialNumber;
+	private JTextField description;
 
 	/**
 	 * Create the panel.
 	 */
 	public AddTreatment(Treatments t) {
-		
-        this.setBackground(new Color(0xA9BED2));
+
+		this.setBackground(new Color(0xA9BED2));
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -43,7 +45,7 @@ public class AddTreatment extends JPanel {
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
-		
+
 		JLabel lblNewLabel = new JLabel("Add a Treatment");
 		lblNewLabel.setFont(new Font("Traditional Arabic", Font.BOLD, 22));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -53,9 +55,9 @@ public class AddTreatment extends JPanel {
 		gbc_lblNewLabel.gridx = 2;
 		gbc_lblNewLabel.gridy = 1;
 		add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(0xA9BED2));
+		panel_1.setBackground(new Color(0xA9BED2));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.gridheight = 11;
 		gbc_panel_1.insets = new Insets(0, 0, 5, 5);
@@ -63,7 +65,7 @@ public class AddTreatment extends JPanel {
 		gbc_panel_1.gridx = 1;
 		gbc_panel_1.gridy = 1;
 		add(panel_1, gbc_panel_1);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Serial Number:");
 		lblNewLabel_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -72,18 +74,18 @@ public class AddTreatment extends JPanel {
 		gbc_lblNewLabel_1.gridx = 2;
 		gbc_lblNewLabel_1.gridy = 6;
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		textField = new JTextField();
-		textField.setBackground(new Color(0x698DB0)); 
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 6;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 6;
-		gbc_textField.gridy = 6;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
-		
+
+		serialNumber = new JTextField();
+		serialNumber.setBackground(new Color(0x698DB0)); 
+		GridBagConstraints gbc_serialNumber = new GridBagConstraints();
+		gbc_serialNumber.gridwidth = 6;
+		gbc_serialNumber.insets = new Insets(0, 0, 5, 5);
+		gbc_serialNumber.fill = GridBagConstraints.HORIZONTAL;
+		gbc_serialNumber.gridx = 6;
+		gbc_serialNumber.gridy = 6;
+		add(serialNumber, gbc_serialNumber);
+		serialNumber.setColumns(10);
+
 		JLabel lblNewLabel_2 = new JLabel("Description:");
 		lblNewLabel_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
@@ -92,38 +94,41 @@ public class AddTreatment extends JPanel {
 		gbc_lblNewLabel_2.gridx = 2;
 		gbc_lblNewLabel_2.gridy = 8;
 		add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
-		textField_1 = new JTextField();
-		textField_1.setBackground(new Color(0x698DB0)); 
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.gridwidth = 6;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 6;
-		gbc_textField_1.gridy = 8;
-		add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
+
+		description = new JTextField();
+		description.setBackground(new Color(0x698DB0)); 
+		GridBagConstraints gbc_description = new GridBagConstraints();
+		gbc_description.gridwidth = 6;
+		gbc_description.insets = new Insets(0, 0, 5, 5);
+		gbc_description.fill = GridBagConstraints.HORIZONTAL;
+		gbc_description.gridx = 6;
+		gbc_description.gridy = 8;
+		add(description, gbc_description);
+		description.setColumns(10);
+
 		JButton btnNewButton = new JButton("Save");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
-					if(textField.getText().trim().isEmpty() || textField_1.getText().trim().isEmpty()) {
+					if(serialNumber.getText().trim().isEmpty() || description.getText().trim().isEmpty()) {
 						throw new InvalidUserDetails("All Fields Must Be Filled.");
 					}
-					if(!textField.getText().matches("\\d+")) {
+					if(!serialNumber.getText().matches("\\d+")) {
 						throw new InvalidUserDetails("Serial Number Field Must Only Contain Numbers.");
 					}
-					
+					Treatment treatment = new Treatment(Integer.parseInt(serialNumber.getText()),description.getText());
+
+					Hospital.getInstance().addTreatment(treatment);
+
 					JOptionPane.showMessageDialog(null, "Treatment Added Successfully!");
 
-					
+
 				}catch(InvalidUserDetails ec) {
 					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					
+
 				}catch(ObjectAlreadyExistsException ex) {
-        			JOptionPane.showMessageDialog(AddTreatment.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(AddTreatment.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 
 				}
 			}
@@ -135,9 +140,9 @@ public class AddTreatment extends JPanel {
 		gbc_btnNewButton.gridx = 13;
 		gbc_btnNewButton.gridy = 11;
 		add(btnNewButton, gbc_btnNewButton);
-		
+
 		JPanel panel = new JPanel();
-        panel.setBackground(new Color(0xA9BED2));
+		panel.setBackground(new Color(0xA9BED2));
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 14;
@@ -145,30 +150,30 @@ public class AddTreatment extends JPanel {
 		add(panel, gbc_panel);
 
 	}
-	
+
 	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Add Treatment");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  // Set the desired size (width x height)
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame("Add Treatment");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(200, 200);  // Set the desired size (width x height)
 
-            // Get screen size and calculate window location
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
+			// Get screen size and calculate window location
+			Toolkit toolkit = Toolkit.getDefaultToolkit();
+			Dimension screenSize = toolkit.getScreenSize();
+			int screenWidth = screenSize.width;
+			int screenHeight = screenSize.height;
+			int windowWidth = 300;
+			int windowHeight = 200;
 
-            // Center the window on the screen
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
+			// Center the window on the screen
+			int x = (screenWidth - windowWidth) / 2;
+			int y = (screenHeight - windowHeight) / 2;
+			frame.setLocation(x, y);
 
-            frame.setSize(new Dimension(400, 200));
-            frame.getContentPane().add(new AddTreatment(null));
-            frame.setVisible(true);
-        });
-    }
+			frame.setSize(new Dimension(400, 200));
+			frame.getContentPane().add(new AddTreatment(null));
+			frame.setVisible(true);
+		});
+	}
 
 }

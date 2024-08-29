@@ -23,9 +23,14 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
 
+import control.Hospital;
 import exceptions.FutureDateException;
+
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import model.Patient;
+import model.Visit;
+import utils.UtilsMethods;
 
 import javax.swing.UIManager;
 import javax.swing.DefaultComboBoxModel;
@@ -34,41 +39,41 @@ import javax.swing.DefaultComboBoxModel;
 public class AddVisit extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField number;
+	private JTextField patientID;
 	private JDateChooser startDateChooser;
 	private JDateChooser endDateChooser;
 	private JComboBox comboBox_1;
 	private JComboBox comboBox;
-	 private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-	    private static final Date MAX_DATE;
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	private static final Date MAX_DATE;
 
-	    static {
-	        try {
-	            MAX_DATE = DATE_FORMAT.parse("30/04/2024");
-	        } catch (ParseException e) {
-	            throw new RuntimeException("Date parsing error", e);
-	        }
-	    }
+	static {
+		try {
+			MAX_DATE = DATE_FORMAT.parse("30/04/2024");
+		} catch (ParseException e) {
+			throw new RuntimeException("Date parsing error", e);
+		}
+	}
 
 
-	
+
 
 	/**
 	 * Create the panel.
 	 */
 	public AddVisit(Visits v) {
-		
-        this.setBackground(new Color(0xA9BED2));
 
-		
+		this.setBackground(new Color(0xA9BED2));
+
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color (0xA9BED2));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -77,7 +82,7 @@ public class AddVisit extends JPanel {
 		gbc_panel_1.gridx = 5;
 		gbc_panel_1.gridy = 0;
 		add(panel_1, gbc_panel_1);
-		
+
 		JLabel lblNewLabel = new JLabel("Add A Visit");
 		lblNewLabel.setFont(new Font("Traditional Arabic", Font.BOLD, 22));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -87,7 +92,7 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel.gridx = 5;
 		gbc_lblNewLabel.gridy = 3;
 		add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Number:");
 		lblNewLabel_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -96,19 +101,19 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1.gridx = 2;
 		gbc_lblNewLabel_1.gridy = 6;
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		textField = new JTextField();
-		textField.setBackground(new Color(0x698DB0)); 
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 9;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 7;
-		gbc_textField.gridy = 6;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Patient:");
+
+		number = new JTextField();
+		number.setBackground(new Color(0x698DB0)); 
+		GridBagConstraints gbc_number = new GridBagConstraints();
+		gbc_number.gridwidth = 9;
+		gbc_number.insets = new Insets(0, 0, 5, 5);
+		gbc_number.fill = GridBagConstraints.HORIZONTAL;
+		gbc_number.gridx = 7;
+		gbc_number.gridy = 6;
+		add(number, gbc_number);
+		number.setColumns(10);
+
+		JLabel lblNewLabel_1_1 = new JLabel("Patient ID:");
 		lblNewLabel_1_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1_1.gridwidth = 5;
@@ -116,18 +121,18 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1_1.gridx = 2;
 		gbc_lblNewLabel_1_1.gridy = 7;
 		add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
-		
-		textField_1 = new JTextField();
-		textField_1.setBackground(new Color(0x698DB0)); // Set the background color of the text field
-		textField_1.setColumns(10);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.gridwidth = 9;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 7;
-		gbc_textField_1.gridy = 7;
-		add(textField_1, gbc_textField_1);
-		
+
+		patientID = new JTextField();
+		patientID.setBackground(new Color(0x698DB0)); // Set the background color of the text field
+		patientID.setColumns(10);
+		GridBagConstraints gbc_patientID = new GridBagConstraints();
+		gbc_patientID.gridwidth = 9;
+		gbc_patientID.insets = new Insets(0, 0, 5, 5);
+		gbc_patientID.fill = GridBagConstraints.HORIZONTAL;
+		gbc_patientID.gridx = 7;
+		gbc_patientID.gridy = 7;
+		add(patientID, gbc_patientID);
+
 		JLabel lblNewLabel_1_1_1 = new JLabel("Start Date:");
 		lblNewLabel_1_1_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1_1_1 = new GridBagConstraints();
@@ -136,7 +141,7 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1_1_1.gridx = 2;
 		gbc_lblNewLabel_1_1_1.gridy = 8;
 		add(lblNewLabel_1_1_1, gbc_lblNewLabel_1_1_1);
-        
+
 		JDateChooser startDateChooser = new JDateChooser();
 		startDateChooser.setBackground(new Color(0x698DB0)); // Set the background color of the text field
 		startDateChooser.setForeground(Color.WHITE); // Set the text color to white
@@ -152,7 +157,7 @@ public class AddVisit extends JPanel {
 		JTextField dateTextField = (JTextField) startDateChooser.getDateEditor().getUiComponent();
 		dateTextField.setBackground(new Color(0x698DB0)); 
 
-		
+
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("End Date:");
 		lblNewLabel_1_1_1_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1_1_1_1 = new GridBagConstraints();
@@ -161,7 +166,7 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1_1_1_1.gridx = 2;
 		gbc_lblNewLabel_1_1_1_1.gridy = 9;
 		add(lblNewLabel_1_1_1_1, gbc_lblNewLabel_1_1_1_1);
-		
+
 		JDateChooser endDateChooser = new JDateChooser();
 		endDateChooser.getCalendarButton().setPreferredSize(new Dimension(12, 12));
 		endDateChooser.setForeground(Color.WHITE);
@@ -177,7 +182,7 @@ public class AddVisit extends JPanel {
 		JTextField dateTextField_1 = (JTextField) endDateChooser.getDateEditor().getUiComponent();
 		dateTextField_1.setBackground(new Color(0x698DB0)); 
 
-		
+
 		JLabel lblNewLabel_1_1_1_2 = new JLabel("Medical Problems:");
 		lblNewLabel_1_1_1_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1_1_1_2 = new GridBagConstraints();
@@ -186,18 +191,18 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1_1_1_2.gridx = 2;
 		gbc_lblNewLabel_1_1_1_2.gridy = 10;
 		add(lblNewLabel_1_1_1_2, gbc_lblNewLabel_1_1_1_2);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "one"}));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		comboBox.setBackground(new Color(0x698DB0)); 
-		gbc_comboBox.gridwidth = 9;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 7;
-		gbc_comboBox.gridy = 10;
-		add(comboBox, gbc_comboBox);
-		
+
+		JComboBox medicalProblemComboBox = new JComboBox();
+		medicalProblemComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "one"}));
+		GridBagConstraints gbc_medicalProblemComboBox = new GridBagConstraints();
+		medicalProblemComboBox.setBackground(new Color(0x698DB0)); 
+		gbc_medicalProblemComboBox.gridwidth = 9;
+		gbc_medicalProblemComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_medicalProblemComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_medicalProblemComboBox.gridx = 7;
+		gbc_medicalProblemComboBox.gridy = 10;
+		add(medicalProblemComboBox, gbc_medicalProblemComboBox);
+
 		JLabel lblNewLabel_1_1_1_3 = new JLabel("Treatments:");
 		lblNewLabel_1_1_1_3.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_lblNewLabel_1_1_1_3 = new GridBagConstraints();
@@ -206,18 +211,18 @@ public class AddVisit extends JPanel {
 		gbc_lblNewLabel_1_1_1_3.gridx = 2;
 		gbc_lblNewLabel_1_1_1_3.gridy = 11;
 		add(lblNewLabel_1_1_1_3, gbc_lblNewLabel_1_1_1_3);
-		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {" ", "two"}));
-		comboBox_1.setBackground(new Color(0x698DB0)); 
-		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.gridwidth = 9;
-		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox_1.gridx = 7;
-		gbc_comboBox_1.gridy = 11;
-		add(comboBox_1, gbc_comboBox_1);
-		
+
+		JComboBox treatmentComboBox = new JComboBox();
+		treatmentComboBox.setModel(new DefaultComboBoxModel(new String[] {" ", "two"}));
+		treatmentComboBox.setBackground(new Color(0x698DB0)); 
+		GridBagConstraints gbc_treatmentComboBox = new GridBagConstraints();
+		gbc_treatmentComboBox.gridwidth = 9;
+		gbc_treatmentComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_treatmentComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_treatmentComboBox.gridx = 7;
+		gbc_treatmentComboBox.gridy = 11;
+		add(treatmentComboBox, gbc_treatmentComboBox);
+
 		JButton btnNewButton = new JButton("Save\r\n");
 		btnNewButton.setFont(new Font("Times New Roman", Font.ITALIC, 15));
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -225,33 +230,44 @@ public class AddVisit extends JPanel {
 		gbc_btnNewButton.gridx = 16;
 		gbc_btnNewButton.gridy = 12;
 		add(btnNewButton, gbc_btnNewButton);
-		
+
 		btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if(textField.getText().trim().isEmpty() || textField_1.getText().trim().isEmpty() || startDateChooser.getDate()==null 
-                       || endDateChooser.getDate()==null || comboBox.getSelectedItem()==null || comboBox_1.getSelectedItem()==null) {
-                    	throw new InvalidUserDetails("All Fields Must Be Filled.");
-                    }
-                    if (!textField.getText().matches("\\d+")) {
-                        throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
-                    }
-                    if(startDateChooser.getDate().after(MAX_DATE) || endDateChooser.getDate().after(MAX_DATE)) {
-                    	throw new FutureDateException(MAX_DATE);
-                    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(number.getText().trim().isEmpty() || patientID.getText().trim().isEmpty() || startDateChooser.getDate()==null 
+							|| endDateChooser.getDate()==null || medicalProblemComboBox.getSelectedItem()==null || treatmentComboBox.getSelectedItem()==null) {
+						throw new InvalidUserDetails("All Fields Must Be Filled.");
+					}
+					if (!number.getText().matches("\\d+")) {
+						throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
+					}
+					if(startDateChooser.getDate().after(MAX_DATE) || endDateChooser.getDate().after(MAX_DATE)) {
+						throw new FutureDateException(MAX_DATE);
+					}
 
-                } catch (InvalidUserDetails ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                catch(FutureDateException ec) {
-                    JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+				} catch (InvalidUserDetails ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				catch(FutureDateException ec) {
+					JOptionPane.showMessageDialog(null, "Invalid Date Input.");
 
-                }
-                JOptionPane.showMessageDialog(null, "Visit Added Successfully!.");
-            }
-        });
-		
+				}
+
+				//TODO idk if i deleted an exceptopn calle invalidexception or am blind :D
+				//TODO why the heck is there treatments an medicalproblems, should be deleted need laylas approval
+				Patient patient = Hospital.getInstance().getRealPatient(Integer.parseInt(patientID.getText()));
+
+
+				Visit visit = new Visit(Integer.parseInt(number.getText()),patient,startDateChooser.getDate(),
+						endDateChooser.getDate());
+
+				Hospital.getInstance().addVisit(visit);
+
+				JOptionPane.showMessageDialog(null, "Visit Added Successfully!.");
+			}
+		});
+
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color (0xA9BED2));
 		GridBagConstraints gbc_panel = new GridBagConstraints();
@@ -261,32 +277,32 @@ public class AddVisit extends JPanel {
 		add(panel, gbc_panel);
 
 	}
-	
-	
-    
+
+
+
 
 	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Add Visit");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  // Set the desired size (width x height)
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new JFrame("Add Visit");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(200, 200);  // Set the desired size (width x height)
 
-            // Get screen size and calculate window location
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
+			// Get screen size and calculate window location
+			Toolkit toolkit = Toolkit.getDefaultToolkit();
+			Dimension screenSize = toolkit.getScreenSize();
+			int screenWidth = screenSize.width;
+			int screenHeight = screenSize.height;
+			int windowWidth = 300;
+			int windowHeight = 200;
 
-            // Center the window on the screen
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
+			// Center the window on the screen
+			int x = (screenWidth - windowWidth) / 2;
+			int y = (screenHeight - windowHeight) / 2;
+			frame.setLocation(x, y);
 
-            frame.setSize(new Dimension(500, 300));
-            frame.getContentPane().add(new AddVisit(null));
-            frame.setVisible(true);
-        });
-    }
+			frame.setSize(new Dimension(500, 300));
+			frame.getContentPane().add(new AddVisit(null));
+			frame.setVisible(true);
+		});
+	}
 }
