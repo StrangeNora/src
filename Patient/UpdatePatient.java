@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 
 import com.toedter.calendar.JDateChooser;
 
+import control.Hospital;
 import enums.BiologicalSex;
 import enums.HealthFund;
 import exceptions.FutureDateException;
@@ -43,12 +44,12 @@ public class UpdatePatient extends JPanel {
 	 private static final long serialVersionUID = 1L;
 	    private JPanel inputPanel;
 	    private JComboBox<String> attributeComboBox;
-	    private JTextField textField1;
-	    private JTextField textField2;
-	    private JTextField textField3;
-	    private JTextField textField4;
-	    private JTextField textField5;
-	    private JTextField textField6;
+	    private JTextField idField;
+	    private JTextField firstNameField;
+	    private JTextField lastNameField;
+	    private JTextField adressField;
+	    private JTextField numberField;
+	    private JTextField emailField;
 	    private JRadioButton maleRadioButton;
 	    private JRadioButton femaleRadioButton;
 	    private ButtonGroup genderGroup;
@@ -56,7 +57,7 @@ public class UpdatePatient extends JPanel {
 	    private JRadioButton otherRadioButton;
 	    private JComboBox<HealthFund> healthFundComboBox;
 	    private BiologicalSex[] selectedSex;
-	    private Patients p;
+	    private Patients patients;
 	    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    private static Date maxAllowedDate;
 
@@ -71,7 +72,9 @@ public class UpdatePatient extends JPanel {
 	        }
 	    }
 	    
-	    public UpdatePatient(Patients p) {
+	    public UpdatePatient(Patients patients) {
+	    	this.patients=patients;
+
 	        this.setBackground(new Color(0x698DB0));
 	        setLayout(new BorderLayout());
 
@@ -132,16 +135,16 @@ public class UpdatePatient extends JPanel {
 	            }
 	        });
 
-	        textField1 = new JTextField(10);
-	        textField2 = new JTextField(10);
-	        textField3 = new JTextField(10);
-	        textField4 = new JTextField(10);
-	        textField5 = new JTextField(10);
-	        textField6 = new JTextField(10);
+	        idField = new JTextField(10);
+	        firstNameField = new JTextField(10);
+	        lastNameField = new JTextField(10);
+	        adressField = new JTextField(10);
+	        numberField = new JTextField(10);
+	        emailField = new JTextField(10);
 
 	        JComponent[] components = {
-	            birthDateChooser, textField1, textField2, textField3,
-	            textField4, textField5, textField6
+	            birthDateChooser, idField, firstNameField, lastNameField,
+	            adressField, numberField, emailField
 	        };
 
 	        for (JComponent component : components) {
@@ -164,42 +167,43 @@ public class UpdatePatient extends JPanel {
 	        			}
 	        		     
 	        			if(selectedItem == "ID") {
-	        				if(textField1.getText().trim().isEmpty())  {
+	        				
+	        				if(idField.getText().trim().isEmpty())  {
 	        					throw new InvalidUserDetails("Field Cannot Be Empty.");
 	        				}
-	        				if(!textField1.getText().matches("\\d+")) {
+	        				if(!idField.getText().matches("\\d+")) {
 	        					throw new InvalidUserDetails("Feild Must Only Contain Numbers");
 	        				}
 	        			}
 	        			
 	        			if (selectedItem == "Phone Number") {
-	        				if(textField5.getText().trim().isEmpty()) {
+	        				if(numberField.getText().trim().isEmpty()) {
 	        					
 	        				}
-	        				if(!textField5.getText().matches("\\d+")) {
+	        				if(!numberField.getText().matches("\\d+")) {
 	        					throw new InvalidUserDetails("Feild Must Only Contain Numbers");
 	        				}
 	        			}
 	        			if(selectedItem == "First Name") {
 	        			
-	        				if(textField2.getText().trim().isEmpty()) {
+	        				if(firstNameField.getText().trim().isEmpty()) {
 	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
 	        				}
 	        			}
 	        			if(selectedItem == "Last Name") {
-	        				if(textField3.getText().trim().isEmpty() ) {
+	        				if(lastNameField.getText().trim().isEmpty() ) {
 	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
 
 	        				}
 	        			}
 	        			if(selectedItem == "Address") {
-	        				if(textField4.getText().trim().isEmpty()) {
+	        				if(adressField.getText().trim().isEmpty()) {
 	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
 
 	        				}
 	        			}
 	        			if(selectedItem == "Email") {
-	        				if(textField6.getText().trim().isEmpty()) {
+	        				if(emailField.getText().trim().isEmpty()) {
 	        					throw new InvalidUserDetails ("Feild Cannot Be Empty.");
 
 	        				}
@@ -215,6 +219,7 @@ public class UpdatePatient extends JPanel {
 	        				}
 	        			}
 	        			if(selectedItem == "Birthdate") {
+	        				Hospital.getInstance().getPatients().containsKey(p);
 	        				if(birthDateChooser.getDate() == null) {
 	        					throw new InvalidUserDetails("Field Cannot Be Empty");
 	        				}
@@ -255,22 +260,22 @@ public class UpdatePatient extends JPanel {
 	        String selectedOption = (String) attributeComboBox.getSelectedItem();
 	        switch (selectedOption) {
 	            case "ID":
-	                addLabelAndTextField("ID:", textField1, gbc, 0);
+	                addLabelAndTextField("ID:", idField, gbc, 0);
 	                break;
 	            case "First Name":
-	                addLabelAndTextField("First Name:", textField2, gbc, 1);
+	                addLabelAndTextField("First Name:", firstNameField, gbc, 1);
 	                break;
 	            case "Last Name":
-	                addLabelAndTextField("Last Name:", textField3, gbc, 2);
+	                addLabelAndTextField("Last Name:", lastNameField, gbc, 2);
 	                break;
 	            case "Address":
-	                addLabelAndTextField("Address:", textField4, gbc, 3);
+	                addLabelAndTextField("Address:", adressField, gbc, 3);
 	                break;
 	            case "Phone Number":
-	                addLabelAndTextField("Phone Number:", textField5, gbc, 4);
+	                addLabelAndTextField("Phone Number:", numberField, gbc, 4);
 	                break;
 	            case "Email":
-	                addLabelAndTextField("Email:", textField6, gbc, 5);
+	                addLabelAndTextField("Email:", emailField, gbc, 5);
 	                break;
 	            case "Gender":
 	                addGenderOptions(gbc, 6);
