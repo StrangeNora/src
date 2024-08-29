@@ -79,15 +79,15 @@ public class Medications extends JPanel {
 	    }
 	    
 	    private boolean canAdd() {
-	    	return userRole != Role.Nurse;
+	        return userRole == Role.Admin || userRole == Role.Doctor;
 	    }
 	    
 	    private boolean canRemove() {
-	    	return userRole == Role.Admin;
+	        return userRole == Role.Admin || userRole == Role.Doctor;
 	    }
 	    
 	    private boolean canUpdate() {
-	    	return userRole == Role.Admin;
+	        return userRole == Role.Admin || userRole == Role.Doctor;
 	    }
 	}
 

@@ -31,7 +31,7 @@ public class UserPage extends JFrame {
 
 	// DefaultListModels for each page
 	private DefaultListModel<StaffMember> staffMembersListModel = new DefaultListModel<>();
-	private DefaultListModel<String> nursesListModel = new DefaultListModel<>();
+	private DefaultListModel<String> SystemQueriesListModel = new DefaultListModel<>();
 	private DefaultListModel<Medication> medicationsListModel = new DefaultListModel<>();
 	private DefaultListModel<MedicalProblem> medicalProblemsListModel = new DefaultListModel<>();
 	private DefaultListModel<Department> departmentsListModel = new DefaultListModel<>();
@@ -41,16 +41,15 @@ public class UserPage extends JFrame {
 
 	public UserPage(Role role) {
 		this.userRole = role;
-		
 		JPanel staffMemberPanel = new StaffMembers(userRole, "StaffMembers", staffMembersListModel).getPanel();
-//		JPanel nursesPanel = new Nurses("Nurses", nursesListModel).getPanel();
+
 		JPanel patientsPanel = new Patients(userRole, "Patient", patientListModel).getPanel();
 		JPanel medicationsPanel = new Medications(userRole, "Medications", medicationsListModel).getPanel();
 		JPanel medicalProblemsPanel = new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel).getPanel();
 		JPanel departmentsPanel = new Departments(userRole, "Departments", departmentsListModel).getPanel();
 		JPanel treatmentsPanel = new Treatments(userRole, "Treatments", treatmentsListModel).getPanel();
 		JPanel visitsPanel = new Visits(userRole, "Visits", visitsListModel).getPanel();
-		
+		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel).getPanel();
 		createToolBar();
 		
 		setTitle("Hospital Management System");
@@ -75,14 +74,14 @@ public class UserPage extends JFrame {
 		// Add content panels
 		contentPanel.add(createHomePanel(), "Home");
 		contentPanel.add(staffMemberPanel,"StaffMembers");
-//		contentPanel.add(nursesPanel,"Nurses");
+	
 		contentPanel.add(patientsPanel,"Patients");
 		contentPanel.add(medicationsPanel,"Medications");
 		contentPanel.add(medicalProblemsPanel,"Medical Problems");
 		contentPanel.add(departmentsPanel,"Departments");
 		contentPanel.add(treatmentsPanel,"Treatments");
 		contentPanel.add(visitsPanel,"Visits");
-
+		contentPanel.add(SystemQueriesPanel,"SystemQueries");
 		// Right panel for buttons and set its background color
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
@@ -113,7 +112,7 @@ public class UserPage extends JFrame {
 		// Create buttons for each section
 		JButton homeButton = createToolBarButton("Home");
 		JButton staffMemberButton = createToolBarButton("Staff Members");
-		JButton nursesButton = createToolBarButton("Nurses");
+		JButton SystemQueriesButton = createToolBarButton("SystemQueries");
 		JButton patientsButton = createToolBarButton("Patients");
 		JButton medicationsButton = createToolBarButton("Medications");
 		JButton medicalProblemsButton = createToolBarButton("Medical Problems");
@@ -124,7 +123,7 @@ public class UserPage extends JFrame {
 		// Add buttons to the toolbar
 		toolBar.add(homeButton);
 		toolBar.add(staffMemberButton);
-		toolBar.add(nursesButton);
+		toolBar.add(SystemQueriesButton);
 		toolBar.add(patientsButton);
 		toolBar.add(medicationsButton);
 		toolBar.add(medicalProblemsButton);
@@ -135,18 +134,18 @@ public class UserPage extends JFrame {
 		// Add action listeners to toolbar buttons
 		homeButton.addActionListener(e -> cardLayout.show(contentPanel, "Home"));
 		staffMemberButton.addActionListener(e -> cardLayout.show(contentPanel, "StaffMembers"));
-		nursesButton.addActionListener(e -> cardLayout.show(contentPanel, "Nurses"));
+		
 		patientsButton.addActionListener(e -> cardLayout.show(contentPanel, "Patients"));
 		medicationsButton.addActionListener(e -> cardLayout.show(contentPanel, "Medications"));
 		medicalProblemsButton.addActionListener(e -> cardLayout.show(contentPanel, "Medical Problems"));
 		departmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Departments"));
 		treatmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Treatments"));
 		visitsButton.addActionListener(e -> cardLayout.show(contentPanel, "Visits"));
-		
+		SystemQueriesButton.addActionListener(e -> cardLayout.show(contentPanel, "SystemQueries"));
 		// hide other staff members buttons if its not an admin
 		if(userRole != Role.Admin) {
 			staffMemberButton.setVisible(false);
-			nursesButton.setVisible(false);
+			
 		}
 	}
 
@@ -246,8 +245,13 @@ public class UserPage extends JFrame {
 		revalidate();
 		repaint();
 	}
+private void loadDataFromHospital() {
+	
 
+	
+	
+}
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new UserPage(Role.Doctor));
+		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin));
 	}
 }

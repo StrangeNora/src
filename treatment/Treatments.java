@@ -77,15 +77,15 @@ public class Treatments extends JPanel {
 	    }
 	    
 	    private boolean canAdd() {
-	    	return userRole != Role.Nurse;
+	        return userRole !=Role.Nurse;
 	    }
 	    
 	    private boolean canRemove() {
-	    	return userRole == Role.Admin;
+	        return userRole !=Role.Nurse;
 	    }
 	    
 	    private boolean canUpdate() {
-	    	return userRole == Role.Admin;
+	        return userRole !=Role.Nurse;
 	    }
 	}
 

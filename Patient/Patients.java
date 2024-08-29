@@ -72,14 +72,14 @@ public class Patients extends JPanel {
     }
     
     private boolean canAdd() {
-    	return userRole != Role.Doctor;
+        return userRole == Role.Admin || userRole == Role.Nurse;
     }
     
     private boolean canRemove() {
-    	return userRole == Role.Admin;
+    	 return userRole == Role.Admin || userRole == Role.Nurse;
     }
     
     private boolean canUpdate() {
-    	return userRole == Role.Admin;
+    	 return userRole == Role.Admin || userRole == Role.Nurse;
     }
 }

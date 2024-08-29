@@ -82,11 +82,11 @@ public class Visits extends JPanel {
 	    }
 	    
 	    private boolean canRemove() {
-	    	return userRole == Role.Admin;
+	    	return userRole != Role.Doctor;
 	    }
 	    
 	    private boolean canUpdate() {
-	    	return userRole == Role.Admin;
+	    	return userRole != Role.Doctor;
 	    }
 	}
 
