@@ -25,12 +25,10 @@ public class Treatments extends JPanel {
 		private GenericListPanel<Treatment> genericListPanel;
 	    private DefaultListModel<Treatment> listModel;
 
-	  ;
-
 	    public Treatments(String sectionName, DefaultListModel<Treatment> listModel) {
 	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(sectionName, listModel, this:: removeTreatmentFromHospital, this::showAddTreatmentDialog
-	        		,this::showUpdateTreatmentDialog);
+	        genericListPanel = new GenericListPanel<Treatment>(sectionName, listModel, this:: removeTreatmentFromHospital, this::showAddTreatmentDialog
+	        		,this::showUpdateTreatmenttDialog);
 	        loadTreatmentsFromHospital();
 	    }
 

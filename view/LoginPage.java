@@ -131,7 +131,7 @@ public class LoginPage extends JFrame {
             }
             if (userID==1) {
                 // Redirect to AdminPage
-                new AdminPage().setVisible(true);
+                new UserPage().setVisible(true);
                 dispose();
 
             } else if (Hospital.getInstance().getStaffMember(userID)instanceof Doctor) {

@@ -1,19 +1,23 @@
 package view;
 import panels.*;
 import staffMember.*;
+import treatment.Treatments;
+import visit.Visits;
 import control.*;
+import department.Departments;
 import exceptions.*;
 import javax.swing.*;
 import Patient.*;
 import exceptions.ObjectAlreadyExistsException;
-
+import medicalProblem.MedicalProblems;
+import medication.Medications;
 import model.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminPage extends JFrame {
+public class UserPage extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel centerPanel;
@@ -26,27 +30,77 @@ public class AdminPage extends JFrame {
 	// DefaultListModels for each page
 	private DefaultListModel<StaffMember> staffMembersListModel = new DefaultListModel<>();
 	private DefaultListModel<String> nursesListModel = new DefaultListModel<>();
-	private DefaultListModel<Patient> patientsListModel = new DefaultListModel<>();
-	private DefaultListModel<String> medicationsListModel = new DefaultListModel<>();
-	private DefaultListModel<String> medicalProblemsListModel = new DefaultListModel<>();
-	private DefaultListModel<String> departmentsListModel = new DefaultListModel<>();
-	private DefaultListModel<String> treatmentsListModel = new DefaultListModel<>();
-	private DefaultListModel<String> visitsListModel = new DefaultListModel<>();
+	private DefaultListModel<Medication> medicationsListModel = new DefaultListModel<>();
+	private DefaultListModel<MedicalProblem> medicalProblemsListModel = new DefaultListModel<>();
+	private DefaultListModel<Department> departmentsListModel = new DefaultListModel<>();
+	private DefaultListModel<Treatment> treatmentsListModel = new DefaultListModel<>();
+	private DefaultListModel<Visit> visitsListModel = new DefaultListModel<>();
 	private DefaultListModel<Patient> patientListModel = new DefaultListModel<>();
 
-	public AdminPage() {
-		Patients patients = new Patients("Patient", patientListModel);
-		JPanel patientPanel = patients.getPanel();
-		PatientList patientList = new PatientList("Patients", patientsListModel);
-		JPanel patientListPanel = patientList.getPanel();
-		StaffMembers staffMembers = new StaffMembers("StaffMembers", staffMembersListModel);
-		JPanel staffMemberPanel = staffMembers.getPanel();
+	public UserPage() {
+		JPanel staffMemberPanel = new StaffMembers("StaffMembers", staffMembersListModel).getPanel();
+//		JPanel nursesPanel = new Nurses("Nurses", nursesListModel).getPanel();
+		JPanel patientsPanel = new Patients("Patient", patientListModel).getPanel();
+		JPanel medicationsPanel = new Medications("Medications", medicationsListModel).getPanel();
+		JPanel medicalProblemsPanel = new MedicalProblems("Medical Problems", medicalProblemsListModel).getPanel();
+		JPanel departmentsPanel = new Departments("Departments", departmentsListModel).getPanel();
+		JPanel treatmentsPanel = new Treatments("Treatments", treatmentsListModel).getPanel();
+		JPanel visitsPanel = new Visits("Visits", visitsListModel).getPanel();
+		
+		createToolBar();
+		
 		setTitle("Hospital Management System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 
 		setMinimumSize(new Dimension(800, 600));
 
+		// Add tool bar to the frame
+		getContentPane().add(toolBar, BorderLayout.NORTH);
+
+		// Center panel and set its background color
+		centerPanel = new JPanel(new BorderLayout());
+		centerPanel.setBackground(Color.decode("#A9BED2"));
+		getContentPane().add(centerPanel, BorderLayout.CENTER);
+
+		// Initialize content panel with CardLayout
+		cardLayout = new CardLayout();
+		contentPanel = new JPanel(cardLayout);
+		centerPanel.add(contentPanel, BorderLayout.CENTER);
+
+		// Add content panels
+		contentPanel.add(createHomePanel(), "Home");
+		contentPanel.add(staffMemberPanel,"StaffMembers");
+//		contentPanel.add(nursesPanel,"Nurses");
+		contentPanel.add(patientsPanel,"Patients");
+		contentPanel.add(medicationsPanel,"Medications");
+		contentPanel.add(medicalProblemsPanel,"Medical Problems");
+		contentPanel.add(departmentsPanel,"Departments");
+		contentPanel.add(treatmentsPanel,"Treatments");
+		contentPanel.add(visitsPanel,"Visits");
+
+		// Right panel for buttons and set its background color
+		rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		rightPanel.setBackground(Color.decode("#547DA5"));
+		getContentPane().add(rightPanel, BorderLayout.EAST);
+
+		// Initialize sidebar
+		initializeSidebar();
+
+		// Make the frame visible
+		setSize(1000, 800);
+		setVisible(true);
+
+		// Adjust button font size on component resize
+		addComponentListener(new java.awt.event.ComponentAdapter() {
+			public void componentResized(java.awt.event.ComponentEvent evt) {
+				adjustButtonFontSize(rightPanel);
+			}
+		});
+	}
+	
+	private void createToolBar() {
 		// Create the tool bar
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -73,31 +127,7 @@ public class AdminPage extends JFrame {
 		toolBar.add(departmentsButton);
 		toolBar.add(treatmentsButton);
 		toolBar.add(visitsButton);
-
-		// Add tool bar to the frame
-		getContentPane().add(toolBar, BorderLayout.NORTH);
-
-		// Center panel and set its background color
-		centerPanel = new JPanel(new BorderLayout());
-		centerPanel.setBackground(Color.decode("#A9BED2"));
-		getContentPane().add(centerPanel, BorderLayout.CENTER);
-
-		// Initialize content panel with CardLayout
-		cardLayout = new CardLayout();
-		contentPanel = new JPanel(cardLayout);
-		centerPanel.add(contentPanel, BorderLayout.CENTER);
-
-		// Add content panels
-		contentPanel.add(createHomePanel(), "Home");
-		contentPanel.add(staffMemberPanel,"StaffMembers");
-		contentPanel.add(createSearchPanel("Nurses", nursesListModel), "Nurses");
-		contentPanel.add(patientListPanel, "Patients");
-		contentPanel.add(patientPanel,"Medications");
-		contentPanel.add(createSearchPanel("Medical Problems", medicalProblemsListModel), "Medical Problems");
-		contentPanel.add(createSearchPanel("Departments", departmentsListModel), "Departments");
-		contentPanel.add(createSearchPanel("Treatments", treatmentsListModel), "Treatments");
-		contentPanel.add(createSearchPanel("Visits", visitsListModel), "Visits");
-
+		
 		// Add action listeners to toolbar buttons
 		homeButton.addActionListener(e -> cardLayout.show(contentPanel, "Home"));
 		staffMemberButton.addActionListener(e -> cardLayout.show(contentPanel, "StaffMembers"));
@@ -108,26 +138,6 @@ public class AdminPage extends JFrame {
 		departmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Departments"));
 		treatmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Treatments"));
 		visitsButton.addActionListener(e -> cardLayout.show(contentPanel, "Visits"));
-
-		// Right panel for buttons and set its background color
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.setBackground(Color.decode("#547DA5"));
-		getContentPane().add(rightPanel, BorderLayout.EAST);
-
-		// Initialize sidebar
-		initializeSidebar();
-
-		// Make the frame visible
-		setSize(1000, 800);
-		setVisible(true);
-
-		// Adjust button font size on component resize
-		addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentResized(java.awt.event.ComponentEvent evt) {
-				adjustButtonFontSize(rightPanel);
-			}
-		});
 	}
 
 
@@ -334,6 +344,6 @@ public class AdminPage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new AdminPage());
+		SwingUtilities.invokeLater(() -> new UserPage());
 	}
 }

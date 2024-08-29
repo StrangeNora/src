@@ -6,7 +6,7 @@ import exceptions.*;
 import model.*;
 
 import utils.*;
-import view.AdminPage;
+import view.UserPage;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
