@@ -12,6 +12,9 @@ import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import medication.UpdateMedication;
 import model.Department;
+import model.Disease;
+import model.Fracture;
+import model.Injury;
 import model.Medication;
 
 public class AddMedicalProblem extends JPanel {
@@ -20,9 +23,9 @@ public class AddMedicalProblem extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField nameField;
-	private JTextField textField1;
-	private JTextField textField2;
-	private JTextField textField3;
+	private JTextField locationField;
+	private JTextField descriptionField;
+	private JTextField commonRecoveryTimeField;
 	private JComboBox<Department> departmentsComboBox;
 	private JComboBox<String> optionsComboBox;
 	private JPanel fieldsPanel;
@@ -91,24 +94,37 @@ public class AddMedicalProblem extends JPanel {
 
 					switch (selectedItem) {
 					case "Fracture":
-						if (nameField.getText().isEmpty() || textField1.getText().trim().isEmpty() || group.getSelection() == null) {
+						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || group.getSelection() == null) {
 							throw new InvalidUserDetails("Field cannot be empty.");
 						}
+						Department department = (Department)departmentsComboBox.getSelectedItem();
+		    			Fracture fracture = new Fracture(nameField.getText(),department,locationField.getText(),Boolean.parseBoolean(group.getSelection().getActionCommand()));
+		    		    Hospital.getInstance().addFracture(fracture);
 						break;
 
 					case "Disease":
-						if (nameField.getText().isEmpty() || textField2.getText().trim().isEmpty()) {
+						if (nameField.getText().isEmpty() || descriptionField.getText().trim().isEmpty()) {
 							throw new InvalidUserDetails("Field cannot be empty.");
 						}
+						 department = (Department)departmentsComboBox.getSelectedItem();
+		    			Disease disease = new Disease(nameField.getText(),department,descriptionField.getText());
+		    			
+		                Hospital.getInstance().addDisease(disease);
+		    			 
 						break;
 
 					case "Injury":
-						if (nameField.getText().isEmpty() || textField1.getText().trim().isEmpty() || textField3.getText().trim().isEmpty()) {
+						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || commonRecoveryTimeField.getText().trim().isEmpty()) {
 							throw new InvalidUserDetails("Field cannot be empty.");
 						}
-						if (!textField3.getText().matches("\\d+\\.\\d*") || !textField3.getText().matches("\\d+")) {
+						if (!commonRecoveryTimeField.getText().matches("\\d+\\.\\d*") || !commonRecoveryTimeField.getText().matches("\\d+")) {
 							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
 						}
+						 department = (Department)departmentsComboBox.getSelectedItem();
+						Injury injury = new Injury(nameField.getText(),department,Double.parseDouble(commonRecoveryTimeField.getText()),locationField.getText());
+			    			
+			                Hospital.getInstance().addInjury(injury);
+			                
 						break;
 					}
 					JOptionPane.showMessageDialog(null, "Medical Problem updated successfully.");
@@ -173,9 +189,9 @@ public class AddMedicalProblem extends JPanel {
 			gbc.gridx = 0;
 			gbc.gridy++;
 			fieldsPanel.add(createLabel("Location:"), gbc);
-			textField1 = createTextField();
+			locationField = createTextField();
 			gbc.gridx = 1;
-			fieldsPanel.add(textField1, gbc);
+			fieldsPanel.add(locationField, gbc);
 
 			gbc.gridx = 0;
 			gbc.gridy++;
@@ -200,9 +216,9 @@ public class AddMedicalProblem extends JPanel {
 			gbc.gridx = 0;
 			gbc.gridy++;
 			fieldsPanel.add(createLabel("Description:"), gbc);
-			textField2 = createTextField();
+			descriptionField = createTextField();
 			gbc.gridx = 1;
-			fieldsPanel.add(textField2, gbc);
+			fieldsPanel.add(descriptionField, gbc);
 
 		} else if ("Injury".equals(selectedOption)) {
 			fieldsPanel.add(createLabel("Name:"), gbc);
@@ -213,16 +229,16 @@ public class AddMedicalProblem extends JPanel {
 			gbc.gridx = 0;
 			gbc.gridy++;
 			fieldsPanel.add(createLabel("Location:"), gbc);
-			textField1 = createTextField();
+			locationField = createTextField();
 			gbc.gridx = 1;
-			fieldsPanel.add(textField1, gbc);
+			fieldsPanel.add(locationField, gbc);
 
 			gbc.gridx = 0;
 			gbc.gridy++;
 			fieldsPanel.add(createLabel("Common Recovery Time:"), gbc);
-			textField3 = createTextField();
+			commonRecoveryTimeField = createTextField();
 			gbc.gridx = 1;
-			fieldsPanel.add(textField3, gbc);
+			fieldsPanel.add(commonRecoveryTimeField, gbc);
 		}
 
 		fieldsPanel.revalidate();
