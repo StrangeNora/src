@@ -9,6 +9,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -16,47 +17,20 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+import utils.UtilsMethods;
 
 
 
-public class Medications extends JPanel {
+public class Medications extends SectionPanel<Medication> {
 
 
 		private static final long serialVersionUID = 1L;
-		private GenericListPanel<Medication> genericListPanel;
-	    private DefaultListModel<Medication> listModel;
-	    private Role userRole;
-
-	    public Medications(Role userRole, String sectionName, DefaultListModel<Medication> listModel) {
-	    	this.userRole = userRole;
-	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(
-	        		sectionName,
-	        		listModel, 
-	        		canRemove() ? this::removeMedicationtFromHospital : null,
-	        		canAdd() ? this::showAddMedicationDialog : null,
-	        		canUpdate() ? this::showUpdateMedicationDialog : null
-	        	);
-	        loadMedicationsFromHospital();
+		
+	    public Medications(Role userRole, String sectionName, DefaultListModel<Medication> listModel, JPanel quickLinksPanel) {
+	    	super(userRole, sectionName, listModel, quickLinksPanel);
+	    	this.initGenericListPanel(this::removeMedicationtFromHospital, this::showAddMedicationDialog, this::showUpdateMedicationDialog);
 	    }
-
-	    public JPanel getPanel() {
-	        return genericListPanel.getPanel();
-	    }
-
-	    private void loadMedicationsFromHospital() {
-	        Hospital hospital = Hospital.getInstance();
-	        HashMap<Integer, Medication> Medication = hospital.getMedications();
-	        for (Medication v : Medication.values()) {
-	            listModel.addElement(v);
-	        }
-	    }
-
-	    public void refreshList() {
-	        listModel.clear();
-	        loadMedicationsFromHospital();
-	    }
-
+	    
 	    private void removeMedicationtFromHospital(Medication v) {
 	        Hospital.getInstance().removeMedication(v);
 	    }
@@ -78,17 +52,42 @@ public class Medications extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    
-	    private boolean canAdd() {
+	    @Override
+	    protected void load() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<Integer, Medication> Medication = hospital.getMedications();
+	        for (Medication v : Medication.values()) {
+	            listModel.addElement(v);
+	        }
+	    }
+	    
+	    protected boolean canAdd() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canRemove() {
+	    protected boolean canRemove() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canUpdate() {
+	    protected boolean canUpdate() {
 	    	return userRole != Role.Nurse;
 	    }
+
+		@Override
+		public void initializeQuickPanelButtons() {
+			quickLinksPanel.removeAll();
+	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+	    	
+	    	if(canAdd()) {
+				JButton addButton = UtilsMethods.createPanelButton("Add Medication");
+		    	addButton.addActionListener(e -> {
+		    		showAddMedicationDialog();
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
+	    	
+	    	quickLinksPanel.repaint();
+		}
 	}
 
 

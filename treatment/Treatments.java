@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -15,44 +16,20 @@ import enums.Role;
 import model.*;
 import panels.GenericListPanel;
 import treatment.*;
+import utils.UtilsMethods;
 
 
 
 
-public class Treatments extends JPanel {
+public class Treatments extends SectionPanel<Treatment> {
 		private static final long serialVersionUID = 1L;
 		private GenericListPanel<Treatment> genericListPanel;
 	    private DefaultListModel<Treatment> listModel;
 	    private Role userRole;
 	    
-	    public Treatments(Role userRole, String sectionName, DefaultListModel<Treatment> listModel) {
-	    	this.userRole = userRole;
-	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(
-	        		sectionName,
-	        		listModel, 
-	        		canRemove() ? this::removeTreatmentFromHospital : null,
-	        		canAdd() ? this::showAddTreatmentDialog : null,
-	        		canUpdate() ? this::showUpdateTreatmenttDialog : null
-	        	);
-	        loadTreatmentsFromHospital();
-	    }
-
-	    public JPanel getPanel() {
-	        return genericListPanel.getPanel();
-	    }
-
-	    private void loadTreatmentsFromHospital() {
-	        Hospital hospital = Hospital.getInstance();
-	        HashMap<Integer, Treatment> treatment = hospital.getTreatments();
-	        for (Treatment t : treatment.values()) {
-	            listModel.addElement(t);
-	        }
-	    }
-
-	    public void refreshList() {
-	        listModel.clear();
-	        loadTreatmentsFromHospital();
+	    public Treatments(Role userRole, String sectionName, DefaultListModel<Treatment> listModel, JPanel quickLinksPanel) {
+	    	super(userRole, sectionName, listModel, quickLinksPanel);
+	    	this.initGenericListPanel(this::removeTreatmentFromHospital, this::showAddTreatmentDialog, this::showUpdateTreatmenttDialog);
 	    }
 
 	    private void removeTreatmentFromHospital(Treatment t) {
@@ -76,22 +53,39 @@ public class Treatments extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    
-	    private boolean canAdd() {
+	    protected void load() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<Integer, Treatment> treatment = hospital.getTreatments();
+	        for (Treatment t : treatment.values()) {
+	            listModel.addElement(t);
+	        }
+	    }
+	    
+	    protected boolean canAdd() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canRemove() {
+	    protected boolean canRemove() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canUpdate() {
+	    protected boolean canUpdate() {
 	    	return userRole != Role.Nurse;
 	    }
+
+		@Override
+		public void initializeQuickPanelButtons() {
+			quickLinksPanel.removeAll();
+	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+	    	
+	    	if(canAdd()) {
+				JButton addButton = UtilsMethods.createPanelButton("Add Treatment");
+		    	addButton.addActionListener(e -> {
+		    		showAddTreatmentDialog();
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
+	    	
+	    	quickLinksPanel.repaint();
+		}
 	}
-
-	
-	
-	
-
-
-

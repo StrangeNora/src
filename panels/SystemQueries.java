@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 public class SystemQueries {
 
-	public SystemQueries(String string, DefaultListModel<String> systemQueriesListModel) {
+	public SystemQueries(String string, DefaultListModel<String> systemQueriesListModel, JPanel quickLinksPanel) {
 		// TODO Auto-generated constructor stub
 	}
 

@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -14,45 +15,18 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+import utils.UtilsMethods;
 
 
 
-public class MedicalProblems extends JPanel {
+public class MedicalProblems extends SectionPanel<MedicalProblem> {
 
 
 		private static final long serialVersionUID = 1L;
-		private GenericListPanel<MedicalProblem> genericListPanel;
-	    private DefaultListModel<MedicalProblem> listModel;
-	    private Role userRole;
 
-	    public MedicalProblems(Role userRole, String sectionName, DefaultListModel<MedicalProblem> listModel) {
-	    	this.userRole = userRole;
-	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(
-	        		sectionName,
-	        		listModel, 
-	        		canRemove() ? this::removeMedicalProblemtFromHospital : null,
-	        		canAdd() ? this::showAddMedicalProblemDialog : null,
-	        		canUpdate() ? this::showUpdateMedicalProblemDialog : null
-	        	);
-	        loadMedicalProblemsFromHospital();
-	    }
-
-	    public JPanel getPanel() {
-	        return genericListPanel.getPanel();
-	    }
-
-	    private void loadMedicalProblemsFromHospital() {
-	        Hospital hospital = Hospital.getInstance();
-	        HashMap<String, MedicalProblem> MedicalProblem = hospital.getMedicalProblems();
-	        for (MedicalProblem v : MedicalProblem.values()) {
-	            listModel.addElement(v);
-	        }
-	    }
-
-	    public void refreshList() {
-	        listModel.clear();
-	        loadMedicalProblemsFromHospital();
+	    public MedicalProblems(Role userRole, String sectionName, DefaultListModel<MedicalProblem> listModel, JPanel quickLinksPanel) {
+	    	super(userRole, sectionName, listModel, quickLinksPanel);
+	    	this.initGenericListPanel(this::removeMedicalProblemtFromHospital, this::showAddMedicalProblemDialog, this::showUpdateMedicalProblemDialog);
 	    }
 
 	    private void removeMedicalProblemtFromHospital(MedicalProblem v) {
@@ -76,16 +50,38 @@ public class MedicalProblems extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    
-	    private boolean canAdd() {
+	    protected void load() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<String, MedicalProblem> MedicalProblem = hospital.getMedicalProblems();
+	        for (MedicalProblem v : MedicalProblem.values()) {
+	            listModel.addElement(v);
+	        }
+	    }
+	    
+	    protected boolean canAdd() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canRemove() {
+	    protected boolean canRemove() {
 	    	return userRole != Role.Nurse;
 	    }
 	    
-	    private boolean canUpdate() {
+	    protected boolean canUpdate() {
 	    	return userRole != Role.Nurse;
 	    }
+
+		@Override
+		public void initializeQuickPanelButtons() {
+			quickLinksPanel.removeAll();
+	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+	    	
+	    	if(canAdd()) {
+				JButton addButton = UtilsMethods.createPanelButton("Add Medical Problem");
+		    	addButton.addActionListener(e -> {
+		    		showAddMedicalProblemDialog();
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
+		}
 	}
 
