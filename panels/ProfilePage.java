@@ -1,11 +1,11 @@
 package panels;
 
 import javax.swing.*;
-
 import enums.Specialization;
 import model.Department;
 import model.Doctor;
 import model.Nurse;
+import model.StaffMember;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,27 +28,22 @@ public class ProfilePage extends JPanel {
     private JLabel salaryLabel;
     private JLabel specializationLabel;
     private JLabel licenseNumberLabel;
+    private JLabel profilePictureLabel;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
-    public ProfilePage(Doctor doctor) {
-        this();
-        if (doctor != null) {
-            initializeDoctorProfile(doctor);
-        }
-    }
-
-    public ProfilePage(Nurse nurse) {
-        this();
-        if (nurse != null) {
-            initializeNurseProfile(nurse);
-        }
-    }
-
-    public ProfilePage() {
-        setLayout(new GridBagLayout());
+    public ProfilePage(StaffMember staffMember) {
+        setLayout(new BorderLayout());
         setBackground(new Color(0xA9BED2));
-        
+        initializeProfile(staffMember);
+    }
+
+    private void initializeProfile(StaffMember staffMember) {
+        if (staffMember instanceof Doctor) {
+            initializeDoctorProfile((Doctor) staffMember);
+        } else if (staffMember instanceof Nurse) {
+            initializeNurseProfile((Nurse) staffMember);
+        }
     }
 
     private void initializeDoctorProfile(Doctor doctor) {
@@ -60,6 +55,7 @@ public class ProfilePage extends JPanel {
                        doctor.isFinishInternship() ? "Yes" : "No",
                        doctor.getSalary(), doctor.getSpecialization(),
                        doctor.getLicenseNumber());
+        loadExistingProfilePicture(doctor);
     }
 
     private void initializeNurseProfile(Nurse nurse) {
@@ -71,21 +67,22 @@ public class ProfilePage extends JPanel {
                        null, // Internship status not applicable for Nurse
                        nurse.getSalary(), null, // Specialization not applicable for Nurse
                        nurse.getLicenseNumber());
+        loadExistingProfilePicture(nurse);
     }
 
-    private void setProfileInfo(String welcomeMessage, String firstName, String lastName, HashSet<Department> hashSet,
-                                int i, String gender, String address, String phoneNumber, String email,
+    private void setProfileInfo(String welcomeMessage, String firstName, String lastName, HashSet<Department> departments,
+                                int id, String gender, String address, String phoneNumber, String email,
                                 Date birthDate, Date workStartDate, String internshipStatus,
-                                double salary, Specialization specialization, int j) {
+                                double salary, Specialization specialization, int licenseNumber) {
         // Create and configure labels
         JLabel welcomeLabel = new JLabel(welcomeMessage);
-        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
         welcomeLabel.setForeground(Color.WHITE);
 
         firstNameLabel = new JLabel("First Name: " + firstName);
         lastNameLabel = new JLabel("Last Name: " + lastName);
-        departmentLabel = new JLabel("Department: " + hashSet);
-        idLabel = new JLabel("ID: " + i);
+        departmentLabel = new JLabel("Department: " + departments);
+        idLabel = new JLabel("ID: " + id);
         genderLabel = new JLabel("Gender: " + gender);
         addressLabel = new JLabel("Address: " + address);
         phoneNumberLabel = new JLabel("Phone Number: " + phoneNumber);
@@ -95,69 +92,86 @@ public class ProfilePage extends JPanel {
         internshipStatusLabel = internshipStatus != null ? new JLabel("Finished Internship: " + internshipStatus) : null;
         salaryLabel = new JLabel("Salary: $" + salary);
         specializationLabel = specialization != null ? new JLabel("Specialization: " + specialization) : null;
-        licenseNumberLabel = new JLabel("License Number: " + j);
+        licenseNumberLabel = new JLabel("License Number: " + licenseNumber);
+        profilePictureLabel = new JLabel();
 
-        // Add components to the panel
+        // Create a panel for the profile picture and labels
+        JPanel infoPanel = new JPanel(new GridBagLayout());
+        infoPanel.setBackground(new Color(0x8A9BA8));
+        infoPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        infoPanel.setPreferredSize(new Dimension(600, 600)); // Set preferred size
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
-
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(welcomeLabel, gbc);
-
+        infoPanel.add(welcomeLabel, gbc);
         gbc.gridy++;
-        add(firstNameLabel, gbc);
-
+        infoPanel.add(profilePictureLabel, gbc);
         gbc.gridy++;
-        add(lastNameLabel, gbc);
-
+        infoPanel.add(firstNameLabel, gbc);
         gbc.gridy++;
-        add(departmentLabel, gbc);
-
+        infoPanel.add(lastNameLabel, gbc);
         gbc.gridy++;
-        add(idLabel, gbc);
-
+        infoPanel.add(departmentLabel, gbc);
         gbc.gridy++;
-        add(genderLabel, gbc);
-
+        infoPanel.add(idLabel, gbc);
         gbc.gridy++;
-        add(addressLabel, gbc);
-
+        infoPanel.add(genderLabel, gbc);
         gbc.gridy++;
-        add(phoneNumberLabel, gbc);
-
+        infoPanel.add(addressLabel, gbc);
         gbc.gridy++;
-        add(emailLabel, gbc);
-
+        infoPanel.add(phoneNumberLabel, gbc);
         gbc.gridy++;
-        add(dateOfBirthLabel, gbc);
-
+        infoPanel.add(emailLabel, gbc);
         gbc.gridy++;
-        add(workStartDateLabel, gbc);
+        infoPanel.add(dateOfBirthLabel, gbc);
+        gbc.gridy++;
+        infoPanel.add(workStartDateLabel, gbc);
 
         if (internshipStatusLabel != null) {
             gbc.gridy++;
-            add(internshipStatusLabel, gbc);
+            infoPanel.add(internshipStatusLabel, gbc);
         }
 
         gbc.gridy++;
-        add(salaryLabel, gbc);
+        infoPanel.add(salaryLabel, gbc);
 
         if (specializationLabel != null) {
             gbc.gridy++;
-            add(specializationLabel, gbc);
+            infoPanel.add(specializationLabel, gbc);
         }
 
         gbc.gridy++;
-        add(licenseNumberLabel, gbc);
+        infoPanel.add(licenseNumberLabel, gbc);
+
+        // Create an outer panel with reduced space
+        JPanel outerPanel = new JPanel(new GridBagLayout());
+        outerPanel.setBackground(new Color(0xA9BED2));
+        outerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        outerPanel.setPreferredSize(new Dimension(450, 650)); // Set preferred size
+
+        GridBagConstraints outerGbc = new GridBagConstraints();
+        outerGbc.gridx = 0;
+        outerGbc.gridy = 0;
+        outerGbc.anchor = GridBagConstraints.CENTER;
+        outerPanel.add(infoPanel, outerGbc);
+
+        // Add the outer panel to the main panel
+        add(outerPanel, BorderLayout.CENTER);
     }
 
     private String formatDate(Date date) {
         return DATE_FORMAT.format(date);
     }
 
-   
+    private void loadExistingProfilePicture(StaffMember staffMember) {
+        String profilePicPath = staffMember.getProfilePicture();
+        if (profilePicPath != null && !profilePicPath.isEmpty()) {
+            ImageIcon profileImage = new ImageIcon(profilePicPath);
+            Image scaledImage = profileImage.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            profilePictureLabel.setIcon(new ImageIcon(scaledImage));
+        }
+    }
 }
-
-   
