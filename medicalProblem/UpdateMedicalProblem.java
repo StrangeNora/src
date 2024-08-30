@@ -3,6 +3,7 @@ package medicalProblem;
 import javax.swing.*;
 import control.Hospital;
 import exceptions.InvalidUserDetails;
+import exceptions.ObjectDoesNotExist;
 import model.Department;
 import model.Disease;
 import model.Fracture;
@@ -80,7 +81,7 @@ public class UpdateMedicalProblem extends JPanel {
         textFieldDescription = new JTextField(20);
         textFieldLocation = new JTextField(20);
         textFieldCommonRecoveryTime = new JTextField(20);
-
+        textFieldName.setBackground(new Color(0x698DB0));
         textFieldDescription.setBackground(new Color(0x698DB0));
         textFieldLocation.setBackground(new Color(0x698DB0));
         textFieldCommonRecoveryTime.setBackground(new Color(0x698DB0));
@@ -107,7 +108,7 @@ public class UpdateMedicalProblem extends JPanel {
         commonRecoveryTimeLabel.setForeground(Color.BLACK);
 
         // Create panels for different problem types
-        createPanels();
+        createPanels(medicalProblem);
 
         // Add the cardsPanel to the main layout
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -127,7 +128,13 @@ public class UpdateMedicalProblem extends JPanel {
 
                 } catch (InvalidUserDetails ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }catch (ObjectDoesNotExist ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }catch(NullPointerException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+
                 }
+                
             }
         });
 
@@ -148,8 +155,9 @@ public class UpdateMedicalProblem extends JPanel {
     }
 //TODO when updating Disease Department Label and combo box and name label and field are missing
     //TODO when updating Fracture Department Label and combo box and name label and field and Location label and Field are missing 
-    private void createPanels() {
+    private void createPanels(MedicalProblem m) {
         // Disease Panel
+    	if(m instanceof Disease) {
         JPanel diseasePanel = new JPanel(new GridBagLayout());
         diseasePanel.setBackground(new Color(0xA9BED2));
         diseasePanel.add(nameLabel, createGbc(0, 0));
@@ -159,8 +167,10 @@ public class UpdateMedicalProblem extends JPanel {
         diseasePanel.add(departmentLabel, createGbc(0, 2));
         diseasePanel.add(departmentsComboBox, createGbc(1, 2));
         cardsPanel.add(diseasePanel, "Disease");
+    	}
 
         // Fracture Panel
+    	if(m instanceof Fracture) {
         JPanel fracturePanel = new JPanel(new GridBagLayout());
         fracturePanel.setBackground(new Color(0xA9BED2));
         fracturePanel.add(nameLabel, createGbc(0, 0));
@@ -168,13 +178,18 @@ public class UpdateMedicalProblem extends JPanel {
         fracturePanel.add(locationLabel, createGbc(0, 1));
         fracturePanel.add(textFieldLocation, createGbc(1, 1));
         fracturePanel.add(requiresCastLabel, createGbc(0, 2));
-        fracturePanel.add(trueRadioButton, createGbc(1,2));
-        fracturePanel.add(falseRadioButton, createGbc(2,2));
+        JPanel castPanel = new JPanel();
+        castPanel.setBackground(new Color(0xA9BED2));
+        castPanel.add(trueRadioButton);
+        castPanel.add(falseRadioButton);
+        fracturePanel.add(castPanel, createGbc(1, 2));
         fracturePanel.add(departmentLabel, createGbc(0, 3));
         fracturePanel.add(departmentsComboBox, createGbc(1, 3));
         cardsPanel.add(fracturePanel, "Fracture");
+    	}
 
         // Injury Panel
+    	if(m instanceof Injury) {
         JPanel injuryPanel = new JPanel(new GridBagLayout());
         injuryPanel.setBackground(new Color(0xA9BED2));
         injuryPanel.add(nameLabel, createGbc(0, 0));
@@ -186,6 +201,7 @@ public class UpdateMedicalProblem extends JPanel {
         injuryPanel.add(departmentLabel, createGbc(0, 3));
         injuryPanel.add(departmentsComboBox, createGbc(1, 3));
         cardsPanel.add(injuryPanel, "Injury");
+    	}
     }
 
     private GridBagConstraints createGbc(int x, int y) {
@@ -199,27 +215,30 @@ public class UpdateMedicalProblem extends JPanel {
 
     private void validateFields(MedicalProblem medicalProblem) throws InvalidUserDetails {
         if (textFieldName.getText().trim().isEmpty()) {
-            throw new InvalidUserDetails("Name cannot be empty");
+            throw new NullPointerException("Name cannot be empty");
         }
 
         if (medicalProblem instanceof Disease) {
             if (textFieldDescription.getText().trim().isEmpty()) {
-                throw new InvalidUserDetails("Description cannot be empty");
+                throw new NullPointerException("Description cannot be empty");
             }
         } else if (medicalProblem instanceof Fracture) {
             if (textFieldLocation.getText().trim().isEmpty()) {
-                throw new InvalidUserDetails("Location cannot be empty");
+                throw new NullPointerException("Location cannot be empty");
             }
             if (!trueRadioButton.isSelected() && !falseRadioButton.isSelected()) {
-                throw new InvalidUserDetails("Select if cast is required");
+                throw new NullPointerException("Select if cast is required");
             }
         } else if (medicalProblem instanceof Injury) {
             if (textFieldLocation.getText().trim().isEmpty()) {
-                throw new InvalidUserDetails("Location cannot be empty");
+                throw new NullPointerException("Location cannot be empty");
             }
             if (textFieldCommonRecoveryTime.getText().trim().isEmpty()) {
-                throw new InvalidUserDetails("Common Recovery Time cannot be empty");
+                throw new NullPointerException("Common Recovery Time cannot be empty");
             }
+            if(!textFieldCommonRecoveryTime.getText().matches("\\d*\\.?\\d+")) {	
+				throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
+			}
         }
     }
 

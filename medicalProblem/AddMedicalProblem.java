@@ -118,7 +118,8 @@ public class AddMedicalProblem extends JPanel {
 						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || commonRecoveryTimeField.getText().trim().isEmpty()) {
 							throw new NullPointerException("Field cannot be empty.");
 						}
-						if(!commonRecoveryTimeField.getText().matches("\\d*\\.?\\d+")) {							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
+						if(!commonRecoveryTimeField.getText().matches("\\d*\\.?\\d+")) {	
+							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
 						}
 						 department = (Department)departmentsComboBox.getSelectedItem();
 						Injury injury = new Injury(nameField.getText(),department,Double.parseDouble(commonRecoveryTimeField.getText()),locationField.getText());
