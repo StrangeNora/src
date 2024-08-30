@@ -4,8 +4,10 @@ import javax.swing.*;
 import control.Hospital;
 import exceptions.InvalidUserDetails;
 import model.Department;
+import model.Disease;
+import model.Fracture;
+import model.Injury;
 import model.MedicalProblem;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +33,7 @@ public class UpdateMedicalProblem extends JPanel {
     private JLabel descriptionLabel;
     private JLabel commonRecoveryTimeLabel;
 
-    public UpdateMedicalProblem(MedicalProblems m,MedicalProblem medicalproblem) {
+    public UpdateMedicalProblem(MedicalProblems m,MedicalProblem medicalProblem) {
         setBackground(new Color(0xA9BED2));
         trueOrFalseGroup = new ButtonGroup();
 
@@ -45,14 +47,6 @@ public class UpdateMedicalProblem extends JPanel {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
         add(lblTitle, gbc);
-
-        // ComboBox for problem types
-        JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.setBackground(new Color(0x698DB0));
-        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Select Option", "Disease", "Fracture", "Injury"}));
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = GridBagConstraints.RELATIVE;
-        add(comboBox, gbc);
 
         // Initialize card layout and panels
         cardLayout = new CardLayout();
@@ -68,14 +62,24 @@ public class UpdateMedicalProblem extends JPanel {
         Department[] departmentArray = departments.toArray(new Department[0]);
         departmentsComboBox = new JComboBox<>(departmentArray);
         departmentsComboBox.setBackground(new Color(0x698DB0));
-        gbc.gridwidth = GridBagConstraints.RELATIVE;
-        add(departmentsComboBox, gbc);
+
+        // Set custom renderer to display the department name
+        departmentsComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Department) {
+                    setText(((Department) value).getName());
+                }
+                return this;
+            }
+        });
 
         // Initialize JTextField components
-        textFieldName = new JTextField();
-        textFieldDescription = new JTextField();
-        textFieldLocation = new JTextField();
-        textFieldCommonRecoveryTime = new JTextField();
+        textFieldName = new JTextField(20);
+        textFieldDescription = new JTextField(20);
+        textFieldLocation = new JTextField(20);
+        textFieldCommonRecoveryTime = new JTextField(20);
 
         textFieldDescription.setBackground(new Color(0x698DB0));
         textFieldLocation.setBackground(new Color(0x698DB0));
@@ -87,7 +91,22 @@ public class UpdateMedicalProblem extends JPanel {
         trueOrFalseGroup.add(trueRadioButton);
         trueOrFalseGroup.add(falseRadioButton);
 
-        // Panels for different problem types
+        // Initialize Labels
+        nameLabel = new JLabel("Name:");
+        departmentLabel = new JLabel("Department:");
+        locationLabel = new JLabel("Location:");
+        requiresCastLabel = new JLabel("Requires Cast:");
+        descriptionLabel = new JLabel("Description:");
+        commonRecoveryTimeLabel = new JLabel("Common Recovery Time:");
+
+        nameLabel.setForeground(Color.BLACK);
+        departmentLabel.setForeground(Color.BLACK);
+        locationLabel.setForeground(Color.BLACK);
+        requiresCastLabel.setForeground(Color.BLACK);
+        descriptionLabel.setForeground(Color.BLACK);
+        commonRecoveryTimeLabel.setForeground(Color.BLACK);
+
+        // Create panels for different problem types
         createPanels();
 
         // Add the cardsPanel to the main layout
@@ -101,13 +120,7 @@ public class UpdateMedicalProblem extends JPanel {
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String selectedItem = (String) comboBox.getSelectedItem();
-
-                    if ("Select Option".equals(selectedItem)) {
-                        throw new InvalidUserDetails("Please choose the type of medical problem you want to update.");
-                    }
-
-                    validateFields(selectedItem);
+                    validateFields(medicalProblem);
 
                     // Assuming successful update
                     JOptionPane.showMessageDialog(null, "Update Successful");
@@ -117,132 +130,97 @@ public class UpdateMedicalProblem extends JPanel {
                 }
             }
         });
+
         add(btnUpdate, gbc);
 
-        // Action listener for combo box to switch panels
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String selectedOption = (String) comboBox.getSelectedItem();
-                switch (selectedOption) {
-                    case "Disease":
-                        cardLayout.show(cardsPanel, "Disease");
-                        break;
-                    case "Fracture":
-                        cardLayout.show(cardsPanel, "Fracture");
-                        break;
-                    case "Injury":
-                        cardLayout.show(cardsPanel, "Injury");
-                        break;
-                    default:
-                        cardLayout.show(cardsPanel, "empty");
-                        break;
-                }
-                showRelevantFields(selectedOption);
-            }
-        });
+        // Update visibility based on the medical problem type
+        updatePanel(medicalProblem);
     }
 
+    private void updatePanel(MedicalProblem medicalProblem) {
+        if (medicalProblem instanceof Injury) {
+            cardLayout.show(cardsPanel, "Injury");
+        } else if (medicalProblem instanceof Fracture) {
+            cardLayout.show(cardsPanel, "Fracture");
+        } else if (medicalProblem instanceof Disease) {
+            cardLayout.show(cardsPanel, "Disease");
+        }
+    }
+//TODO when updating Disease Department Label and combo box and name label and field are missing
+    //TODO when updating Fracture Department Label and combo box and name label and field and Location label and Field are missing 
     private void createPanels() {
         // Disease Panel
         JPanel diseasePanel = new JPanel(new GridBagLayout());
         diseasePanel.setBackground(new Color(0xA9BED2));
-        diseasePanel.add(createLabel("Name:"), createGbc(0, 0));
+        diseasePanel.add(nameLabel, createGbc(0, 0));
         diseasePanel.add(textFieldName, createGbc(1, 0));
-        diseasePanel.add(createLabel("Description:"), createGbc(0, 1));
+        diseasePanel.add(descriptionLabel, createGbc(0, 1));
         diseasePanel.add(textFieldDescription, createGbc(1, 1));
-        diseasePanel.add(createLabel("Common Recovery Time:"), createGbc(0, 2));
-        diseasePanel.add(textFieldCommonRecoveryTime, createGbc(1, 2));
-        diseasePanel.add(createLabel("Location:"), createGbc(0, 3));
-        diseasePanel.add(textFieldLocation, createGbc(1, 3));
+        diseasePanel.add(departmentLabel, createGbc(0, 2));
+        diseasePanel.add(departmentsComboBox, createGbc(1, 2));
         cardsPanel.add(diseasePanel, "Disease");
 
         // Fracture Panel
         JPanel fracturePanel = new JPanel(new GridBagLayout());
         fracturePanel.setBackground(new Color(0xA9BED2));
-        fracturePanel.add(createLabel("Name:"), createGbc(0, 0));
+        fracturePanel.add(nameLabel, createGbc(0, 0));
         fracturePanel.add(textFieldName, createGbc(1, 0));
-        fracturePanel.add(createLabel("Location:"), createGbc(0, 1));
+        fracturePanel.add(locationLabel, createGbc(0, 1));
         fracturePanel.add(textFieldLocation, createGbc(1, 1));
-        fracturePanel.add(createLabel("Requires Cast:"), createGbc(0, 2));
-        JPanel castPanel = new JPanel();
-        castPanel.add(trueRadioButton);
-        castPanel.add(falseRadioButton);
-        fracturePanel.add(castPanel, createGbc(1, 2));
+        fracturePanel.add(requiresCastLabel, createGbc(0, 2));
+        fracturePanel.add(trueRadioButton, createGbc(1,2));
+        fracturePanel.add(falseRadioButton, createGbc(2,2));
+        fracturePanel.add(departmentLabel, createGbc(0, 3));
+        fracturePanel.add(departmentsComboBox, createGbc(1, 3));
         cardsPanel.add(fracturePanel, "Fracture");
 
         // Injury Panel
         JPanel injuryPanel = new JPanel(new GridBagLayout());
         injuryPanel.setBackground(new Color(0xA9BED2));
-        injuryPanel.add(createLabel("Name:"), createGbc(0, 0));
+        injuryPanel.add(nameLabel, createGbc(0, 0));
         injuryPanel.add(textFieldName, createGbc(1, 0));
-        injuryPanel.add(createLabel("Description:"), createGbc(0, 1));
-        injuryPanel.add(textFieldDescription, createGbc(1, 1));
+        injuryPanel.add(locationLabel, createGbc(0, 1));
+        injuryPanel.add(textFieldLocation, createGbc(1, 1));
+        injuryPanel.add(commonRecoveryTimeLabel, createGbc(0, 2));
+        injuryPanel.add(textFieldCommonRecoveryTime, createGbc(1, 2));
+        injuryPanel.add(departmentLabel, createGbc(0, 3));
+        injuryPanel.add(departmentsComboBox, createGbc(1, 3));
         cardsPanel.add(injuryPanel, "Injury");
     }
 
     private GridBagConstraints createGbc(int x, int y) {
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridx = x;
         gbc.gridy = y;
+        gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
         return gbc;
     }
 
-    private JLabel createLabel(String text) {
-        JLabel label = new JLabel(text);
-        label.setForeground(Color.BLACK);
-        return label;
-    }
-
-    private void validateFields(String type) throws InvalidUserDetails {
+    private void validateFields(MedicalProblem medicalProblem) throws InvalidUserDetails {
         if (textFieldName.getText().trim().isEmpty()) {
-            throw new InvalidUserDetails("Name field cannot be empty.");
+            throw new InvalidUserDetails("Name cannot be empty");
         }
-        if ("Injury".equals(type) && textFieldLocation.getText().trim().isEmpty()) {
-            throw new InvalidUserDetails("Location field cannot be empty.");
-        }
-        if ("Injury".equals(type) && textFieldCommonRecoveryTime.getText().trim().isEmpty()) {
-            throw new InvalidUserDetails("Common recovery time field cannot be empty.");
-        }
-        if ("Injury".equals(type) && !textFieldCommonRecoveryTime.getText().matches("\\d+\\.\\d+")) {
-            throw new InvalidUserDetails("Common recovery time field must contain a valid number.");
-        }
-        if ("Fracture".equals(type) && trueOrFalseGroup.getSelection() == null) {
-            throw new InvalidUserDetails("Please select an option for 'Requires Cast'.");
-        }
-    }
 
-    private void showRelevantFields(String option) {
-        hideAllFields();
-        switch (option) {
-            case "Disease":
-                textFieldName.setVisible(true);
-                textFieldDescription.setVisible(true);
-                textFieldCommonRecoveryTime.setVisible(true);
-                textFieldLocation.setVisible(true);
-                break;
-            case "Fracture":
-                textFieldName.setVisible(true);
-                textFieldLocation.setVisible(true);
-                trueRadioButton.setVisible(true);
-                falseRadioButton.setVisible(true);
-                break;
-            case "Injury":
-                textFieldName.setVisible(true);
-                textFieldDescription.setVisible(true);
-                textFieldCommonRecoveryTime.setVisible(true);
-                break;
+        if (medicalProblem instanceof Disease) {
+            if (textFieldDescription.getText().trim().isEmpty()) {
+                throw new InvalidUserDetails("Description cannot be empty");
+            }
+        } else if (medicalProblem instanceof Fracture) {
+            if (textFieldLocation.getText().trim().isEmpty()) {
+                throw new InvalidUserDetails("Location cannot be empty");
+            }
+            if (!trueRadioButton.isSelected() && !falseRadioButton.isSelected()) {
+                throw new InvalidUserDetails("Select if cast is required");
+            }
+        } else if (medicalProblem instanceof Injury) {
+            if (textFieldLocation.getText().trim().isEmpty()) {
+                throw new InvalidUserDetails("Location cannot be empty");
+            }
+            if (textFieldCommonRecoveryTime.getText().trim().isEmpty()) {
+                throw new InvalidUserDetails("Common Recovery Time cannot be empty");
+            }
         }
-    }
-
-    private void hideAllFields() {
-        textFieldName.setVisible(false);
-        textFieldDescription.setVisible(false);
-        textFieldLocation.setVisible(false);
-        textFieldCommonRecoveryTime.setVisible(false);
-        trueRadioButton.setVisible(false);
-        falseRadioButton.setVisible(false);
     }
 
     public static void main(String[] args) {
