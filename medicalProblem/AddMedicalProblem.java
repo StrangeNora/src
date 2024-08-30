@@ -127,6 +127,7 @@ public class AddMedicalProblem extends JPanel {
 			                
 						break;
 					}
+					m.refreshList();
 					JOptionPane.showMessageDialog(null, "Medical Problem updated successfully.");
 
 				} catch (InvalidUserDetails ex) {

@@ -231,7 +231,7 @@ public class AddVisit extends JPanel {
 						endDateChooser.getDate());
 
 				Hospital.getInstance().addVisit(visit);
-
+				v.refreshList();
 				JOptionPane.showMessageDialog(null, "Visit Added Successfully!.");
 			}
 		});

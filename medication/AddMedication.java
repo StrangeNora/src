@@ -160,7 +160,7 @@ public class AddMedication extends JPanel {
         gbc_panel.gridy = 9;
         add(panel, gbc_panel);
     }
-
+//TODO addmeds
     private boolean validateFields() throws InvalidUserDetails  {
     	try {
 		        if (textField_0.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()

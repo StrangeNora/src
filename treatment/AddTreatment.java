@@ -120,7 +120,7 @@ public class AddTreatment extends JPanel {
 					Treatment treatment = new Treatment(Integer.parseInt(serialNumber.getText()),description.getText());
 
 					Hospital.getInstance().addTreatment(treatment);
-
+					t.refreshList();
 					JOptionPane.showMessageDialog(null, "Treatment Added Successfully!");
 
 
@@ -151,6 +151,6 @@ public class AddTreatment extends JPanel {
 
 	}
 
-	
+
 
 }

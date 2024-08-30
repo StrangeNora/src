@@ -153,7 +153,7 @@ public class AddDepartment extends JPanel {
 					,nameTextField.getText(),doctor,locationTextField.getText(),specialization);
 
 					Hospital.getInstance().addDepartment(department);
-
+					d.refreshList();
 
 				}catch(InvalidUserDetails ex){
 					JOptionPane.showMessageDialog(null, ex.getMessage());
