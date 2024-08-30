@@ -7,11 +7,14 @@ import Patient.AddPatient;
 import control.Hospital;
 import enums.HealthFund;
 import enums.*;
+import exceptions.FutureDateException;
+import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Department;
 import model.Doctor;
 import model.Nurse;
 import model.Patient;
+import treatment.AddTreatment;
 import utils.UtilsMethods;
 
 import java.awt.*;
@@ -356,35 +359,35 @@ public class AddStaffMember extends JPanel {
             
             
  ) {
-            throw new Exception("All fields must be filled.");
+            throw new NullPointerException("All fields must be filled.");
         }
 
         if (birthDateChooser.getDate() == null || workStartDateChooser.getDate() == null) {
-            throw new Exception("Dates must be selected.");
+            throw new NullPointerException("Dates must be selected.");
         }
 
         if (birthDateChooser.getDate().after(MAX_DATE)) {
-            throw new Exception("Invalid Birth Date Input");
+            throw new FutureDateException(MAX_DATE);
         }
 
         if (workStartDateChooser.getDate().after(MAX_DATE)) {
-            throw new Exception("Invalid Work Start Date Input");
+            throw new FutureDateException(MAX_DATE);
         }
 
         if (!isNumeric(idField.getText())) {
-            throw new Exception("ID Must Only Have Numbers");
+            throw new InvalidUserDetails("ID Must Only Have Numbers");
         }
 
         if (!isNumeric(phoneField.getText())) {
-            throw new Exception("Phone Number Must Only Have Numbers");
+            throw new InvalidUserDetails("Phone Number Must Only Have Numbers");
         }
 
         if (!isNumeric(salaryField.getText())) {
-            throw new Exception("Salary Must Only Have Numbers");
+            throw new InvalidUserDetails("Salary Must Only Have Numbers");
         }
 
         if (!isNumeric(licenseNumberField.getText())) {
-            throw new Exception("License Number Must Only Have Numbers");
+            throw new InvalidUserDetails("License Number Must Only Have Numbers");
         }
         }if (selectedOption == "Add Doctor") {
             
@@ -407,35 +410,35 @@ public class AddStaffMember extends JPanel {
                 specializationComboBox.getSelectedItem()==null
                 
      ) {
-                throw new Exception("All fields must be filled.");
+                throw new NullPointerException("All fields must be filled.");
             }
 
             if (birthDateChooser.getDate() == null || workStartDateChooser.getDate() == null) {
-                throw new Exception("Dates must be selected.");
+                throw new NullPointerException("Dates must be selected.");
             }
 
             if (birthDateChooser.getDate().after(MAX_DATE)) {
-                throw new Exception("Invalid Birth Date Input");
+                throw new FutureDateException(MAX_DATE);
             }
 
             if (workStartDateChooser.getDate().after(MAX_DATE)) {
-                throw new Exception("Invalid Work Start Date Input");
+                throw new FutureDateException(MAX_DATE);
             }
 
             if (!isNumeric(idField.getText())) {
-                throw new Exception("ID Must Only Have Numbers");
+                throw new InvalidUserDetails("ID Must Only Have Numbers");
             }
 
             if (!isNumeric(phoneField.getText())) {
-                throw new Exception("Phone Number Must Only Have Numbers");
+                throw new InvalidUserDetails("Phone Number Must Only Have Numbers");
             }
 
             if (!isNumeric(salaryField.getText())) {
-                throw new Exception("Salary Must Only Have Numbers");
+                throw new InvalidUserDetails("Salary Must Only Have Numbers");
             }
 
             if (!isNumeric(licenseNumberField.getText())) {
-                throw new Exception("License Number Must Only Have Numbers");
+                throw new InvalidUserDetails("License Number Must Only Have Numbers");
             }
             }
     }
@@ -448,5 +451,5 @@ public class AddStaffMember extends JPanel {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-  
+    
 }

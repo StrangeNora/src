@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import exceptions.InvalidUserDetails;
+import exceptions.NegativeDosageException;
+import exceptions.NegativeNumberOfDosesException;
 import exceptions.ObjectAlreadyExistsException;
 
 public class AddMedication extends JPanel {
@@ -165,7 +167,7 @@ public class AddMedication extends JPanel {
     	try {
 		        if (textField_0.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
 		        || textField_3.getText().isEmpty()) {
-		            throw new InvalidUserDetails("All Fields Must Be Filled.");
+		            throw new NullPointerException("All Fields Must Be Filled.");
 		        }
 		        if(!textField_0.getText().trim().matches("\\d+")) {
 		            throw new InvalidUserDetails("Code Must Only Contain Numbers.");
@@ -175,24 +177,28 @@ public class AddMedication extends JPanel {
 		            throw new InvalidUserDetails("Number Of Doses Must Only Contain Numbers.");
 		
 		        }
+		        if(Integer.parseInt(textField_3.getText())<0) {
+		        	throw new NegativeNumberOfDosesException(Integer.parseInt(textField_3.getText()));
+		        }
 		        if(!textField_2.getText().trim().matches("\\d+(\\.\\d+)?" )) {
 		            throw new InvalidUserDetails("Dosage Must Only Contain Numbers.");
-		
 		        }
-		        
+		        if(Double.parseDouble(textField_2.getText())<0) {
+		        	throw new NegativeDosageException(Double.parseDouble(textField_2.getText()));
+		        }
     	}catch(InvalidUserDetails ex){
             JOptionPane.showMessageDialog(null, ex.getMessage());
             return false;
-
     	}catch(ObjectAlreadyExistsException o){
             JOptionPane.showMessageDialog(null, "Medication Already Exists!");
-
+		}catch(NullPointerException ec) {
+			JOptionPane.showMessageDialog(null, ec.getMessage());
 		}
     	return true;
 
         
     }
 
-	
+    
 
 }

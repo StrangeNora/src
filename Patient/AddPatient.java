@@ -352,7 +352,7 @@ public class AddPatient extends JPanel {
                                         selectedSex[0] == null ||
                                         healthFundComboBox.getSelectedItem() == null) {
                                         
-                                        throw new InvalidUserDetails("All fields must be filled.");
+                                        throw new NullPointerException("All fields must be filled.");
                                     }
 
                                     // Validate ID is a number
@@ -395,8 +395,8 @@ public class AddPatient extends JPanel {
                                     if (window != null) {
                                         window.dispose();
                                     }
-                                } catch (NumberFormatException ex) {
-                                    JOptionPane.showMessageDialog(null, "Invalid ID format. Please enter a valid number.");
+                                } catch (NullPointerException ex) {
+                                    JOptionPane.showMessageDialog(null, ex.getMessage());
                                 } catch (InvalidUserDetails ex) {
                                     JOptionPane.showMessageDialog(null, ex.getMessage());
 			                 	}catch (FutureDateException ec) {

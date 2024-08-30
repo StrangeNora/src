@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 import control.Hospital;
 import enums.Specialization;
 import exceptions.InvalidUserDetails;
+import exceptions.NegativeNumberOfDosesException;
 import exceptions.ObjectAlreadyExistsException;
 import model.Department;
 import model.Doctor;
@@ -133,7 +134,7 @@ public class AddDepartment extends JPanel {
 					Specialization specialization=(Specialization) specializationComboBox.getSelectedItem();
 
 					if(numberTextField.getText().trim().isEmpty() ||  locationTextField.getText().trim().isEmpty()) {
-						throw new InvalidUserDetails("All Fields Must Be Filled.");
+						throw new NullPointerException("All Fields Must Be Filled.");
 					}
 					if(!numberTextField.getText().matches("\\d+")) {
 						throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
@@ -159,7 +160,8 @@ public class AddDepartment extends JPanel {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}catch(ObjectAlreadyExistsException ec) {
 					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
+				}catch(NullPointerException ec) {
+					JOptionPane.showMessageDialog(null, ec.getMessage());
 				}
 
 			}
@@ -226,6 +228,28 @@ public class AddDepartment extends JPanel {
 
 	}
 
-	
+	public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Update Staff Member Panel");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(200, 200);  // Set the desired size (width x height)
 
+            // Get screen size and calculate window location
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+            Dimension screenSize = toolkit.getScreenSize();
+            int screenWidth = screenSize.width;
+            int screenHeight = screenSize.height;
+            int windowWidth = 300;
+            int windowHeight = 200;
+
+            // Center the window on the screen
+            int x = (screenWidth - windowWidth) / 2;
+            int y = (screenHeight - windowHeight) / 2;
+            frame.setLocation(x, y);
+
+            frame.setSize(new Dimension(400, 200));
+            frame.add(new AddDepartment(null));
+            frame.setVisible(true);
+        });
+    }
 }

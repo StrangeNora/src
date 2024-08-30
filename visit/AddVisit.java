@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
 
 import control.Hospital;
+import department.UpdateDepartment;
 import exceptions.FutureDateException;
 
 import exceptions.InvalidUserDetails;
@@ -196,7 +197,7 @@ public class AddVisit extends JPanel {
 				try {
 					if(number.getText().trim().isEmpty() || patientID.getText().trim().isEmpty() || startDateChooser.getDate()==null 
 							|| endDateChooser.getDate()==null) {
-						throw new InvalidUserDetails("All Fields Must Be Filled.");
+						throw new NullPointerException("All Fields Must Be Filled.");
 					}
 					if (!number.getText().matches("\\d+") ) {
 						throw new InvalidUserDetails("Number Field Must Only Contain Numbers.");
@@ -219,7 +220,8 @@ public class AddVisit extends JPanel {
 					JOptionPane.showMessageDialog(null, "Invalid Date Input.");
 				}catch(ObjectAlreadyExistsException ex) {
         			JOptionPane.showMessageDialog(AddVisit.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-
+				}catch(NullPointerException es) {
+					JOptionPane.showMessageDialog(null, es.getMessage());
 				}
 
 				//TODO idk if i deleted an exceptopn calle invalidexception or am blind :D
@@ -246,6 +248,5 @@ public class AddVisit extends JPanel {
 
 	}
 
-
-
+	
 }

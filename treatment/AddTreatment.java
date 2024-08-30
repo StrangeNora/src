@@ -21,6 +21,7 @@ import department.AddDepartment;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Treatment;
+import visit.AddVisit;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -112,7 +113,7 @@ public class AddTreatment extends JPanel {
 
 				try {
 					if(serialNumber.getText().trim().isEmpty() || description.getText().trim().isEmpty()) {
-						throw new InvalidUserDetails("All Fields Must Be Filled.");
+						throw new NullPointerException("All Fields Must Be Filled.");
 					}
 					if(!serialNumber.getText().matches("\\d+")) {
 						throw new InvalidUserDetails("Serial Number Field Must Only Contain Numbers.");
@@ -128,8 +129,9 @@ public class AddTreatment extends JPanel {
 					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 
 				}catch(ObjectAlreadyExistsException ex) {
-					JOptionPane.showMessageDialog(AddTreatment.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-
+					JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+				}catch(NullPointerException es) {
+					JOptionPane.showMessageDialog(null, es.getMessage());
 				}
 			}
 		});
@@ -150,7 +152,6 @@ public class AddTreatment extends JPanel {
 		add(panel, gbc_panel);
 
 	}
-
 
 
 }
