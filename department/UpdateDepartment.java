@@ -7,6 +7,8 @@ import enums.Specialization;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
+import medication.UpdateMedication;
 import model.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +41,7 @@ public class UpdateDepartment extends JPanel {
         // ComboBox for options
         JComboBox<String> comboBox = new JComboBox<>();
         comboBox.setBackground(new Color(0x698DB0)); 
-        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Select Option", "Name", "Manager ID", "Location", "Specialization"}));
+        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Select Option", "Name", "Location", "Specialization"}));
         comboBox.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.gridy = 1; // Position the combo box in the second row
@@ -63,7 +65,7 @@ public class UpdateDepartment extends JPanel {
                 String selectedItem = (String) comboBox.getSelectedItem();
                 
                 if (selectedItem == "Select Option") {
-                    throw new InvalidUserDetails("Please select an option to update.");
+                    throw new NullPointerException("Please select an option to update.");
                 }
                 if(selectedItem == "Name") {
                 	if(nameField.getText().trim().isEmpty()) {
@@ -71,15 +73,6 @@ public class UpdateDepartment extends JPanel {
 
                 	}
                 	Hospital.getInstance().getRealDepartment(department.getNumber()).setName(nameField.getSelectedText());
-                }
-                //TODO remove manager id
-                if(selectedItem == "Manager ID") {
-                	if(idField.getText().trim().isEmpty()) {
-                        throw new NullPointerException("This Field Cannot Be Empty.");
-                	}
-                	if(!idField.getText().matches("\\d+")) {
-                        throw new InvalidUserDetails("This Field Must Only Contain Numbers.");
-                	}
                 }
                 if(selectedItem == "Location") {
                 	if(locationField.getText().trim().isEmpty()) {
@@ -93,11 +86,8 @@ public class UpdateDepartment extends JPanel {
                 JOptionPane.showMessageDialog(null, "Department Updated Successfuly!");
 
                 
-            }catch(InvalidUserDetails ex) {
-                showErrorMessage(ex.getMessage());
-
-            }catch(ObjectAlreadyExistsException ex) {
-                JOptionPane.showMessageDialog(null, "Department Already Exists!");
+            }catch(ObjectDoesNotExist ex) {
+                JOptionPane.showMessageDialog(null, "Department Does Not Exists!");
             }catch(NullPointerException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
 
@@ -184,6 +174,7 @@ public class UpdateDepartment extends JPanel {
     }
 
 
-   
+    
+    
     
 }

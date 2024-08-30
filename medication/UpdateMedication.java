@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import exceptions.InvalidUserDetails;
 import exceptions.NegativeDosageException;
 import exceptions.NegativeNumberOfDosesException;
+import exceptions.ObjectDoesNotExist;
 import model.Medication;
 
 public class UpdateMedication extends JPanel {
@@ -127,7 +128,7 @@ public class UpdateMedication extends JPanel {
 				case "Number Of Doses":
 					currentTextField = textField_3;
 					if (currentTextField.getText().isEmpty()) {
-						throw new InvalidUserDetails("Field cannot be empty.");
+						throw new NullPointerException("Field cannot be empty.");
 					}
 					if (!isInteger(currentTextField.getText())) {
 						throw new InvalidUserDetails("Number Of Doses must contain only numbers.");
@@ -158,6 +159,8 @@ public class UpdateMedication extends JPanel {
 		        JOptionPane.showMessageDialog(this, ex.getMessage());
 			}catch(NullPointerException ex) {
 		        JOptionPane.showMessageDialog(this, ex.getMessage());
+			}catch(ObjectDoesNotExist ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage());
 			}
 		});
 
@@ -221,5 +224,5 @@ public class UpdateMedication extends JPanel {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-
+	
 }

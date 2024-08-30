@@ -14,6 +14,8 @@ import com.toedter.calendar.JDateChooser;
 import enums.Specialization;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
+import exceptions.ObjectDoesNotExist;
+import treatment.UpdateTreatment;
 
 public class UpdateStaffMember extends JPanel {
 
@@ -191,7 +193,7 @@ public class UpdateStaffMember extends JPanel {
         inputPanel.repaint();
     }
 
-    private void handleUpdateButtonClick() {
+    private void handleUpdateButtonClick() throws ObjectDoesNotExist {
         try {
             if (staffTypeComboBox.getSelectedIndex() == 0) {
                 throw new Exception("Please select a staff type.");

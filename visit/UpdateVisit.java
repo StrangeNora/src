@@ -9,6 +9,7 @@ import enums.Specialization;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
 import model.Department;
 import model.MedicalProblem;
 import model.Treatment;
@@ -39,12 +40,10 @@ import java.awt.event.ActionEvent;
 public class UpdateVisit extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JTextField textField;
     private JDateChooser startDateChooser;
     private JDateChooser endDateChooser;
     private JComboBox<MedicalProblem> medicalProblemsComboBox;
     private JComboBox<Treatment> treatmentsComboBox;
-    private JLabel lblNumber;
     private JLabel lblStartDate;
     private JLabel lblEndDate;
     private JLabel lblMedicalProblems;
@@ -84,7 +83,7 @@ public class UpdateVisit extends JPanel {
 
         JComboBox<String> comboBox = new JComboBox<>();
         comboBox.setBackground(new Color(0x698DB0));
-        comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Number", "Start Date", "End Date", "Medical Problems", "Treatments"}));
+        comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Start Date", "End Date", "Medical Problems", "Treatments"}));
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.gridwidth = 3;
         gbc_comboBox.insets = new Insets(0, 0, 5, 5);
@@ -103,27 +102,6 @@ public class UpdateVisit extends JPanel {
         add(btnUpdate, gbc_btnUpdate);
 
         // Labels and input fields (initially hidden)
-        lblNumber = new JLabel("Number:");
-        GridBagConstraints gbc_lblNumber = new GridBagConstraints();
-        gbc_lblNumber.anchor = GridBagConstraints.EAST;
-        gbc_lblNumber.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNumber.gridx = 4;
-        gbc_lblNumber.gridy = 7;
-        add(lblNumber, gbc_lblNumber);
-        lblNumber.setVisible(false);
-
-        textField = new JTextField();
-        textField.setBackground(new Color(0x698DB0));
-        GridBagConstraints gbc_textField = new GridBagConstraints();
-        gbc_textField.gridwidth = 4;
-        gbc_textField.insets = new Insets(0, 0, 5, 5);
-        gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_textField.gridx = 5;
-        gbc_textField.gridy = 7;
-        add(textField, gbc_textField);
-        textField.setColumns(10);
-        textField.setVisible(false);
-
         lblStartDate = new JLabel("Start Date:");
         GridBagConstraints gbc_lblStartDate = new GridBagConstraints();
         gbc_lblStartDate.anchor = GridBagConstraints.EAST;
@@ -221,25 +199,16 @@ public class UpdateVisit extends JPanel {
                 String selectedItem = (String) comboBox.getSelectedItem();
                 
                 if (selectedItem == null || selectedItem.isEmpty()) {
-                    throw new InvalidUserDetails("Please select an option to update.");
+                    throw new NullPointerException("Please select an option to update.");
                 }
                 
                 JTextField currentTextField;
 
                 switch (selectedItem) {
-                    case "Number":
-                        currentTextField = textField;
-                        if (currentTextField.getText().isEmpty()) {
-                            throw new InvalidUserDetails("Field cannot be empty.");
-                        }
-                        if (!isInteger(currentTextField.getText())) {
-                            throw new InvalidUserDetails("This Field must contain only numbers.");
-                        }
-                        break;
                     case "Start Date":
                         currentTextField = dateTextField_1;
                         if (currentTextField.getText().isEmpty()) {
-                            throw new InvalidUserDetails("Field cannot be empty.");
+                            throw new NullPointerException("Field cannot be empty.");
                         }
                         if (startDateChooser.getDate().after(maxAllowedDate)) {
                             throw new FutureDateException(startDateChooser.getDate());
@@ -249,7 +218,7 @@ public class UpdateVisit extends JPanel {
                     case "End Date":
                         currentTextField = dateTextField;
                         if (currentTextField.getText().isEmpty()) {
-                            throw new InvalidUserDetails("Field cannot be empty.");
+                            throw new NullPointerException("Field cannot be empty.");
                         }
                         if (endDateChooser.getDate().after(maxAllowedDate)) {
                             throw new FutureDateException(endDateChooser.getDate());
@@ -261,24 +230,24 @@ public class UpdateVisit extends JPanel {
                     case "Medical Problems":
                         String selectedMedicalProblem = (String) medicalProblemsComboBox.getSelectedItem();
                         if (selectedMedicalProblem == null || selectedMedicalProblem.isEmpty()) {
-                            throw new InvalidUserDetails("Field cannot be empty.");
+                            throw new NullPointerException("Field cannot be empty.");
                         }
                         break;
                     case "Treatments":
                         String selectedTreatment = (String) treatmentsComboBox.getSelectedItem();
                         if (selectedTreatment == null || selectedTreatment.isEmpty()) {
-                            throw new InvalidUserDetails("Field cannot be empty.");
+                            throw new NullPointerException("Field cannot be empty.");
                         }
                         break;
                 }
-                JOptionPane.showMessageDialog(null, "Medication updated successfully.");
-            } catch (InvalidUserDetails ex) {
-                showErrorMessage(ex.getMessage());
-            } catch (FutureDateException ec) {
-                JOptionPane.showMessageDialog(null, "Invalid Date Input.");
-            }catch(ObjectAlreadyExistsException ex) {
-                JOptionPane.showMessageDialog(null, "Visit Already Exists!");
+                JOptionPane.showMessageDialog(null, "Visit updated successfully.");
 
+            }catch (FutureDateException ec) {
+                JOptionPane.showMessageDialog(null, "Invalid Date Input.");
+            }catch(NullPointerException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }catch(ObjectDoesNotExist es) {
+            	JOptionPane.showMessageDialog(this, es.getMessage());
             }
         });
 
@@ -291,10 +260,6 @@ public class UpdateVisit extends JPanel {
                 
                 // Show the selected field(s)
                 switch (comboBox.getSelectedItem().toString()) {
-                    case "Number":
-                        lblNumber.setVisible(true);
-                        textField.setVisible(true);
-                        break;
                     case "Start Date":
                         lblStartDate.setVisible(true);
                         startDateChooser.setVisible(true);
@@ -335,8 +300,6 @@ public class UpdateVisit extends JPanel {
 
     // Method to hide all fields
     private void hideAllFields() {
-        lblNumber.setVisible(false);
-        textField.setVisible(false);
         lblStartDate.setVisible(false);
         startDateChooser.setVisible(false);
         lblEndDate.setVisible(false);
@@ -346,5 +309,6 @@ public class UpdateVisit extends JPanel {
         lblTreatments.setVisible(false);
         treatmentsComboBox.setVisible(false);
     }
+    
 
 }

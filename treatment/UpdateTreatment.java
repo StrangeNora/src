@@ -6,7 +6,9 @@ import javax.swing.SwingUtilities;
 import control.Hospital;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
 import model.Treatment;
+import visit.UpdateVisit;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -29,7 +31,6 @@ import java.awt.event.ActionListener;
 public class UpdateTreatment extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JTextField serialNumberField;
     private JTextField descriptionField;
     private JLabel serialNumberLabel;
     private JLabel descriptionLabel;
@@ -57,51 +58,7 @@ public class UpdateTreatment extends JPanel {
         gbc_lblNewLabel.gridy = 2;
         add(lblNewLabel, gbc_lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel("Select:");
-        lblNewLabel_1.setFont(new Font("Times New Roman", Font.ITALIC, 15));
-        GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-        gbc_lblNewLabel_1.gridwidth = 3;
-        gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_1.gridx = 3;
-        gbc_lblNewLabel_1.gridy = 6;
-        add(lblNewLabel_1, gbc_lblNewLabel_1);
-
-        JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.setBackground(new Color(0x698DB0)); 
-        comboBox.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        comboBox.setModel(new DefaultComboBoxModel<>(new String[]{"", "Serial Number", "Description"}));
-        GridBagConstraints gbc_comboBox = new GridBagConstraints();
-        gbc_comboBox.gridwidth = 5;
-        gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-        gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-        gbc_comboBox.gridx = 7;
-        gbc_comboBox.gridy = 6;
-        add(comboBox, gbc_comboBox);
-
-        serialNumberLabel = new JLabel("Serial Number:");
-        serialNumberLabel.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        GridBagConstraints gbc_serialNumberLabel = new GridBagConstraints();
-        gbc_serialNumberLabel.anchor = GridBagConstraints.EAST;
-        gbc_serialNumberLabel.gridwidth = 3;
-        gbc_serialNumberLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_serialNumberLabel.gridx = 5;
-        gbc_serialNumberLabel.gridy = 8;
-        add(serialNumberLabel, gbc_serialNumberLabel);
-        serialNumberLabel.setVisible(false);
-
-        serialNumberField = new JTextField();
-        serialNumberField.setForeground(Color.WHITE); // Set the text color to white
-        serialNumberField.setBackground(new Color(0x698DB0)); 
-        GridBagConstraints gbc_serialNumberField = new GridBagConstraints();
-        gbc_serialNumberField.gridwidth = 4;
-        gbc_serialNumberField.insets = new Insets(0, 0, 5, 5);
-        gbc_serialNumberField.fill = GridBagConstraints.HORIZONTAL;
-        gbc_serialNumberField.gridx = 9;
-        gbc_serialNumberField.gridy = 8;
-        add(serialNumberField, gbc_serialNumberField);
-        serialNumberField.setColumns(10);
-        serialNumberField.setVisible(false);
-
+ 
         descriptionLabel = new JLabel("Description:");
         descriptionLabel.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         GridBagConstraints gbc_descriptionLabel = new GridBagConstraints();
@@ -111,7 +68,7 @@ public class UpdateTreatment extends JPanel {
         gbc_descriptionLabel.gridx = 5;
         gbc_descriptionLabel.gridy = 9;
         add(descriptionLabel, gbc_descriptionLabel);
-        descriptionLabel.setVisible(false);
+        descriptionLabel.setVisible(true);
 
         descriptionField = new JTextField();
         descriptionField.setForeground(Color.WHITE);
@@ -124,41 +81,26 @@ public class UpdateTreatment extends JPanel {
         gbc_descriptionField.gridy = 9;
         add(descriptionField, gbc_descriptionField);
         descriptionField.setColumns(10);
-        descriptionField.setVisible(false);
+        descriptionField.setVisible(true);
 
         updateButton = new JButton("Update");
         updateButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
         		try {
-        			selectedItem = (String) comboBox.getSelectedItem();
-        			if(selectedItem == null || selectedItem.isEmpty()) {
-        				throw new InvalidUserDetails("Please select an option to update.");
+        			if(descriptionField.getText().trim().isEmpty()) {
+        				throw new NullPointerException("Field Must Be Filled.");
         			}
-        			if(selectedItem == "Serial Number") {
-        				if(serialNumberField.getText().trim().isEmpty()) {
-        					throw new InvalidUserDetails("Field Must Be Filled.");
-        				}
-        				if(!serialNumberField.getText().matches("\\d+")) {
-        					throw new InvalidUserDetails("This Field Can Only Contain Numbers");
-        				}
-        			}
-        			if(selectedItem == "Description") {
-        				if(descriptionField.getText().trim().isEmpty()) {
-        					throw new InvalidUserDetails("Field Must Be Filled.");
-        				}
-        				Hospital.getInstance().getRealTreatment(treatment.getSerialNumber()).setDescription(descriptionField.getText());
-        			}
+        			Hospital.getInstance().getRealTreatment(treatment.getSerialNumber()).setDescription(descriptionField.getText());
+        			
         			
         			JOptionPane.showMessageDialog(null, "Treatment Updated Successfully!" );
 
         			
-        		}catch(InvalidUserDetails ex) {
-        			JOptionPane.showMessageDialog(null, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-
-        		}catch(ObjectAlreadyExistsException ec) {
+        		}catch(NullPointerException ec) {
         			JOptionPane.showMessageDialog(UpdateTreatment.this, ec.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-
+        		}catch(ObjectDoesNotExist es) {
+        			JOptionPane.showMessageDialog(null, es.getMessage());
         		}
         	}
         });
@@ -173,31 +115,6 @@ public class UpdateTreatment extends JPanel {
         gbc_updateButton.gridy = 12;
         add(updateButton, gbc_updateButton);
 
-        // Action listener to show/hide fields based on selection
-        comboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selected = (String) comboBox.getSelectedItem();
-                if (selected.equals("Serial Number")) {
-                    serialNumberLabel.setVisible(true);
-                    serialNumberField.setVisible(true);
-                    descriptionLabel.setVisible(false);
-                    descriptionField.setVisible(false);
-                } else if (selected.equals("Description")) {
-                    descriptionLabel.setVisible(true);
-                    descriptionField.setVisible(true);
-                    serialNumberLabel.setVisible(false);
-                    serialNumberField.setVisible(false);
-                } else {
-                    serialNumberLabel.setVisible(false);
-                    serialNumberField.setVisible(false);
-                    descriptionLabel.setVisible(false);
-                    descriptionField.setVisible(false);
-                }
-            }
-        });
     }
-
-    
+   
 }
-//idk

@@ -37,14 +37,15 @@ import enums.HealthFund;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
 import model.Patient;
+import staffMember.UpdateStaffMember;
 
 public class UpdatePatient extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel inputPanel;
 	private JComboBox<String> attributeComboBox;
-	private JTextField idField;
 	private JTextField firstNameField;
 	private JTextField lastNameField;
 	private JTextField adressField;
@@ -135,16 +136,16 @@ public class UpdatePatient extends JPanel {
 				updateInputPanel();
 			}
 		});
+		
+		firstNameField = new JTextField();
+		lastNameField = new JTextField();
+		adressField = new JTextField();
+		numberField = new JTextField();
+		emailField = new JTextField();
 
-		idField = new JTextField(10);
-		firstNameField = new JTextField(10);
-		lastNameField = new JTextField(10);
-		adressField = new JTextField(10);
-		numberField = new JTextField(10);
-		emailField = new JTextField(10);
-
+		
 		JComponent[] components = {
-				birthDateChooser, idField, firstNameField, lastNameField,
+				birthDateChooser, firstNameField, lastNameField,
 				adressField, numberField, emailField
 		};
 
@@ -251,8 +252,9 @@ public class UpdatePatient extends JPanel {
 					showErrorMessage(ex.getMessage());
 
 				}catch(NullPointerException ex) {
-					JOptionPane.showMessageDialog(null, "Patient Already Exists!");
-
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}catch(ObjectDoesNotExist ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}
 			}
 		});
@@ -312,16 +314,34 @@ public class UpdatePatient extends JPanel {
 	}
 
 
+	
+	
 	private void addLabelAndTextField(String labelText, JComponent textField, GridBagConstraints gbc, int row) {
-		gbc.gridx = 0;
-		gbc.gridy = row;
-		JLabel label = new JLabel(labelText);
-		inputPanel.add(label, gbc);
+	    // Adding the label
+	    gbc.gridx = 0;
+	    gbc.gridy = row;
+	    gbc.gridwidth = 1; // Label takes 1 column
+	    gbc.fill = GridBagConstraints.NONE; // Label does not stretch
+	    gbc.weightx = 0; // Label does not take extra space
+	    gbc.anchor = GridBagConstraints.WEST; // Align label to the left
+	    JLabel label = new JLabel(labelText);
+	    inputPanel.add(label, gbc);
 
-		gbc.gridx = 1;
-		gbc.gridy = row;
-		inputPanel.add(textField, gbc);
+	    // Set a preferred size for the text field
+	    textField.setPreferredSize(new Dimension(200, 30)); // Adjust the width and height as needed
+
+	    // Adding the text field
+	    gbc.gridx = 1;
+	    gbc.gridy = row;
+	    gbc.gridwidth = 1; // Text field takes 1 column
+	    gbc.fill = GridBagConstraints.NONE; // Text field does not stretch
+	    gbc.weightx = 0; // Text field does not take extra space
+	    gbc.anchor = GridBagConstraints.WEST; // Align text field to the left
+	    inputPanel.add(textField, gbc);
 	}
+
+
+
 
 	private void addGenderOptions(GridBagConstraints gbc, int row) {
 		gbc.gridx = 0;
@@ -393,7 +413,7 @@ public class UpdatePatient extends JPanel {
 		inputPanel.add(dateChooser, gbc);
 	}
 
-
+	
 
 }
 
