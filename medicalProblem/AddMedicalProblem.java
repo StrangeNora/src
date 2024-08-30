@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 
 import control.Hospital;
+import department.AddDepartment;
 import exceptions.FutureDateException;
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
@@ -89,13 +90,13 @@ public class AddMedicalProblem extends JPanel {
 					String selectedItem = (String) optionsComboBox.getSelectedItem();
 
 					if (selectedItem == null || selectedItem.isEmpty()) {
-						throw new InvalidUserDetails("Please select a medical problem to add.");
+						throw new NullPointerException("Please select a medical problem to add.");
 					}
 
 					switch (selectedItem) {
 					case "Fracture":
 						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || group.getSelection() == null) {
-							throw new InvalidUserDetails("Field cannot be empty.");
+							throw new NullPointerException("Field cannot be empty.");
 						}
 						Department department = (Department)departmentsComboBox.getSelectedItem();
 		    			Fracture fracture = new Fracture(nameField.getText(),department,locationField.getText(),Boolean.parseBoolean(group.getSelection().getActionCommand()));
@@ -104,7 +105,7 @@ public class AddMedicalProblem extends JPanel {
 
 					case "Disease":
 						if (nameField.getText().isEmpty() || descriptionField.getText().trim().isEmpty()) {
-							throw new InvalidUserDetails("Field cannot be empty.");
+							throw new NullPointerException("Field cannot be empty.");
 						}
 						 department = (Department)departmentsComboBox.getSelectedItem();
 		    			Disease disease = new Disease(nameField.getText(),department,descriptionField.getText());
@@ -115,7 +116,7 @@ public class AddMedicalProblem extends JPanel {
 
 					case "Injury":
 						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || commonRecoveryTimeField.getText().trim().isEmpty()) {
-							throw new InvalidUserDetails("Field cannot be empty.");
+							throw new NullPointerException("Field cannot be empty.");
 						}
 						if(!commonRecoveryTimeField.getText().matches("\\d*\\.?\\d+")) {							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
 						}
@@ -135,7 +136,8 @@ public class AddMedicalProblem extends JPanel {
 					JOptionPane.showMessageDialog(null, "Invalid Date Input.");
 				}catch(ObjectAlreadyExistsException ex) {
         			JOptionPane.showMessageDialog(AddMedicalProblem.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-
+				}catch(NullPointerException ec) {
+					JOptionPane.showMessageDialog(null, ec.getMessage());
 				}
 			}
 		});
@@ -258,4 +260,5 @@ public class AddMedicalProblem extends JPanel {
 
 		return textField;
 	}
+	
 }

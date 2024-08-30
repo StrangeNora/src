@@ -228,28 +228,5 @@ public class AddDepartment extends JPanel {
 
 	}
 
-	public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Update Staff Member Panel");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(200, 200);  // Set the desired size (width x height)
-
-            // Get screen size and calculate window location
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            Dimension screenSize = toolkit.getScreenSize();
-            int screenWidth = screenSize.width;
-            int screenHeight = screenSize.height;
-            int windowWidth = 300;
-            int windowHeight = 200;
-
-            // Center the window on the screen
-            int x = (screenWidth - windowWidth) / 2;
-            int y = (screenHeight - windowHeight) / 2;
-            frame.setLocation(x, y);
-
-            frame.setSize(new Dimension(400, 200));
-            frame.add(new AddDepartment(null));
-            frame.setVisible(true);
-        });
-    }
+	
 }
