@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import exceptions.InvalidUserDetails;
+import exceptions.NegativeDosageException;
+import exceptions.NegativeNumberOfDosesException;
 import model.Medication;
 
 public class UpdateMedication extends JPanel {
@@ -18,7 +20,6 @@ public class UpdateMedication extends JPanel {
 	private static final Color TEXTFIELD_BACKGROUND_COLOR = new Color(0x698DB0);
 	private static final Color BUTTON_COLOR = new Color(0x698DB0);
 
-	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -61,7 +62,7 @@ public class UpdateMedication extends JPanel {
 
 		comboBox = new JComboBox<>();
 		comboBox.setBackground(TEXTFIELD_BACKGROUND_COLOR);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Code", "Name", "Dosage", "Number Of Doses"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"", "Name", "Dosage", "Number Of Doses"}));
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.gridwidth = 7;
 		gbc_comboBox.insets = new Insets(0, 10, 5, 5);
@@ -105,29 +106,21 @@ public class UpdateMedication extends JPanel {
 				String selectedItem = (String) comboBox.getSelectedItem();
 
 				if (selectedItem == null || selectedItem.isEmpty()) {
-					throw new InvalidUserDetails("Please select an option to update.");
+					throw new NullPointerException("Please select an option to update.");
 				}
 
 				JTextField currentTextField;
-				//TODO no need for set code
 				switch (selectedItem) {
-				case "Code":
-					currentTextField = textField;
-					if (currentTextField.getText().isEmpty()) {
-						throw new InvalidUserDetails("Field cannot be empty.");
-					}
-					if (!isInteger(currentTextField.getText())) {
-						throw new InvalidUserDetails("Code must contain only numbers.");
-					}
-
-					break;
 				case "Dosage":
 					currentTextField = textField_2;
 					if (currentTextField.getText().isEmpty()) {
-						throw new InvalidUserDetails("Field cannot be empty.");
+						throw new NullPointerException("Field cannot be empty.");
 					}
 					if (!isDouble(currentTextField.getText())) {
 						throw new InvalidUserDetails("Dosage must contain only numbers.");
+					}
+					if(Double.parseDouble(currentTextField.getText())<0) {
+						throw new NegativeDosageException(Double.parseDouble(currentTextField.getText()));
 					}
 					Hospital.getInstance().getRealMedication(medication.getCode()).setDosage(Double.parseDouble(currentTextField.getText()));
 					break;
@@ -139,13 +132,16 @@ public class UpdateMedication extends JPanel {
 					if (!isInteger(currentTextField.getText())) {
 						throw new InvalidUserDetails("Number Of Doses must contain only numbers.");
 					}
+					if(Integer.parseInt(currentTextField.getText())<0) {
+						throw new NegativeNumberOfDosesException(Integer.parseInt(currentTextField.getText()));
+					}
 					Hospital.getInstance().getRealMedication(medication.getCode()).setNumberOfDose(Integer.parseInt(currentTextField.getText()));
 
 					break;
 				case "Name":
 					currentTextField = textField_1;
 					if (currentTextField.getText().isEmpty()) {
-						throw new InvalidUserDetails("Field cannot be empty.");
+						throw new NullPointerException("Field cannot be empty.");
 					}
 					Hospital.getInstance().getRealMedication(medication.getCode()).setName(currentTextField.getText());
 
@@ -156,6 +152,12 @@ public class UpdateMedication extends JPanel {
 
 			} catch (InvalidUserDetails ex) {
 				showErrorMessage(ex.getMessage());
+			}catch(NegativeDosageException ex) {
+		        JOptionPane.showMessageDialog(this, ex.getMessage());
+			}catch(NegativeNumberOfDosesException ex) {
+		        JOptionPane.showMessageDialog(this, ex.getMessage());
+			}catch(NullPointerException ex) {
+		        JOptionPane.showMessageDialog(this, ex.getMessage());
 			}
 		});
 
@@ -176,10 +178,9 @@ public class UpdateMedication extends JPanel {
 				cl.show(cardPanel, panelName);
 			}
 		});
-	}
+	}		
 
 	private void createCardPanel(JPanel cardPanel) {
-		cardPanel.add(createTextFieldPanel("Code:", textField = new JTextField(10)), "Code");
 		cardPanel.add(createTextFieldPanel("Name:", textField_1 = new JTextField(10)), "Name");
 		cardPanel.add(createTextFieldPanel("Dosage:", textField_2 = new JTextField(10)), "Dosage");
 		cardPanel.add(createTextFieldPanel("Number Of Doses:", textField_3 = new JTextField(10)), "Number Of Doses");

@@ -117,8 +117,7 @@ public class AddMedicalProblem extends JPanel {
 						if (nameField.getText().isEmpty() || locationField.getText().trim().isEmpty() || commonRecoveryTimeField.getText().trim().isEmpty()) {
 							throw new InvalidUserDetails("Field cannot be empty.");
 						}
-						if (!commonRecoveryTimeField.getText().matches("\\d+\\.\\d*") || !commonRecoveryTimeField.getText().matches("\\d+")) {
-							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
+						if(!commonRecoveryTimeField.getText().matches("\\d*\\.?\\d+")) {							throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
 						}
 						 department = (Department)departmentsComboBox.getSelectedItem();
 						Injury injury = new Injury(nameField.getText(),department,Double.parseDouble(commonRecoveryTimeField.getText()),locationField.getText());
@@ -259,7 +258,4 @@ public class AddMedicalProblem extends JPanel {
 
 		return textField;
 	}
-
-
-
 }

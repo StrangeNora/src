@@ -106,9 +106,9 @@ public class UpdatePatient extends JPanel {
 		northPanel.setLayout(new BorderLayout());
 		northPanel.add(titleLabel, BorderLayout.NORTH);
 
-		String[] options = {"ID", "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"};
+		String[] options = { "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"};
 		attributeComboBox = new JComboBox<>(options);
-		attributeComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "ID", "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"}));
+		attributeComboBox.setModel(new DefaultComboBoxModel(new String[] {"", "First Name", "Last Name", "Address", "Phone Number", "Gender", "Biological Sex", "Email", "HealthFund", "Birthdate"}));
 
 		JPanel comboBoxPanel = new JPanel();
 		comboBoxPanel.setBackground(new Color(0xA9BED2));
@@ -164,20 +164,8 @@ public class UpdatePatient extends JPanel {
 					String selectedItem = (String) attributeComboBox.getSelectedItem();
 
 					if(selectedItem == null || selectedItem.isEmpty()) {
-						throw new InvalidUserDetails("choose an attribute to update.");
+						throw new NullPointerException("choose an attribute to update.");
 					}
-					//TODO id set not needed
-
-					if(selectedItem == "ID") {
-
-						if(idField.getText().trim().isEmpty())  {
-							throw new InvalidUserDetails("Field Cannot Be Empty.");
-						}
-						if(!idField.getText().matches("\\d+")) {
-							throw new InvalidUserDetails("Feild Must Only Contain Numbers");
-						}
-					}
-
 					if (selectedItem == "Phone Number") {
 						if(numberField.getText().trim().isEmpty()) {
 
@@ -198,21 +186,21 @@ public class UpdatePatient extends JPanel {
 					}
 					if(selectedItem == "Last Name") {
 						if(lastNameField.getText().trim().isEmpty() ) {
-							throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+							throw new NullPointerException ("Feild Cannot Be Empty.");
 
 
 						}Hospital.getInstance().getRealPatient(patient.getId()).setFirstName(lastNameField.getText());
 					}
 					if(selectedItem == "Address") {
 						if(adressField.getText().trim().isEmpty()) {
-							throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+							throw new NullPointerException ("Feild Cannot Be Empty.");
 
 						}Hospital.getInstance().getRealPatient(patient.getId()).setFirstName(adressField.getText());
 
 					}
 					if(selectedItem == "Email") {
 						if(emailField.getText().trim().isEmpty()) {
-							throw new InvalidUserDetails ("Feild Cannot Be Empty.");
+							throw new NullPointerException ("Feild Cannot Be Empty.");
 
 
 						}
@@ -220,7 +208,7 @@ public class UpdatePatient extends JPanel {
 					}
 					if(selectedItem == "Gender") {
 						if(genderGroup.getSelection() == null ) {
-							throw new InvalidUserDetails("Field Cannot Be Empty");
+							throw new NullPointerException("Field Cannot Be Empty");
 
 						}					
 						Hospital.getInstance().getRealPatient(patient.getId()).setGender(genderGroup.getSelection().getActionCommand());
@@ -228,7 +216,7 @@ public class UpdatePatient extends JPanel {
 					}
 					if(selectedItem == "Biological Sex") {
 						if( selectedSex == null) {
-							throw new InvalidUserDetails("Field Cannot Be Empty");
+							throw new NullPointerException("Field Cannot Be Empty");
 
 						}
 						Hospital.getInstance().getRealPatient(patient.getId()).setBiologicalSex(selectedSex[0]);
@@ -236,7 +224,7 @@ public class UpdatePatient extends JPanel {
 					}
 					if(selectedItem == "Health Fund") {
 						if(healthFundComboBox.getSelectedItem() == null){
-							throw new InvalidUserDetails("Field Cannot Be Empty");
+							throw new NullPointerException("Field Cannot Be Empty");
 
 						}	
 						Hospital.getInstance().getRealPatient(patient.getId()).setHealthFund((HealthFund)healthFundComboBox.getSelectedItem());
@@ -244,7 +232,7 @@ public class UpdatePatient extends JPanel {
 					}
 					if(selectedItem == "Birthdate") {
 						if(birthDateChooser.getDate() == null) {
-							throw new InvalidUserDetails("Field Cannot Be Empty");
+							throw new NullPointerException("Field Cannot Be Empty");
 						}
 						if(birthDateChooser.getDate().after(maxAllowedDate)) {
 							throw new FutureDateException(maxAllowedDate);
@@ -262,7 +250,7 @@ public class UpdatePatient extends JPanel {
 				}catch(FutureDateException ex) {
 					showErrorMessage(ex.getMessage());
 
-				}catch(ObjectAlreadyExistsException ex) {
+				}catch(NullPointerException ex) {
 					JOptionPane.showMessageDialog(null, "Patient Already Exists!");
 
 				}
@@ -284,9 +272,6 @@ public class UpdatePatient extends JPanel {
 
 		String selectedOption = (String) attributeComboBox.getSelectedItem();
 		switch (selectedOption) {
-		case "ID":
-			addLabelAndTextField("ID:", idField, gbc, 0);
-			break;
 		case "First Name":
 			addLabelAndTextField("First Name:", firstNameField, gbc, 1);
 			break;
