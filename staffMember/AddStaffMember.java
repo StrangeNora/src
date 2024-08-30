@@ -2,7 +2,9 @@ package staffMember;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
-
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.ImageIcon;
+import java.io.File;
 import Patient.AddPatient;
 import control.Hospital;
 import enums.HealthFund;
@@ -20,6 +22,7 @@ import utils.UtilsMethods;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -51,7 +54,9 @@ public class AddStaffMember extends JPanel {
     private ButtonGroup genderGroup;
     private JComboBox<Specialization> specializationComboBox;
     private JComboBox<Department> departmentsComboBox;
-    
+    private JLabel profilePictureLabel;
+    private JButton chooseImageButton;
+    private File selectedImageFile;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static final Date MAX_DATE;
 
@@ -70,7 +75,33 @@ public class AddStaffMember extends JPanel {
         setLayout(new BorderLayout());
         
         this.setBackground(new Color(0xA9BED2));
+        profilePictureLabel = new JLabel();
+        profilePictureLabel.setPreferredSize(new Dimension(100, 100)); // Set a preferred size
+        chooseImageButton = new JButton("Choose Profile Picture");
 
+        chooseImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg", "gif");
+                fileChooser.setFileFilter(filter);
+                int returnVal = fileChooser.showOpenDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    selectedImageFile = fileChooser.getSelectedFile();
+                    ImageIcon profileImage = new ImageIcon(selectedImageFile.getAbsolutePath());
+                    Image scaledImage = profileImage.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    profilePictureLabel.setIcon(new ImageIcon(scaledImage));
+                }
+            }
+        });
+
+        JPanel imagePanel = new JPanel(new FlowLayout());
+        imagePanel.setBackground(new Color(0xA9BED2));
+        imagePanel.add(profilePictureLabel);
+        imagePanel.add(chooseImageButton);
+
+        // Add the image panel to your main layout
+        add(imagePanel, BorderLayout.EAST);
 
         // Create the title label with large font and add it to the top (north) of the panel
         JLabel titleLabel = new JLabel("Add A Staff Member", JLabel.CENTER);
@@ -212,6 +243,7 @@ public class AddStaffMember extends JPanel {
                     int licenseNumber=Integer.parseInt(licenseNumberField.getText());
                     String userName= userNameField.getText();
                     String password= passwordField.getText();
+                    String photo=selectedImageFile.getAbsolutePath();
                   //TODO initialize nurse with isIntensivecare
                    
                     String gender=genderGroup.getSelection().getActionCommand();
@@ -224,7 +256,7 @@ public class AddStaffMember extends JPanel {
                     	}
                   	Doctor doctor = new Doctor(id,firstName,lastName,birthDateChooser.getDate(),
 								address,phoneNumber,email,gender,
-								workStartDateChooser.getDate(),userName, password, salary,licenseNumber,
+								workStartDateChooser.getDate(),userName, password,photo, salary,licenseNumber,
 								isFinishInternShip,specialization);			
 						Hospital.getInstance().addStaffMember(doctor);
 						JOptionPane.showMessageDialog(null, "Doctor Added Successfully","Success",JOptionPane.INFORMATION_MESSAGE);
@@ -235,7 +267,7 @@ public class AddStaffMember extends JPanel {
                   
                  	Nurse nurse = new Nurse(id,firstName,lastName,birthDateChooser.getDate(),
 								address,phoneNumber,email,gender,
-								workStartDateChooser.getDate(),userName, password, salary,licenseNumber);			
+								workStartDateChooser.getDate(),userName, password,photo, salary,licenseNumber);			
 						Hospital.getInstance().addStaffMember(nurse);
 						JOptionPane.showMessageDialog(null, "Nurse Added Successfully","Success",JOptionPane.INFORMATION_MESSAGE);
                    }

@@ -4,6 +4,8 @@ import javax.swing.*;
 import control.Hospital;
 import exceptions.InvalidUserDetails;
 import model.Department;
+import model.MedicalProblem;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +31,7 @@ public class UpdateMedicalProblem extends JPanel {
     private JLabel descriptionLabel;
     private JLabel commonRecoveryTimeLabel;
 
-    public UpdateMedicalProblem(MedicalProblems m) {
+    public UpdateMedicalProblem(MedicalProblems m,MedicalProblem medicalproblem) {
         setBackground(new Color(0xA9BED2));
         trueOrFalseGroup = new ButtonGroup();
 
@@ -249,7 +251,7 @@ public class UpdateMedicalProblem extends JPanel {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(500, 300);
             frame.setLocationRelativeTo(null);
-            frame.getContentPane().add(new UpdateMedicalProblem(null));
+            frame.getContentPane().add(new UpdateMedicalProblem(null,null));
             frame.setVisible(true);
         });
     }

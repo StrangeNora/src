@@ -14,18 +14,18 @@ public class Nurse extends StaffMember{
 	
 	//constructors
 	public Nurse(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,
-			String email, String gender, Date workStartDate,String username,String password,
+			String email, String gender, Date workStartDate,String username,String password,String profilePicturePath,
 			HashSet<Department> departments, double salary, int licenseNumber) {
-		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,
-				departments, salary);
+		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,profilePicturePath
+				,departments, salary);
 		this.licenseNumber = licenseNumber;
 	}
 	
 	public Nurse(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,
-			String email, String gender, Date workStartDate,String username,String password,
+			String email, String gender, Date workStartDate,String username,String password, String profilePicturePath,
 			 double salary, int licenseNumber) {
-		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,
-				 salary);
+		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password, profilePicturePath
+				 ,salary);
 		this.licenseNumber = licenseNumber;
 	}
 

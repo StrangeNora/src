@@ -14,13 +14,13 @@ import utils.MyFileLogWriter;
 import utils.UtilsMethods;
 
 public abstract class StaffMember extends Person{
-	
+
 	private Date workStartDate;
 	private HashSet<Department> departments;
 	private double salary;
 	private String UserName;
 	private String Password;
-    
+	private String profilePicturePath;
 	public String getUserName() {
 		return UserName;
 	}
@@ -39,7 +39,7 @@ public abstract class StaffMember extends Person{
 
 	//Constructors
 	public StaffMember(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,
-			String email, String gender, Date workStartDate,String username,String password,
+			String email, String gender, Date workStartDate,String username,String password,String profilePicturePath,
 			HashSet<Department> departments, double salary) {
 		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender);
 		setWorkStartDate(workStartDate);
@@ -47,17 +47,36 @@ public abstract class StaffMember extends Person{
 		this.salary = salary;
 		this.UserName=username;
 		this.Password=password;
+		this.profilePicturePath= profilePicturePath;
 	}
-	
+
 	public StaffMember(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,
-			String email, String gender, Date workStartDate,String username,String password,
-			 double salary) {
+			String email, String gender, Date workStartDate,String username,String password,String profilePicturePath,
+			double salary) {
 		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender);
 		setWorkStartDate(workStartDate);
 		this.departments = new HashSet<Department>();
 		this.salary = salary;
 		this.UserName=username;
 		this.Password=password;
+		this.profilePicturePath= profilePicturePath;
+
+	}
+
+	/**
+	 * Sets the profile picture path.
+	 * @param path The file path to the profile picture.
+	 */
+	public void setProfilePicture(String path) {
+		this.profilePicturePath = path;
+	}
+
+	/**
+	 * Gets the profile picture path.
+	 * @return The file path to the profile picture.
+	 */
+	public String getProfilePicture() {
+		return this.profilePicturePath;
 	}
 
 	//getters
@@ -72,7 +91,7 @@ public abstract class StaffMember extends Person{
 	public double getSalary() {
 		return salary;
 	}
-	
+
 	public double getWorkTime() {
 		//returns the WorkTime of the StaffMember, in days
 		return UtilsMethods.dateDiffInDays(Hospital.TODAY, workStartDate);
@@ -104,10 +123,10 @@ public abstract class StaffMember extends Person{
 			throw new ObjectAlreadyExistsException(department, this);
 
 		}
-			return departments.add(department);
+		return departments.add(department);
 
 	}
-	
+
 	//remove
 	public boolean removeDepartment(Department department) {
 		if(department==null) {
@@ -117,18 +136,19 @@ public abstract class StaffMember extends Person{
 			throw new ObjectDoesNotExist(department.getNumber(), department.getClass().getSimpleName(), this);
 
 		}
-			return departments.remove(department);
+		return departments.remove(department);
 
 	}
 
 	//toString based on the super.toString()
 	@Override
 	public String toString() {
-		return super.toString()+", workStartDate=" + workStartDate  +
-				", salary=" + salary
-				;
+		return super.toString()+", workStartDate=" + workStartDate +" departments=" + departments + ", salary=" + salary
+				+ ", UserName=" + UserName + ", Password=" + Password + ", profilePicturePath=" + profilePicturePath;
+
+				
 	}
-	
+
 	public Department getDepartmentBySpecialization(Specialization specialization) {
 		for(Department department:departments) {
 			if (department.getSpecialization().equals(specialization)) {
@@ -137,7 +157,7 @@ public abstract class StaffMember extends Person{
 		}
 		return null;
 	}
-	
-	
-	
+
+
+
 }

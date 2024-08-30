@@ -16,21 +16,21 @@ public class Doctor extends StaffMember{
 	
 	//constructors
 	public Doctor(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,String email,
-			String gender, Date workStartDate,String username,String password,HashSet<Department> departments,
+			String gender, Date workStartDate,String username,String password,String profilePicturePath,HashSet<Department> departments,
 			double salary,int licenseNumber, boolean isFinishInternship,
 			Specialization specialization) {
 		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,
-				username,password,departments, salary);
+				username,password, profilePicturePath,departments, salary);
 		this.licenseNumber = licenseNumber;
 		this.isFinishInternship = isFinishInternship;
 		this.specialization = specialization;
 	}
 	
 	public Doctor(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,
-			String email, String gender, Date workStartDate,String username,String password,
+			String email, String gender, Date workStartDate,String username,String password,String profilePicturePath,
 			 double salary, int licenseNumber, boolean isFinishInternship,
 			Specialization specialization) {
-		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,
+		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,profilePicturePath,
 				 salary);
 		this.licenseNumber = licenseNumber;
 		this.isFinishInternship = isFinishInternship;

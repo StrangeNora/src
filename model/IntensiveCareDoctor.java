@@ -10,9 +10,9 @@ import enums.Specialization;
 public class IntensiveCareDoctor extends Doctor implements IntensiveCareStaffMember{
 
 	public IntensiveCareDoctor(int id, String firstName, String lastName, Date birthDate, String address,
-			String phoneNumber, String email, String gender, Date workStartDate,String username,String password, double salary, int licenseNumber,
+			String phoneNumber, String email, String gender, Date workStartDate,String username,String password,String profilePicturePath, double salary, int licenseNumber,
 			boolean isFinishInternship) {
-		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password, salary, licenseNumber,
+		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password, profilePicturePath, salary, licenseNumber,
 				isFinishInternship, Specialization.IntensiveCare);
 		Department department= Hospital.getInstance().searchDepartmentBySpecialization(Specialization.IntensiveCare);
 		department.addDoctor(this);
@@ -21,9 +21,9 @@ public class IntensiveCareDoctor extends Doctor implements IntensiveCareStaffMem
 	}
 	
 	public IntensiveCareDoctor(int id, String firstName, String lastName, Date birthDate, String address, String phoneNumber,String email,
-			String gender, Date workStartDate,String username,String password,HashSet<Department> departments,
+			String gender, Date workStartDate,String username,String password,String profilePicturePath,HashSet<Department> departments,
 			double salary,int licenseNumber, boolean isFinishInternship) {
-		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password,departments, salary, licenseNumber,
+		super(id, firstName, lastName, birthDate, address, phoneNumber, email, gender, workStartDate,username,password, profilePicturePath,departments, salary, licenseNumber,
 				isFinishInternship, Specialization.IntensiveCare);
 		Department department= Hospital.getInstance().searchDepartmentBySpecialization(Specialization.IntensiveCare);
 		department.addDoctor(this);

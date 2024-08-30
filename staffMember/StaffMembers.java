@@ -65,7 +65,7 @@ public class StaffMembers extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    private void showUpdateStaffMemberDialog(StaffMember stf) {
-	        UpdateStaffMember updateStaffMember = new UpdateStaffMember(this);
+	        UpdateStaffMember updateStaffMember = new UpdateStaffMember(this,stf);
 	        JDialog dialog = new JDialog((Frame) null, "Update StaffMember", true);
 	        dialog.getContentPane().add(updateStaffMember);
 	        dialog.pack();
