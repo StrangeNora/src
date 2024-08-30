@@ -29,6 +29,7 @@ import exceptions.FutureDateException;
 
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import medicalProblem.UpdateMedicalProblem;
 import model.Patient;
 import model.Visit;
 import utils.UtilsMethods;
@@ -209,6 +210,9 @@ public class AddVisit extends JPanel {
 					if(startDateChooser.getDate().after(MAX_DATE) || endDateChooser.getDate().after(MAX_DATE)) {
 						throw new FutureDateException(MAX_DATE);
 					}
+					if(startDateChooser.getDate().after(endDateChooser.getDate())) {
+						throw new InvalidUserDetails("Start Date Cannot Be After End Date.");
+					}
 					
 					JOptionPane.showMessageDialog(null, "Visit Added Successfully!");
 
@@ -248,5 +252,6 @@ public class AddVisit extends JPanel {
 
 	}
 
+   
 	
 }
