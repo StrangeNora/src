@@ -126,22 +126,25 @@ public class LoginPage extends JFrame {
 
             // If user is null, throw ObjectDoesNotExist exception
             int userID=Hospital.getInstance().authenticate(username,password);
+            if (userID==1) {
+                // Redirect to AdminPage
+                new UserPage(Role.Admin,null).setVisible(true);
+                dispose();
+            }
+            StaffMember user=Hospital.getInstance().getStaffMember(userID);
+
             // Check the type of user and redirect to the appropriate page
             if(userID==-1) {
             	 throw new InvalidUserDetails("The Entered Username Or password is invalid, Please Try Again");
-            }
-            if (userID==1) {
-                // Redirect to AdminPage
-                new UserPage(Role.Admin).setVisible(true);
-                dispose();
+          
 
-            } else if (Hospital.getInstance().getStaffMember(userID)instanceof Doctor) {
+            } else if (user instanceof Doctor) {
                 
-                new UserPage(Role.Doctor).setVisible(true);
+                new UserPage(Role.Doctor,user).setVisible(true);
                 dispose();
-            } else if (Hospital.getInstance().getStaffMember(userID)instanceof Nurse) {
+            } else if (user instanceof Nurse) {
                 // Redirect to NursePage
-                new UserPage(Role.Nurse).setVisible(true);
+                new UserPage(Role.Nurse,user).setVisible(true);
                 dispose();
            
         }
@@ -156,7 +159,9 @@ public class LoginPage extends JFrame {
         // Catch any other exceptions
         javax.swing.JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
+        
     }
+    
 }
 
     

@@ -1,11 +1,13 @@
 package view;
 import panels.*;
+import panels.ProfilePage;
 import staffMember.*;
 import treatment.Treatments;
 import visit.Visits;
 import control.*;
 import department.Departments;
 import enums.Role;
+import enums.Specialization;
 import exceptions.*;
 import javax.swing.*;
 import Patient.*;
@@ -17,6 +19,7 @@ import model.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class UserPage extends JFrame {
 
@@ -28,7 +31,7 @@ public class UserPage extends JFrame {
 	private JPanel rightPanel;
 	private int buttonWidth = 260;
 	private Role userRole;
-
+	private StaffMember staffUser;
 	// DefaultListModels for each page
 	private DefaultListModel<StaffMember> staffMembersListModel = new DefaultListModel<>();
 	private DefaultListModel<String> SystemQueriesListModel = new DefaultListModel<>();
@@ -39,8 +42,9 @@ public class UserPage extends JFrame {
 	private DefaultListModel<Visit> visitsListModel = new DefaultListModel<>();
 	private DefaultListModel<Patient> patientListModel = new DefaultListModel<>();
 
-	public UserPage(Role role) {
+	public UserPage(Role role, StaffMember staffUser) {
 		this.userRole = role;
+		this.staffUser=staffUser;
 		
 		JPanel staffMemberPanel = new StaffMembers(userRole, "StaffMembers", staffMembersListModel).getPanel();
 		JPanel patientsPanel = new Patients(userRole, "Patient", patientListModel).getPanel();
@@ -50,7 +54,7 @@ public class UserPage extends JFrame {
 		JPanel treatmentsPanel = new Treatments(userRole, "Treatments", treatmentsListModel).getPanel();
 		JPanel visitsPanel = new Visits(userRole, "Visits", visitsListModel).getPanel();
 		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel).getPanel();
-
+		
 		createToolBar();
 		
 		setTitle("Hospital Management System");
@@ -221,6 +225,15 @@ public class UserPage extends JFrame {
 	}
 
 	private JPanel createHomePanel() {
+		if(staffUser instanceof Doctor) {
+			  ProfilePage doctorUser=new ProfilePage((Doctor)staffUser);
+			  return doctorUser;
+		}
+		if(staffUser instanceof Nurse) {
+			ProfilePage nurseUser=new ProfilePage((Nurse)staffUser);
+			return nurseUser;
+		}
+		else {
 		JPanel panel = new JPanel(new BorderLayout());
 		JLabel homeLabel = new JLabel("<html>Welcome Admin!<br><br>Manage all aspects of the hospital here.</html>", JLabel.CENTER);
 		homeLabel.setFont(new Font("Bell MT", Font.BOLD | Font.ITALIC, 18));
@@ -229,6 +242,7 @@ public class UserPage extends JFrame {
 		panel.add(homeLabel, BorderLayout.CENTER);
 
 		return panel;
+		}
 	}
 
 	private void adjustButtonFontSize(JComponent component) {
@@ -246,6 +260,29 @@ public class UserPage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin));
+		
+
+	        // Create a dummy doctor
+	        @SuppressWarnings("deprecation")
+			Doctor dummyDoctor = new Doctor(
+	            1, // id
+	            "John", // firstName
+	            "Doe", // lastName
+	            new Date(01,01,1998), // birthDate
+	            "123 Main St", // address
+	            "555-1234", // phoneNumber
+	            "john.doe@example.com", // email
+	            "Male", // gender
+	            new Date(01,01,1998), // workStartDate
+	            "johndoe", // username
+	            "password123", // password
+	            "C:\\Users\\daddysatan\\Desktop\\hanamal2_with_exceptions\\hanamal2_with_exceptions\\src\\view\\HH_LOGO.png", // profilePicturePath
+	            100000.0, // salary
+	            123456, // licenseNumber
+	            true, // isFinishInternship
+	            Specialization.Cardiology // specialization
+	        );
+
+		SwingUtilities.invokeLater(() -> new UserPage(Role.Doctor,dummyDoctor));
 	}
 }

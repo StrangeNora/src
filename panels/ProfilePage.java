@@ -45,9 +45,10 @@ public class ProfilePage extends JPanel {
         }
     }
 
-    private ProfilePage() {
+    public ProfilePage() {
         setLayout(new GridBagLayout());
         setBackground(new Color(0xA9BED2));
+        
     }
 
     private void initializeDoctorProfile(Doctor doctor) {
