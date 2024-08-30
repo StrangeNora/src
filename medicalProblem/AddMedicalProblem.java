@@ -169,15 +169,29 @@ public class AddMedicalProblem extends JPanel {
 			gbc.anchor = GridBagConstraints.EAST;  // Align the label to the right
 			fieldsPanel.add(departmentLabel, gbc);
 
-			Collection<Department> departments = Hospital.getInstance().getDepartments().values();
-			Department[] departmentArray = departments.toArray(new Department[0]);
-			departmentsComboBox = new JComboBox<>(departmentArray);
+			 Collection<Department> departments = Hospital.getInstance().getDepartments().values();
+		        Department[] departmentArray = departments.toArray(new Department[0]);
+		        departmentsComboBox = new JComboBox<>(departmentArray);
+		        departmentsComboBox.setBackground(new Color(0x698DB0));
+
+		        // Set custom renderer to display the department name
+		        departmentsComboBox.setRenderer(new DefaultListCellRenderer() {
+		            @Override
+		            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		                if (value instanceof Department) {
+		                    setText(((Department) value).getName());
+		                }
+		                return this;
+		            }
+		        });
 			gbc.gridx = 1;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			gbc.anchor = GridBagConstraints.WEST;  // Align the combo box to the left
 			fieldsPanel.add(departmentsComboBox, gbc);
 			departmentsComboBox.setBackground(new Color(0x698DB0));
 
+			
 			gbc.gridx = 0;
 			gbc.gridy++;
 		}

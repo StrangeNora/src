@@ -68,7 +68,7 @@ public class MedicalProblems extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    private void showUpdateMedicalProblemDialog(MedicalProblem m) {
-	    	UpdateMedicalProblem updateMedicalProblem = new UpdateMedicalProblem(this);
+	    	UpdateMedicalProblem updateMedicalProblem = new UpdateMedicalProblem(this, m);
 	        JDialog dialog = new JDialog((Frame) null, "Update MedicalProblem", true);
 	        dialog.getContentPane().add(updateMedicalProblem);
 	        dialog.pack();
