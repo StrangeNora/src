@@ -3,14 +3,13 @@ package panels;
 import javax.swing.*;
 
 import enums.Specialization;
+import model.Department;
 import model.Doctor;
 import model.Nurse;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
-
-import model.Department;
 
 public class ProfilePage extends JPanel {
 
@@ -53,10 +52,11 @@ public class ProfilePage extends JPanel {
 
     private void initializeDoctorProfile(Doctor doctor) {
         setProfileInfo("Welcome Back, " + doctor.getFirstName(),
-                       doctor.getLastName(), doctor.getDepartments(), doctor.getId(), doctor.getGender(),
+                       doctor.getFirstName(), doctor.getLastName(),
+                       doctor.getDepartments(), doctor.getId(), doctor.getGender(),
                        doctor.getAddress(), doctor.getPhoneNumber(), doctor.getEmail(),
                        doctor.getBirthDate(), doctor.getWorkStartDate(),
-                       doctor.isFinishInternship() ? true : false,
+                       doctor.isFinishInternship() ? "Yes" : "No",
                        doctor.getSalary(), doctor.getSpecialization(),
                        doctor.getLicenseNumber());
     }
@@ -72,10 +72,10 @@ public class ProfilePage extends JPanel {
                        nurse.getLicenseNumber());
     }
 
-    private void setProfileInfo(String welcomeMessage, String firstName, String lastName, HashSet<Department> departments,
-                                int id, String gender, String address, String phoneNumber, String email,
-                                Date birthDate,Date workStartDate , boolean internshipStatus,
-                                double salary, Specialization specialization, int licenseNumber) {
+    private void setProfileInfo(String welcomeMessage, String firstName, String lastName, HashSet<Department> hashSet,
+                                int i, String gender, String address, String phoneNumber, String email,
+                                Date birthDate, Date workStartDate, String internshipStatus,
+                                double salary, Specialization specialization, int j) {
         // Create and configure labels
         JLabel welcomeLabel = new JLabel(welcomeMessage);
         welcomeLabel.setFont(new Font("Times New Roman", Font.BOLD, 20));
@@ -83,8 +83,8 @@ public class ProfilePage extends JPanel {
 
         firstNameLabel = new JLabel("First Name: " + firstName);
         lastNameLabel = new JLabel("Last Name: " + lastName);
-        departmentLabel = new JLabel("Department: " + departments);
-        idLabel = new JLabel("ID: " + id);
+        departmentLabel = new JLabel("Department: " + hashSet);
+        idLabel = new JLabel("ID: " + i);
         genderLabel = new JLabel("Gender: " + gender);
         addressLabel = new JLabel("Address: " + address);
         phoneNumberLabel = new JLabel("Phone Number: " + phoneNumber);
@@ -94,7 +94,7 @@ public class ProfilePage extends JPanel {
         internshipStatusLabel = internshipStatus != null ? new JLabel("Finished Internship: " + internshipStatus) : null;
         salaryLabel = new JLabel("Salary: $" + salary);
         specializationLabel = specialization != null ? new JLabel("Specialization: " + specialization) : null;
-        licenseNumberLabel = new JLabel("License Number: " + licenseNumber);
+        licenseNumberLabel = new JLabel("License Number: " + j);
 
         // Add components to the panel
         GridBagConstraints gbc = new GridBagConstraints();
@@ -156,15 +156,7 @@ public class ProfilePage extends JPanel {
         return DATE_FORMAT.format(date);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Profile Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 600);
-            frame.setLocationRelativeTo(null);
-            // Provide a valid Doctor or Nurse object here
-           // frame.getContentPane().add(new ProfilePage(new Doctor("John", "Doe", "Cardiology", "12345", "Male", "123 Street", "1234567890", "john.doe@example.com", new Date(), new Date(), true, 100000, "Cardiologist", "AB123")));
-            frame.setVisible(true);
-        });
-    }
+   
 }
+
+   
