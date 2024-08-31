@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -84,6 +86,30 @@ public class StaffMembers extends SectionPanel<StaffMember> {
     	
     	quickLinksPanel.repaint();
     }
+    
+    protected Object[][] getTable() {
+    	Object[][] table = new Object[listModel.getSize()][getColumns().length];
+    	for(int row=0; row < listModel.getSize(); row++) {
+    		StaffMember member = listModel.get(row);
+    		table[row][0] = new JLabel("" + member.getId());
+    		table[row][1] = new JLabel(member.getFirstName());
+    		table[row][2] = new JLabel("" + member.getLastName());
+    		table[row][3] = new JLabel((member instanceof Nurse ? "Nurse" : "Doctor"));
+    		table[row][4] = new JComboBox<String>(new String[] {"item 1", "item 2", "item 3"});
+    	}
+    	return table;
+    }
+
+	@Override
+	protected String[] getColumns() {
+		return new String[] {
+				"ID",
+				"First Name",
+				"Last Name",
+				"Type",
+				"TEST"
+		};
+	}
 }
 
 

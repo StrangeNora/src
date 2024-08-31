@@ -34,6 +34,8 @@ public abstract class SectionPanel<T>  extends JPanel {
     
     public void initGenericListPanel(Consumer<T> removeCallback, Runnable addCallback, Consumer<T> updateCallback) {
     	genericListPanel = new GenericListPanel<>(
+    			getTable(),
+    			getColumns(),
         		sectionName,
         		listModel, 
         		canRemove() ? removeCallback : null,
@@ -50,6 +52,10 @@ public abstract class SectionPanel<T>  extends JPanel {
     public void refreshList() {
         listModel.clear();
         load();
+        if(genericListPanel != null) {
+        	genericListPanel.refreshTableData(getTable());
+        }
+        
     }
     
     protected boolean canAdd() {
@@ -70,4 +76,6 @@ public abstract class SectionPanel<T>  extends JPanel {
     
     protected abstract void load();
     public abstract void initializeQuickPanelButtons();
+    protected abstract Object[][] getTable();
+    protected abstract String[] getColumns();
 }

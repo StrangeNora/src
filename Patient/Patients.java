@@ -68,4 +68,16 @@ public class Patients extends SectionPanel<Patient> {
     	
     	quickLinksPanel.repaint();
 	}
+
+	@Override
+	protected Object[][] getTable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String[] getColumns() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

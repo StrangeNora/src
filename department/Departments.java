@@ -90,6 +90,18 @@ public class Departments extends SectionPanel<Department> {
 		    	quickLinksPanel.add(addButton);
 	    	}
 		}
+
+		@Override
+		protected Object[][] getTable() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected String[] getColumns() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 

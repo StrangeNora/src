@@ -92,5 +92,17 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 		    	quickLinksPanel.add(addTreatmentButton);
 	    	}
 		}
+
+		@Override
+		protected Object[][] getTable() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected String[] getColumns() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
