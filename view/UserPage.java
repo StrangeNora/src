@@ -156,6 +156,13 @@ public class UserPage extends JFrame {
 		});
 		accountDetailsPanel.add(accountDetailsButton);
 		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		JButton signOutButton = UtilsMethods.createPanelButton("Sign out");
+		signOutButton.addActionListener(e -> {
+			new LoginPage().setVisible(true);
+            dispose();
+		});
+		accountDetailsPanel.add(signOutButton);
+		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		rightPanel.add(quickLinksPanel);
 		rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
