@@ -1,4 +1,4 @@
-package department;
+package medicalProblem;
 
 import javax.swing.*;
 
@@ -14,13 +14,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddDoctorToDepartment extends JPanel {
+public class AddTreatmentToMedicalProblem extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private CardLayout cardLayout;
     private JPanel cardsPanel;
+    private JTextField nameField;
+    private JTextField idField;
+    private JTextField locationField;
+    private JComboBox<Specialization> specializationComboBox;
 
-    public AddDoctorToDepartment(Departments d, Department department) {
+    public AddTreatmentToMedicalProblem(MedicalProblems m, MedicalProblem medicalProb) {
     	this.setBackground(new Color(0xA9BED2));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -28,25 +32,25 @@ public class AddDoctorToDepartment extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title Label
-        JLabel lblTitle = new JLabel("Add Doctor for Department " + department.getName());
+        JLabel lblTitle = new JLabel("Add Treatment for MedicalProblem " + medicalProb.getName());
         lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 22));
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
         add(lblTitle, gbc);
 
         // ComboBox for options
-        JComboBox<Doctor> comboBox = new JComboBox<>();
+        JComboBox<Treatment> comboBox = new JComboBox<>();
         comboBox.setBackground(new Color(0x698DB0));
         
-        comboBox.setModel(new DefaultComboBoxModel<>(getDoctors()));
-        comboBox.setRenderer(new ListCellRenderer<Doctor>() {
+        comboBox.setModel(new DefaultComboBoxModel<>((Treatment[]) Hospital.getInstance().getTreatments().values().toArray(new Treatment[0])));
+        comboBox.setRenderer(new ListCellRenderer<Treatment>() {
 
 			@Override
-			public Component getListCellRendererComponent(JList<? extends Doctor> list, Doctor value, int index,
+			public Component getListCellRendererComponent(JList<? extends Treatment> list, Treatment value, int index,
 					boolean isSelected, boolean cellHasFocus) {
 				
 				JLabel label = new JLabel();
-				String repr = value.getId() + ", " + value.getFirstName() + " " + value.getLastName();
+				String repr = "" + value.getSerialNumber(); // TODO: better representation?
 				label.setText(repr);
 				return label;
 			}
@@ -71,11 +75,11 @@ public class AddDoctorToDepartment extends JPanel {
         btnUpdate.setBackground(new Color(0x698DB0));
         btnUpdate.addActionListener(e -> {
             try {
-                Doctor selectedDoctor = (Doctor) comboBox.getSelectedItem();
-                Hospital.getInstance().addDoctorToDepartment(department, selectedDoctor);
-                d.refreshList();
+                Treatment selectedTreatment = (Treatment) comboBox.getSelectedItem();
+                medicalProb.addTreatment(selectedTreatment);
+                m.refreshList();
                 
-                JOptionPane.showMessageDialog(null, "Doctor added to DepartmentsSuccessfuly!");
+                JOptionPane.showMessageDialog(null, "Treatment added to Medical Problem successfully!");
                 
                 
             }catch(ObjectDoesNotExist ex) {
@@ -92,34 +96,6 @@ public class AddDoctorToDepartment extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.EAST;
         add(btnUpdate, gbc);
-
-        // Action listener for combo box
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String selectedOption = (String) comboBox.getSelectedItem();
-                cardLayout.show(cardsPanel, selectedOption);
-            }
-        });
-    }
-    
-    private Doctor[] getDoctors() {
-    	int departmentsLength = Hospital.getInstance().getStaffMembers().size();
-    	int doctorsCount = 0;
-    	for(StaffMember sm : Hospital.getInstance().getStaffMembers().values()) {
-    		if(sm instanceof Doctor) {
-    			doctorsCount++;
-    		}
-    	}
-    	
-        Doctor[] doctors = new Doctor[doctorsCount];
-        int idx = 0;
-        for(StaffMember sm : Hospital.getInstance().getStaffMembers().values()) {
-        	if(sm instanceof Doctor) {
-        		doctors[idx++] = (Doctor) sm;
-        	}
-        }
-        
-        return doctors;
     }
     
     private void showErrorMessage(String message) {

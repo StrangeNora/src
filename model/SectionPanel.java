@@ -42,11 +42,6 @@ public abstract class SectionPanel<T>  extends JPanel {
         	);
     }
 
-    public SectionPanel(Role userRole2, String sectionName, DefaultListModel<StaffMember> listModel2,
-			JPanel quickLinksPanel2, Object removeCallback, Object addCallback, Object updateCallback) {
-		// TODO Auto-generated constructor stub
-	}
-
 	public JPanel getPanel() {
         return genericListPanel.getPanel();
     }

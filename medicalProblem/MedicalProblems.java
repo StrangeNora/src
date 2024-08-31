@@ -20,8 +20,6 @@ import utils.UtilsMethods;
 
 
 public class MedicalProblems extends SectionPanel<MedicalProblem> {
-
-
 		private static final long serialVersionUID = 1L;
 
 	    public MedicalProblems(Role userRole, String sectionName, DefaultListModel<MedicalProblem> listModel, JPanel quickLinksPanel) {
@@ -81,6 +79,17 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 		    		showAddMedicalProblemDialog();
 		    	});
 		    	quickLinksPanel.add(addButton);
+		    	
+		    	JButton addTreatmentButton = UtilsMethods.createPanelButton("Add Treatment to Medical Problem");
+		    	addTreatmentButton.addActionListener(e -> {
+		    		AddTreatmentToMedicalProblem addDepartment = new AddTreatmentToMedicalProblem(this, getSelectedObject());
+			        JDialog dialog = new JDialog((Frame) null, "Add Doctor To Department", true);
+			        dialog.getContentPane().add(addDepartment);
+			        dialog.pack();
+			        dialog.setLocationRelativeTo(null);
+			        dialog.setVisible(true);
+		    	});
+		    	quickLinksPanel.add(addTreatmentButton);
 	    	}
 		}
 	}

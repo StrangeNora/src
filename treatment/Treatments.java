@@ -12,7 +12,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import control.Hospital;
+import department.AddDoctorToDepartment;
 import enums.Role;
+import medicalProblem.AddTreatmentToMedicalProblem;
 import model.*;
 import panels.GenericListPanel;
 import treatment.*;
@@ -23,9 +25,6 @@ import utils.UtilsMethods;
 
 public class Treatments extends SectionPanel<Treatment> {
 		private static final long serialVersionUID = 1L;
-		private GenericListPanel<Treatment> genericListPanel;
-	    private DefaultListModel<Treatment> listModel;
-	    private Role userRole;
 	    
 	    public Treatments(Role userRole, String sectionName, DefaultListModel<Treatment> listModel, JPanel quickLinksPanel) {
 	    	super(userRole, sectionName, listModel, quickLinksPanel);
@@ -85,6 +84,7 @@ public class Treatments extends SectionPanel<Treatment> {
 		    	});
 		    	quickLinksPanel.add(addButton);
 	    	}
+	    	
 	    	
 	    	quickLinksPanel.repaint();
 		}

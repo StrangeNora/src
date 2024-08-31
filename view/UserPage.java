@@ -225,6 +225,10 @@ public class UserPage extends JFrame {
 		h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
 		h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
 		h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
+		h.addTreatment(new Treatment(123, "desc1"));
+		h.addTreatment(new Treatment(321, "desc2"));
+		h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
+		h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
 
 	        // Create a dummy doctor
 	        @SuppressWarnings("deprecation")
