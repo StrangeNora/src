@@ -8,7 +8,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import control.Hospital;
@@ -95,14 +97,33 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 
 		@Override
 		protected Object[][] getTable() {
-			// TODO Auto-generated method stub
-			return null;
+			Object[][] table = new Object[listModel.getSize()][getColumns().length];
+			
+	    	for(int row=0; row < listModel.getSize(); row++) {
+	    		MedicalProblem mp = listModel.get(row);
+	    		
+	    		String[] treatments = new String[mp.getTreatmentsList().size()];
+				int idx = 0;
+				for(Treatment treatment : mp.getTreatmentsList()) {
+					treatments[idx] = "" + treatment.getSerialNumber();
+				}
+				
+	    		table[row][0] = new JLabel("" + mp.getCode());
+	    		table[row][1] = new JLabel(mp.getName());
+	    		table[row][2] = new JLabel("" + mp.getDepartment().getName());
+	    		table[row][3] = new JComboBox<String>(treatments);
+	    	}
+	    	return table;
 		}
 
 		@Override
 		protected String[] getColumns() {
-			// TODO Auto-generated method stub
-			return null;
+			return new String[] {
+					"Code",
+					"Name",
+					"Department Name",
+					"Treatments"
+			};
 		}
 	}
 

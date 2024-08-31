@@ -8,7 +8,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -23,12 +25,7 @@ import visit.*;
 
 
 public class Visits extends SectionPanel<Visit> {
-
-
 		private static final long serialVersionUID = 1L;
-		private GenericListPanel<Visit> genericListPanel;
-	    private DefaultListModel<Visit> listModel;
-	    private Role userRole;
 
 	    public Visits(Role userRole, String sectionName, DefaultListModel<Visit> listModel, JPanel quickLinksPanel) {
 	    	super(userRole, sectionName, listModel, quickLinksPanel);
@@ -126,14 +123,27 @@ public class Visits extends SectionPanel<Visit> {
 
 		@Override
 		protected Object[][] getTable() {
-			// TODO Auto-generated method stub
-			return null;
+			Object[][] table = new Object[listModel.getSize()][getColumns().length];
+
+	    	for(int row=0; row < listModel.getSize(); row++) {
+	    		Visit visit = listModel.get(row);
+
+	    		table[row][0] = new JLabel("" + visit.getNumber());
+	    		table[row][1] = new JLabel(visit.getPatient().getFirstName() + " " + visit.getPatient().getLastName());
+	    		table[row][2] = new JLabel(visit.getStartDate().toString());
+	    		table[row][3] = new JLabel(visit.getEndDate().toString());
+	    	}
+	    	return table;
 		}
 
 		@Override
 		protected String[] getColumns() {
-			// TODO Auto-generated method stub
-			return null;
+			return new String[] {
+					"Number",
+					"Patient",
+					"Start Date",
+					"End Date"
+			};
 		}
 	}
 

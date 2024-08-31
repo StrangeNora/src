@@ -8,7 +8,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -141,13 +143,22 @@ public class Treatments extends SectionPanel<Treatment> {
 
 		@Override
 		protected Object[][] getTable() {
-			// TODO Auto-generated method stub
-			return null;
+			Object[][] table = new Object[listModel.getSize()][getColumns().length];
+
+	    	for(int row=0; row < listModel.getSize(); row++) {
+	    		Treatment tm = listModel.get(row);
+				
+	    		table[row][0] = new JLabel("" + tm.getSerialNumber());
+	    		table[row][1] = new JLabel(tm.getDescription());
+	    	}
+	    	return table;
 		}
 
 		@Override
 		protected String[] getColumns() {
-			// TODO Auto-generated method stub
-			return null;
+			return new String[] {
+					"Serial Number",
+					"Description"
+			};
 		}
 	}

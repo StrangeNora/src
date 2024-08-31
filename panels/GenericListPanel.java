@@ -1,7 +1,11 @@
 package panels;
-
+import javax.swing.*;
+import javax.swing.table.*;
+import java.awt.*;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import enums.Role;
 import utils.CustomTableModel;
@@ -19,8 +23,10 @@ public class GenericListPanel<T> {
     private DefaultListModel<T> listModel;
     private JTextField searchField;
     private JList<T> list;
-    private CustomTableModel tableModel;
+    private DefaultTableModel tableModel;
     private Object[][] tableData;
+    JTable table;
+    private int selectedIdx = -1;
 
     public GenericListPanel(Object[][] tableData, String[] columns, String sectionName, DefaultListModel<T> listModel, Consumer<T> removeCallback, Runnable addCallback, Consumer<T> updateCallback) {
     	this.tableData = tableData;
@@ -36,10 +42,49 @@ public class GenericListPanel<T> {
         searchPanel.add(addButton);
 
         // List and scroll pane
-        tableModel = new CustomTableModel(tableData, columns);
-        JTable table = new JTable(tableModel);
-        table.setDefaultRenderer(Object.class, new TableCellRendererEditor());
-//        table.setDefaultRenderer(JComboBox.class, new TableCellRendererEditor());
+        tableModel = new DefaultTableModel(tableData, columns) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return Object.class; // Both JLabel and JComboBox are derived from Object
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return getValueAt(row, column) instanceof JComboBox;
+//            	return true;
+            }
+        };;
+        table = new JTable(tableModel);
+        table.setDefaultRenderer(Object.class, new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            	Component comp = value instanceof Component ? (Component) value : new JLabel("");  
+                
+            	if (table.isRowSelected(row)) {
+            		if(comp instanceof JLabel) {
+            			((JLabel) comp).setOpaque(true);
+            		}
+                    comp.setBackground(Color.CYAN); // Set your preferred highlight color
+                } else {
+                	comp.setBackground(Color.WHITE); // Set the default background color
+                }
+            	
+                return comp;
+            }
+        });
+
+        // Set the custom editor
+        table.setDefaultEditor(Object.class, new DefaultCellEditor(new JComboBox<>()) {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+                if (value instanceof JComboBox) {
+                    return (JComboBox<?>) value; // Cast value to JComboBox
+                }
+                return (JLabel) value;//super.getTableCellEditorComponent(table, value, isSelected, row, column);
+            }
+        });
+        table.setRowSelectionAllowed(true);
+        table.setColumnSelectionAllowed(false);
         JScrollPane listScrollPane = new JScrollPane(table);
         
 //        list = new JList<>(listModel);
@@ -57,7 +102,7 @@ public class GenericListPanel<T> {
 	        popupMenu.add(updateMenuItem);
 	        // Add action listener to "Update" menu item
 	        updateMenuItem.addActionListener(e -> {
-	            int selectedIndex = list.getSelectedIndex();
+	            int selectedIndex = table.getSelectedRow();
 	            if (selectedIndex != -1) {
 	                T selectedItem = listModel.getElementAt(selectedIndex);
 	                updateCallback.accept(selectedItem); // Call the update logic
@@ -71,11 +116,11 @@ public class GenericListPanel<T> {
 	        popupMenu.add(removeMenuItem);
 	        // Add action listener to "Remove" menu item
 	        removeMenuItem.addActionListener(e -> {
-	            int selectedIndex = list.getSelectedIndex();
+	        	int selectedIndex = table.getSelectedRow();
 	            if (selectedIndex != -1) {
-	                T selectedItem = listModel.getElementAt(selectedIndex);
+	            	T selectedItem = listModel.getElementAt(selectedIndex);
+	            	listModel.remove(selectedIndex);
 	                removeCallback.accept(selectedItem); // Call the removal logic
-	                listModel.remove(selectedIndex);
 	                JOptionPane.showMessageDialog(null, sectionName + " Removed Successfully");
 	            }
 	        });
@@ -84,23 +129,23 @@ public class GenericListPanel<T> {
         boolean shouldShowMenu = updateCallback != null || removeCallback != null;
         // Add mouse listener to show pop-up menu on right-click
         
-//        list.addMouseListener(new java.awt.event.MouseAdapter() {
-//            public void mousePressed(java.awt.event.MouseEvent evt) {
-//                showPopup(evt);
-//            }
-//
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                showPopup(evt);
-//            }
-//
-//            private void showPopup(java.awt.event.MouseEvent evt) {
-//                if (shouldShowMenu && evt.isPopupTrigger()) { // This is true for right-clicks
-//                    int index = list.locationToIndex(evt.getPoint());
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                showPopup(evt);
+            }
+
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                showPopup(evt);
+            }
+
+            private void showPopup(java.awt.event.MouseEvent evt) {
+                if (shouldShowMenu && evt.isPopupTrigger()) { // This is true for right-clicks
+                    int index = table.getSelectedRow();
 //                    list.setSelectedIndex(index); // Select the item that was right-clicked
-//                    popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
-//                }
-//            }
-//        });
+                    popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+                }
+            }
+        });
 
         // Add action listener for the "Add" button
         addButton.addActionListener(e -> addCallback.run());
@@ -136,12 +181,17 @@ public class GenericListPanel<T> {
     }
     
     public void refreshTableData(Object[][] tableData) {
-    	tableModel.setData(tableData);
-    	
+        tableModel.setRowCount(0);
+
+        for (Object[] row : tableData) {
+            tableModel.addRow(row);
+        }
+        tableModel.fireTableDataChanged();
+        selectedIdx = -1;
     }
     
     public T getSelectedObject() {
-    	return list.getSelectedValue();
+    	return listModel.getElementAt(table.getSelectedRow());
     }
 
     public JPanel getPanel() {

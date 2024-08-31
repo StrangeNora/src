@@ -58,12 +58,12 @@ public class UserPage extends JFrame {
 		
 		HashMap<String, SectionPanel> sections = new HashMap<String, SectionPanel>();
 		sections.put("Staff Members", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
-//		sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
-//		sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
-//		sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
-//		sections.put("Departments", new Departments(userRole, "Departments", departmentsListModel, quickLinksPanel));
-//		sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
-//		sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
+		sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
+		sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
+		sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
+		sections.put("Departments", new Departments(userRole, "Departments", departmentsListModel, quickLinksPanel));
+		sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
+		sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
 
 		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel, quickLinksPanel).getPanel();
 
