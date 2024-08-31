@@ -19,18 +19,20 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import control.Hospital;
 import exceptions.InvalidUserDetails;
 import exceptions.NegativeDosageException;
 import exceptions.NegativeNumberOfDosesException;
 import exceptions.ObjectAlreadyExistsException;
+import model.Medication;
 
 public class AddMedication extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private JTextField textField_0;
-    private JTextField textField_1;
-    private JTextField textField_2;
-    private JTextField textField_3;
+    private JTextField codeField;
+    private JTextField nameField;
+    private JTextField dosageField;
+    private JTextField numOfDosageField;
 
     public AddMedication(Medications m) {
 
@@ -61,17 +63,17 @@ public class AddMedication extends JPanel {
         gbc_lblNewLabel_1.gridy = 3;
         add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-        textField_0 = new JTextField();
-        textField_0.setBackground(new Color(0x698DB0));
-        textField_0.setForeground(Color.WHITE); 
+        codeField = new JTextField();
+        codeField.setBackground(new Color(0x698DB0));
+        codeField.setForeground(Color.WHITE); 
         GridBagConstraints gbc_textField = new GridBagConstraints();
         gbc_textField.gridwidth = 6;
         gbc_textField.insets = new Insets(0, 0, 5, 5);
         gbc_textField.fill = GridBagConstraints.HORIZONTAL;
         gbc_textField.gridx = 3;
         gbc_textField.gridy = 3;
-        add(textField_0, gbc_textField);
-        textField_0.setColumns(10);
+        add(codeField, gbc_textField);
+        codeField.setColumns(10);
 
         JLabel lblNewLabel_2 = new JLabel("Name:");
         lblNewLabel_2.setFont(new Font("Times New Roman", Font.ITALIC, 15));
@@ -81,17 +83,17 @@ public class AddMedication extends JPanel {
         gbc_lblNewLabel_2.gridy = 4;
         add(lblNewLabel_2, gbc_lblNewLabel_2);
 
-        textField_1 = new JTextField();
-        textField_1.setBackground(new Color(0x698DB0));
-        textField_1.setForeground(Color.WHITE); 
-        textField_1.setColumns(10);
-        GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-        gbc_textField_1.gridwidth = 6;
-        gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-        gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-        gbc_textField_1.gridx = 3;
-        gbc_textField_1.gridy = 4;
-        add(textField_1, gbc_textField_1);
+        nameField = new JTextField();
+        nameField.setBackground(new Color(0x698DB0));
+        nameField.setForeground(Color.WHITE); 
+        nameField.setColumns(10);
+        GridBagConstraints gbc_nameField = new GridBagConstraints();
+        gbc_nameField.gridwidth = 6;
+        gbc_nameField.insets = new Insets(0, 0, 5, 5);
+        gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
+        gbc_nameField.gridx = 3;
+        gbc_nameField.gridy = 4;
+        add(nameField, gbc_nameField);
 
         JLabel lblNewLabel_3 = new JLabel("Dosage:");
         lblNewLabel_3.setFont(new Font("Times New Roman", Font.ITALIC, 15));
@@ -101,17 +103,17 @@ public class AddMedication extends JPanel {
         gbc_lblNewLabel_3.gridy = 5;
         add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-        textField_2 = new JTextField();
-        textField_2.setBackground(new Color(0x698DB0));
-        textField_2.setForeground(Color.WHITE); 
-        textField_2.setColumns(10);
-        GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-        gbc_textField_2.gridwidth = 6;
-        gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-        gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-        gbc_textField_2.gridx = 3;
-        gbc_textField_2.gridy = 5;
-        add(textField_2, gbc_textField_2);
+        dosageField = new JTextField();
+        dosageField.setBackground(new Color(0x698DB0));
+        dosageField.setForeground(Color.WHITE); 
+        dosageField.setColumns(10);
+        GridBagConstraints gbc_dosageField = new GridBagConstraints();
+        gbc_dosageField.gridwidth = 6;
+        gbc_dosageField.insets = new Insets(0, 0, 5, 5);
+        gbc_dosageField.fill = GridBagConstraints.HORIZONTAL;
+        gbc_dosageField.gridx = 3;
+        gbc_dosageField.gridy = 5;
+        add(dosageField, gbc_dosageField);
 
         JLabel lblNewLabel_4 = new JLabel("Number Of Dose:");
         lblNewLabel_4.setFont(new Font("Times New Roman", Font.ITALIC, 15));
@@ -121,17 +123,17 @@ public class AddMedication extends JPanel {
         gbc_lblNewLabel_4.gridy = 6;
         add(lblNewLabel_4, gbc_lblNewLabel_4);
 
-        textField_3 = new JTextField();
-        textField_3.setBackground(new Color(0x698DB0));
-        textField_3.setForeground(Color.WHITE); 
-        textField_3.setColumns(10);
-        GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-        gbc_textField_3.gridwidth = 6;
-        gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-        gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
-        gbc_textField_3.gridx = 3;
-        gbc_textField_3.gridy = 6;
-        add(textField_3, gbc_textField_3);
+        numOfDosageField = new JTextField();
+        numOfDosageField.setBackground(new Color(0x698DB0));
+        numOfDosageField.setForeground(Color.WHITE); 
+        numOfDosageField.setColumns(10);
+        GridBagConstraints gbc_numOfDosageField = new GridBagConstraints();
+        gbc_numOfDosageField.gridwidth = 6;
+        gbc_numOfDosageField.insets = new Insets(0, 0, 5, 5);
+        gbc_numOfDosageField.fill = GridBagConstraints.HORIZONTAL;
+        gbc_numOfDosageField.gridx = 3;
+        gbc_numOfDosageField.gridy = 6;
+        add(numOfDosageField, gbc_numOfDosageField);
 
         JButton btnNewButton = new JButton("Save");
         btnNewButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -146,11 +148,16 @@ public class AddMedication extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if(validateFields()) {
+                    	Medication med=new Medication(Integer.parseInt(codeField.getText()), nameField.getText(),Double.parseDouble(dosageField.getText()), 
+                    			Integer.parseInt(numOfDosageField.getText()));
+                    	Hospital.getInstance().addMedication(med);
+                    	m.refreshList();
                         JOptionPane.showMessageDialog(null, "Medication saved successfully.");
                     }
                 } catch (InvalidUserDetails ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                
             }
         });
 
@@ -165,26 +172,26 @@ public class AddMedication extends JPanel {
 //TODO addmeds
     private boolean validateFields() throws InvalidUserDetails  {
     	try {
-		        if (textField_0.getText().isEmpty() || textField_1.getText().isEmpty() || textField_2.getText().isEmpty()
-		        || textField_3.getText().isEmpty()) {
+		        if (codeField.getText().isEmpty() || nameField.getText().isEmpty() || dosageField.getText().isEmpty()
+		        || numOfDosageField.getText().isEmpty()) {
 		            throw new NullPointerException("All Fields Must Be Filled.");
 		        }
-		        if(!textField_0.getText().trim().matches("\\d+")) {
+		        if(!codeField.getText().trim().matches("\\d+")) {
 		            throw new InvalidUserDetails("Code Must Only Contain Numbers.");
 		
 		        }
-		        if(!textField_3.getText().trim().matches("\\d+" )) {
+		        if(!numOfDosageField.getText().trim().matches("\\d+" )) {
 		            throw new InvalidUserDetails("Number Of Doses Must Only Contain Numbers.");
 		
 		        }
-		        if(Integer.parseInt(textField_3.getText())<0) {
-		        	throw new NegativeNumberOfDosesException(Integer.parseInt(textField_3.getText()));
+		        if(Integer.parseInt(numOfDosageField.getText())<0) {
+		        	throw new NegativeNumberOfDosesException(Integer.parseInt(numOfDosageField.getText()));
 		        }
-		        if(!textField_2.getText().trim().matches("\\d+(\\.\\d+)?" )) {
+		        if(!dosageField.getText().trim().matches("\\d+(\\.\\d+)?" )) {
 		            throw new InvalidUserDetails("Dosage Must Only Contain Numbers.");
 		        }
-		        if(Double.parseDouble(textField_2.getText())<0) {
-		        	throw new NegativeDosageException(Double.parseDouble(textField_2.getText()));
+		        if(Double.parseDouble(dosageField.getText())<0) {
+		        	throw new NegativeDosageException(Double.parseDouble(dosageField.getText()));
 		        }
     	}catch(InvalidUserDetails ex){
             JOptionPane.showMessageDialog(null, ex.getMessage());

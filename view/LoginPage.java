@@ -22,6 +22,7 @@ import exceptions.*;
 import control.*;
 import enums.Role;
 import model.*;
+import java.awt.GridBagLayout;
 
 
 public class LoginPage extends JFrame {
@@ -70,8 +71,14 @@ public class LoginPage extends JFrame {
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(new Color(64, 128, 128));
-        panel_1.setBounds(0, 404, 709, 89);
+        panel_1.setBounds(-11, 370, 5000, 2000);
         contentPane.add(panel_1);
+        GridBagLayout gbl_panel_1 = new GridBagLayout();
+        gbl_panel_1.columnWidths = new int[]{0};
+        gbl_panel_1.rowHeights = new int[]{0};
+        gbl_panel_1.columnWeights = new double[]{Double.MIN_VALUE};
+        gbl_panel_1.rowWeights = new double[]{Double.MIN_VALUE};
+        panel_1.setLayout(gbl_panel_1);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);

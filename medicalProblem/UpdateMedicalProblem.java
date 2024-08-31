@@ -122,8 +122,12 @@ public class UpdateMedicalProblem extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     validateFields(medicalProblem);
+                    Hospital.getInstance().getMedicalProblem(medicalProblem.getCode()).setDepartment((Department)departmentsComboBox.getSelectedItem());
+                    Hospital.getInstance().getMedicalProblem(medicalProblem.getCode()).setName(textFieldName.getText());
+                
+m.refreshList();
 
-                    // Assuming successful update
+                   
                     JOptionPane.showMessageDialog(null, "Update Successful");
 
                 } catch (InvalidUserDetails ex) {
@@ -217,11 +221,12 @@ public class UpdateMedicalProblem extends JPanel {
         if (textFieldName.getText().trim().isEmpty()) {
             throw new NullPointerException("Name cannot be empty");
         }
+      MedicalProblem m=  Hospital.getInstance().getMedicalProblem(medicalProblem.getCode());
 
         if (medicalProblem instanceof Disease) {
             if (textFieldDescription.getText().trim().isEmpty()) {
                 throw new NullPointerException("Description cannot be empty");
-            }
+            }((Disease)m).setDescription(textFieldDescription.getText());
         } else if (medicalProblem instanceof Fracture) {
             if (textFieldLocation.getText().trim().isEmpty()) {
                 throw new NullPointerException("Location cannot be empty");
@@ -229,6 +234,15 @@ public class UpdateMedicalProblem extends JPanel {
             if (!trueRadioButton.isSelected() && !falseRadioButton.isSelected()) {
                 throw new NullPointerException("Select if cast is required");
             }
+            ((Fracture)m).setLocation(textFieldLocation.getText());
+            if(trueRadioButton.isSelected()) {
+            	 ((Fracture)m).setRequiresCast(true);
+            }
+           if(falseRadioButton.isSelected()) {
+        	   ((Fracture)m).setRequiresCast(false);
+           }
+            
+
         } else if (medicalProblem instanceof Injury) {
             if (textFieldLocation.getText().trim().isEmpty()) {
                 throw new NullPointerException("Location cannot be empty");
@@ -239,6 +253,7 @@ public class UpdateMedicalProblem extends JPanel {
             if(!textFieldCommonRecoveryTime.getText().matches("\\d*\\.?\\d+")) {	
 				throw new InvalidUserDetails("Common Recovery Time Can Only Contain Numbers.");
 			}
+            ((Injury)m).setCommonRecoveryTime(Integer.parseInt(textFieldCommonRecoveryTime.getText()));
         }
     }
 }
