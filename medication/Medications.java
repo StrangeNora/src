@@ -10,7 +10,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import control.Hospital;
@@ -99,6 +101,31 @@ public class Medications extends SectionPanel<Medication> {
 	    	}
 	    	
 	    	quickLinksPanel.repaint();
+		}
+
+		@Override
+		protected Object[][] getTable() {
+			Object[][] table = new Object[listModel.getSize()][getColumns().length];
+
+	    	for(int row=0; row < listModel.getSize(); row++) {
+	    		Medication med = listModel.get(row);
+				
+	    		table[row][0] = new JLabel("" + med.getCode());
+	    		table[row][1] = new JLabel(med.getName());
+	    		table[row][2] = new JLabel("" + med.getDosage());
+	    		table[row][2] = new JLabel("" + med.getNumberOfDose());
+	    	}
+	    	return table;
+		}
+
+		@Override
+		protected String[] getColumns() {
+			return new String[] {
+					"Code",
+					"Name",
+					"Dosage",
+					"Number of Dose"
+			};
 		}
 	}
 

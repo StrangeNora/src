@@ -89,12 +89,12 @@ public class ProfilePage extends JPanel {
 
         // Apply custom renderer to the table cells
         int cellFontSize = 16; // Adjust the font size for cell text as needed
-        profileTable.getColumnModel().getColumn(0).setCellRenderer(new CustomTableCellRenderer(cellFontSize));
-        profileTable.getColumnModel().getColumn(1).setCellRenderer(new CustomTableCellRenderer(cellFontSize));
+//        profileTable.getColumnModel().getColumn(0).setCellRenderer(new CustomTableCellRenderer(cellFontSize));
+//        profileTable.getColumnModel().getColumn(1).setCellRenderer(new CustomTableCellRenderer(cellFontSize));
 
         // Apply custom header renderer to the table
         int headerFontSize = 16; // Adjust the font size for header text as needed
-        profileTable.getTableHeader().setDefaultRenderer(new CustomHeaderRenderer(headerFontSize));
+//        profileTable.getTableHeader().setDefaultRenderer(new CustomHeaderRenderer(headerFontSize));
 
         // Set the background color of the JTable to match the profile panel
         profileTable.setBackground(Color.decode("#D4DEE8"));
