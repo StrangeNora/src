@@ -38,7 +38,7 @@ public class AddMedicalProblemToTreatment extends JPanel {
         JComboBox<MedicalProblem> comboBox = new JComboBox<>();
         comboBox.setBackground(new Color(0x698DB0));
         
-        comboBox.setModel(new DefaultComboBoxModel<>((MedicalProblem[]) Hospital.getInstance().getMedications().values().toArray(new MedicalProblem[0])));
+        comboBox.setModel(new DefaultComboBoxModel<>((MedicalProblem[]) Hospital.getInstance().getMedicalProblems().values().toArray(new MedicalProblem[0])));
         comboBox.setRenderer(new ListCellRenderer<MedicalProblem>() {
 
 			@Override
