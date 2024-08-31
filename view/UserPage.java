@@ -226,6 +226,39 @@ public class UserPage extends JFrame {
 		revalidate();
 		repaint();
 	}
+	public static void main(String[] args) {
+		Hospital h = Hospital.getInstance();
+		h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
+		h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
+		h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
+		h.addTreatment(new Treatment(123, "desc1"));
+		h.addTreatment(new Treatment(321, "desc2"));
+		h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
+		h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
 
+	        // Create a dummy doctor
+	        @SuppressWarnings("deprecation")
+			Doctor dummyDoctor = new Doctor(
+	            1, // id
+	            "John", // firstName
+	            "Doe", // lastName
+	            new Date(01,01,1998), // birthDate
+	            "123 Main St", // address
+	            "555-1234", // phoneNumber
+	            "john.doe@example.com", // email
+	            "Male", // gender
+	            new Date(01,01,1998), // workStartDate
+	            "johndoe", // username
+	            "password123", // password
+	            "C:\\Users\\layla\\OneDrive\\Desktop\\java programming\\LaylaIsGay\\hanamal2_with_exceptions\\src\\view\\norahospital.jpg", // profilePicturePath
+	            100000.0, // salary
+	            123456, // licenseNumber
+	            true, // isFinishInternship
+	            Specialization.Cardiology // specialization
+	        );
+
+		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin,dummyDoctor));
+	}
+	
 	
 }
