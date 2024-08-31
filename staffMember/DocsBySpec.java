@@ -30,7 +30,7 @@ public class DocsBySpec extends JPanel {
     /**
      * Create the panel.
      */
-    public DocsBySpec() {
+    public DocsBySpec(StaffMembers s) {
     	this.setPreferredSize(new Dimension(390,235));
         this.setBackground(new Color(0xA9BED2));
         this.setLayout(new GridBagLayout());

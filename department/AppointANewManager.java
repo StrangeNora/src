@@ -40,8 +40,9 @@ public class AppointANewManager extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public AppointANewManager(Departments d, Department department) {
-		this.setBackground(new Color(0xA9BED2));
+
+	public AppointANewManager(Departments d,Department ds) {
+        this.setBackground(new Color(0xA9BED2));
         this.setPreferredSize(new Dimension(390,150));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 38, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

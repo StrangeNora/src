@@ -1,4 +1,4 @@
-package department;
+																																																																																																																																																																																																																																																																																																																														package department;
 
 
 import java.awt.Frame;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import control.Hospital;
@@ -78,6 +79,18 @@ public class Departments extends SectionPanel<Department> {
 	    	}
 	    	
 	    	if(userRole == Role.Admin) {
+	    		
+	    		JButton managerButton = UtilsMethods.createPanelButton("Appoint A New Manager");
+		    	managerButton.addActionListener(e -> {
+		    		AppointANewManager appointANewManager = new AppointANewManager(this, getSelectedObject());
+		    		 JDialog dialog = new JDialog((Frame) null, "Appoint A New Manager", true);
+		    		 dialog.getContentPane().add(appointANewManager);
+				        dialog.pack();
+				        dialog.setLocationRelativeTo(null);
+				        dialog.setVisible(true);
+		    	});
+		    	
+	    		        quickLinksPanel.add(managerButton);
 		    	JButton addButton = UtilsMethods.createPanelButton("Add Doctor to Department");
 		    	addButton.addActionListener(e -> {
 		    		AddDoctorToDepartment addDepartment = new AddDoctorToDepartment(this, getSelectedObject());

@@ -42,7 +42,7 @@ public class HowManyVisitBefore extends JPanel {
 	}
 
 
-    public HowManyVisitBefore() {
+    public HowManyVisitBefore(Visits visits) {
 		 this.setPreferredSize(new Dimension(300, 150)); 
 		 this.setBackground(new Color(0xA9BED2));
 

@@ -35,7 +35,7 @@ public class CountMedication extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CountMedication() {
+	public CountMedication(Medications m) {
 		
         this.setBackground(new Color(0xA9BED2));
         this.setPreferredSize(new Dimension(390,150));

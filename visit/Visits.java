@@ -85,6 +85,16 @@ public class Visits extends SectionPanel<Visit> {
 		    	});
 		    	quickLinksPanel.add(addButton);
 		    	
+		    	JButton HowManyVButton = UtilsMethods.createPanelButton("How Many Visits");
+		        HowManyVButton.addActionListener(e -> {
+		            HowManyVisitBefore howManyVisits = new HowManyVisitBefore(this);
+		            JDialog dialog = new JDialog((Frame) null, "How Many Visits", true);
+		            dialog.getContentPane().add(howManyVisits);
+		            dialog.pack();
+		            dialog.setLocationRelativeTo(null);
+		            dialog.setVisible(true);
+		        });
+		        quickLinksPanel.add(HowManyVButton);
 		    	JButton addMedicalProblem = UtilsMethods.createPanelButton("Add Medical Problem To Visit");
 		    	addMedicalProblem.addActionListener(e -> {
 		    		Visit selectedMember = getSelectedObject();

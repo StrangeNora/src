@@ -17,6 +17,7 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+
 import utils.UtilsMethods;
 
 
@@ -79,6 +80,17 @@ public class Medications extends SectionPanel<Medication> {
 	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
 	    	
 	    	if(canAdd()) {
+	    		JButton addButton1 = UtilsMethods.createPanelButton("Count Medication");
+	    		
+	            addButton1.addActionListener(e -> {
+	                CountMedication countMedication = new CountMedication(this);
+	                JDialog dialog = new JDialog((Frame) null, "Count Medication", true);
+	                dialog.getContentPane().add(countMedication);
+	                dialog.pack();
+	                dialog.setLocationRelativeTo(null);
+	                dialog.setVisible(true);
+	            });
+	            quickLinksPanel.add(addButton1);
 				JButton addButton = UtilsMethods.createPanelButton("Add Medication");
 		    	addButton.addActionListener(e -> {
 		    		showAddMedicationDialog();

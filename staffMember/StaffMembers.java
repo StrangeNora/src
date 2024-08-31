@@ -59,11 +59,25 @@ public class StaffMembers extends SectionPanel<StaffMember> {
     	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
     	
     	if(canAdd()) {
+    		
+    		JButton addButton1 = UtilsMethods.createPanelButton("Doctors By Specialization");
+    		
+            addButton1.addActionListener(e -> {
+                DocsBySpec docBySpec = new DocsBySpec(this);
+                JDialog dialog = new JDialog((Frame) null, "Doctors By Specialization", true);
+                dialog.getContentPane().add(docBySpec);
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            });
+            quickLinksPanel.add(addButton1);
+
 	    	JButton addButton = UtilsMethods.createPanelButton("Add Staff Member");
 	    	addButton.addActionListener(e -> {
 	    		showAddStaffMemberDialog();
 	    	});
 	    	quickLinksPanel.add(addButton);
+	    	JButton addButton22 = UtilsMethods.createPanelButton("Information About The Staff");
 	    	
 	    	JButton addDepartment = UtilsMethods.createPanelButton("Add Department to Staff Member");
 	    	addDepartment.addActionListener(e -> {
