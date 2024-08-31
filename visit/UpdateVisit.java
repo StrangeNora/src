@@ -63,6 +63,8 @@ public class UpdateVisit extends JPanel {
     }
 
     public UpdateVisit(Visits visits, Visit v) {
+    	
+		 this.setPreferredSize(new Dimension(420, 280)); 
         this.setBackground(new Color(0xA9BED2));
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -226,7 +228,6 @@ public class UpdateVisit extends JPanel {
                         Hospital.getInstance().getRealVisit(v.getNumber()).setEndDate(endDateChooser.getDate());
 
                         break;
-                        //TODO : delete medical problems and treatments not needed and the number
                     case "Medical Problems":
                         String selectedMedicalProblem = (String) medicalProblemsComboBox.getSelectedItem();
                         if (selectedMedicalProblem == null || selectedMedicalProblem.isEmpty()) {

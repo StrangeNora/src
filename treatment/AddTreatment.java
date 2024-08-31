@@ -22,6 +22,7 @@ import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
 import model.Treatment;
 import visit.AddVisit;
+import visit.UpdateVisit;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -39,7 +40,7 @@ public class AddTreatment extends JPanel {
 	public AddTreatment(Treatments t) {
 
 		this.setBackground(new Color(0xA9BED2));
-
+		 this.setPreferredSize(new Dimension(420, 220)); 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -152,6 +153,7 @@ public class AddTreatment extends JPanel {
 		add(panel, gbc_panel);
 
 	}
-
+	
+	
 
 }

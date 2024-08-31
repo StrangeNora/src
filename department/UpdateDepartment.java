@@ -26,6 +26,7 @@ public class UpdateDepartment extends JPanel {
 
     public UpdateDepartment(Departments d, Department department) {
     	this.setBackground(new Color(0xA9BED2));
+		 this.setPreferredSize(new Dimension(350, 200)); 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -175,7 +176,5 @@ public class UpdateDepartment extends JPanel {
     }
 
 
-    
-    
     
 }

@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import com.toedter.calendar.JDateChooser;
 
+import Patient.AddPatient;
 import control.Hospital;
 import department.UpdateDepartment;
 import exceptions.FutureDateException;
@@ -68,6 +69,8 @@ public class AddVisit extends JPanel {
 	 */
 	public AddVisit(Visits v) {
 
+		 this.setPreferredSize(new Dimension(420, 280)); 
+		 
 		this.setBackground(new Color(0xA9BED2));
 
 
@@ -262,7 +265,12 @@ public class AddVisit extends JPanel {
 		add(panel, gbc_panel);
 
 	}
+	
+	
 
-   
+	   
+
+
+	  
 	
 }

@@ -36,6 +36,8 @@ public class AddMedicalProblem extends JPanel {
 	public AddMedicalProblem(MedicalProblems m) {
 
 		this.setBackground(new Color(0xA9BED2));
+		 this.setPreferredSize(new Dimension(500, 350)); 
+
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -275,5 +277,6 @@ public class AddMedicalProblem extends JPanel {
 
 		return textField;
 	}
+	
 	
 }

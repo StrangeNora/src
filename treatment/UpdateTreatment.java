@@ -40,6 +40,8 @@ public class UpdateTreatment extends JPanel {
     public UpdateTreatment(Treatments t,Treatment treatment) {
     	
         this.setBackground(new Color(0xA9BED2));
+		this.setPreferredSize(new Dimension(430, 220)); 
+
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -116,5 +118,6 @@ public class UpdateTreatment extends JPanel {
         add(updateButton, gbc_updateButton);
 
     }
+   
    
 }

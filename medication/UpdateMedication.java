@@ -36,6 +36,7 @@ public class UpdateMedication extends JPanel {
 		this.medication=medication;
 		this.medications=medications;
 		setBackground(BACKGROUND_COLOR);
+		this.setPreferredSize(new Dimension(450, 220)); 
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0};
@@ -223,6 +224,7 @@ public class UpdateMedication extends JPanel {
 	private void showErrorMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
-
+	
+	
 	
 }

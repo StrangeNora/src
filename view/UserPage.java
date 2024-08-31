@@ -45,71 +45,75 @@ public class UserPage extends JFrame {
 	private DefaultListModel<Patient> patientListModel = new DefaultListModel<>();
 
 	public UserPage(Role role, StaffMember staffUser) {
-		this.userRole = role;
-		this.staffUser=staffUser;
-		
-		// Right panel for buttons and set its background color
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.setBackground(Color.decode("#096bbe"));
+	    this.userRole = role;
+	    this.staffUser = staffUser;
 
-		// Initialize sidebar
-		JPanel quickLinksPanel = initializeSidebar();
-		
-		HashMap<String, SectionPanel> sections = new HashMap<String, SectionPanel>();
-		sections.put("Staff Members", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
-		sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
-		sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
-		sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
-		sections.put("Departments", new Departments(userRole, "Departments", departmentsListModel, quickLinksPanel));
-		sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
-		sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
+	    // Right panel for buttons and set its background color
+	    rightPanel = new JPanel();
+	    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+	    rightPanel.setBackground(Color.decode("#096bbe"));
 
-		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel, quickLinksPanel).getPanel();
+	    // Initialize sidebar
+	    JPanel quickLinksPanel = initializeSidebar();
 
-		createToolBar(sections);
-		
-		setTitle("Hospital Management System");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BorderLayout());
+	    HashMap<String, SectionPanel> sections = new HashMap<>();
+	    sections.put("Staff Members", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
+	    sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
+	    sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
+	    sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
+	    sections.put("Departments", new Departments(userRole, "Departments", departmentsListModel, quickLinksPanel));
+	    sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
+	    sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
 
-		setMinimumSize(new Dimension(800, 600));
+	    JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel, quickLinksPanel).getPanel();
 
-		// Add tool bar to the frame
-		getContentPane().add(toolBar, BorderLayout.NORTH);
+	    createToolBar(sections);
 
-		// Center panel and set its background color
-		centerPanel = new JPanel(new BorderLayout());
-		centerPanel.setBackground(Color.decode("#096bbe"));
-		getContentPane().add(centerPanel, BorderLayout.CENTER);
+	    setTitle("Hospital Management System");
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    getContentPane().setLayout(new BorderLayout());
 
-		// Initialize content panel with CardLayout
-		cardLayout = new CardLayout();
-		contentPanel = new JPanel(cardLayout);
-		centerPanel.add(contentPanel, BorderLayout.CENTER);
+	    setMinimumSize(new Dimension(800, 600));
 
-		// Add content panels
-		contentPanel.add(createHomePanel(), "Home");
-		for(String name : sections.keySet()) {
-			contentPanel.add(sections.get(name).getPanel(), name);			
-		}
-		//contentPanel.add(SystemQueriesPanel,"SystemQueries");
-		
-		getContentPane().add(rightPanel, BorderLayout.EAST);
+	    // Add tool bar to the frame
+	    getContentPane().add(toolBar, BorderLayout.NORTH);
 
-		// Make the frame visible
-		setSize(1000, 800);
-		setVisible(true);
+	    // Center panel and set its background color
+	    centerPanel = new JPanel(new BorderLayout());
+	    centerPanel.setBackground(Color.decode("#096bbe"));
+	    getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		// Adjust button font size on component resize
-		addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentResized(java.awt.event.ComponentEvent evt) {
-				adjustButtonFontSize(rightPanel);
-			}
-		});
-		
-		repaint();
+	    // Initialize content panel with CardLayout
+	    cardLayout = new CardLayout();
+	    contentPanel = new JPanel(cardLayout);
+	    centerPanel.add(contentPanel, BorderLayout.CENTER);
+
+	    // Add content panels
+	    contentPanel.add(createHomePanel(), "Home");
+	    for (String name : sections.keySet()) {
+	        contentPanel.add(sections.get(name).getPanel(), name);
+	    }
+	    // contentPanel.add(SystemQueriesPanel,"SystemQueries");
+
+	    getContentPane().add(rightPanel, BorderLayout.EAST);
+
+	    // Set the frame to maximize mode, but with window decorations
+	    setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+	    // Make the frame visible
+	    setVisible(true);
+
+	    // Adjust button font size on component resize
+	    addComponentListener(new java.awt.event.ComponentAdapter() {
+	        public void componentResized(java.awt.event.ComponentEvent evt) {
+	            adjustButtonFontSize(rightPanel);
+	        }
+	    });
+
+	    repaint();
 	}
+
+
 	
 	private void createToolBar(HashMap<String, SectionPanel> sections) {
 		// Create the tool bar
@@ -227,38 +231,36 @@ public class UserPage extends JFrame {
 		repaint();
 	}
 	public static void main(String[] args) {
-		Hospital h = Hospital.getInstance();
-		h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
-		h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
-		h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
-		h.addTreatment(new Treatment(123, "desc1"));
-		h.addTreatment(new Treatment(321, "desc2"));
-		h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
-		h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
+	    Hospital h = Hospital.getInstance();
+	    h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
+	    h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
+	    h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
+	    h.addTreatment(new Treatment(123, "desc1"));
+	    h.addTreatment(new Treatment(321, "desc2"));
+	    h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
+	    h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
 
-	        // Create a dummy doctor
-	        @SuppressWarnings("deprecation")
-			Doctor dummyDoctor = new Doctor(
-	            1, // id
-	            "John", // firstName
-	            "Doe", // lastName
-	            new Date(01,01,1998), // birthDate
-	            "123 Main St", // address
-	            "555-1234", // phoneNumber
-	            "john.doe@example.com", // email
-	            "Male", // gender
-	            new Date(01,01,1998), // workStartDate
-	            "johndoe", // username
-	            "password123", // password
-	            "C:\\Users\\layla\\OneDrive\\Desktop\\java programming\\LaylaIsGay\\hanamal2_with_exceptions\\src\\view\\norahospital.jpg", // profilePicturePath
-	            100000.0, // salary
-	            123456, // licenseNumber
-	            true, // isFinishInternship
-	            Specialization.Cardiology // specialization
-	        );
+	    // Create a dummy nurse
+	    @SuppressWarnings("deprecation")
+	    Nurse dummyNurse = new Nurse(
+	        2, // id
+	        "Jane", // firstName
+	        "Smith", // lastName
+	        new Date(01,01,1990), // birthDate
+	        "456 Elm St", // address
+	        "555-5678", // phoneNumber
+	        "jane.smith@example.com", // email
+	        "Female", // gender
+	        new Date(01,01,2015), // workStartDate
+	        "janesmith", // username
+	        "password456", // password
+	        "C:\\Users\\layla\\OneDrive\\Desktop\\java programming\\LaylaIsGay\\hanamal2_with_exceptions\\src\\view\\norahospital.jpg", // profilePicturePath
+	        75000.0, // salary
+	        654321
+	    );
 
-		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin,dummyDoctor));
+	    SwingUtilities.invokeLater(() -> new UserPage(Role.Admin, dummyNurse));
 	}
-	
+
 	
 }

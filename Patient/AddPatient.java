@@ -5,6 +5,7 @@ import enums.*;
 import control.*;
 import exceptions.*;
 import model.*;
+import treatment.UpdateTreatment;
 import utils.*;
 import view.UserPage;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 
 
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -59,6 +61,9 @@ public class AddPatient extends JPanel {
      * Create the panel.
      */
     public AddPatient(Patients patients) {
+		 this.setPreferredSize(new Dimension(750, 350)); 
+
+
     	this.patients=patients;
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{84, 52, 111, 0, 88, 29, 101, 0, 0};
@@ -423,9 +428,7 @@ public class AddPatient extends JPanel {
        
     }
    
-
-
-  
+   
     	}
 
 

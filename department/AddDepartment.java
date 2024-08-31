@@ -20,6 +20,7 @@ import exceptions.InvalidUserDetails;
 import exceptions.NegativeNumberOfDosesException;
 import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
+import medicalProblem.UpdateMedicalProblem;
 import model.Department;
 import model.Doctor;
 import visit.AddVisit;
@@ -46,6 +47,8 @@ public class AddDepartment extends JPanel {
 	public AddDepartment(Departments d) {
 
 		this.setBackground(new Color(0xA9BED2));
+		 this.setPreferredSize(new Dimension(400, 280)); 
+
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -238,6 +241,5 @@ public class AddDepartment extends JPanel {
 
 
 	}
-
 	
 }

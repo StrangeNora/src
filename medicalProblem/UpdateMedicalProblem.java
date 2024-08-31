@@ -37,6 +37,8 @@ public class UpdateMedicalProblem extends JPanel {
     public UpdateMedicalProblem(MedicalProblems m,MedicalProblem medicalProblem) {
         setBackground(new Color(0xA9BED2));
         trueOrFalseGroup = new ButtonGroup();
+		 this.setPreferredSize(new Dimension(500, 250)); 
+
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -256,4 +258,6 @@ m.refreshList();
             ((Injury)m).setCommonRecoveryTime(Integer.parseInt(textFieldCommonRecoveryTime.getText()));
         }
     }
+   
+
 }

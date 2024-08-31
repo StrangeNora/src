@@ -19,6 +19,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import Patient.UpdatePatient;
 import control.Hospital;
 import exceptions.InvalidUserDetails;
 import exceptions.NegativeDosageException;
@@ -37,6 +38,8 @@ public class AddMedication extends JPanel {
     public AddMedication(Medications m) {
 
         this.setBackground(new Color(0xA9BED2));
+		 this.setPreferredSize(new Dimension(420, 270)); 
+
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[]{0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -205,7 +208,7 @@ public class AddMedication extends JPanel {
 
         
     }
-
     
+   
 
 }

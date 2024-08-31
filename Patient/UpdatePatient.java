@@ -78,6 +78,7 @@ public class UpdatePatient extends JPanel {
 		this.patient=patient;
 
 		this.setBackground(new Color(0x698DB0));
+		this.setPreferredSize(new Dimension(420, 220)); 
 		setLayout(new BorderLayout());
 
 		// Initialize the radio buttons first
@@ -413,7 +414,8 @@ public class UpdatePatient extends JPanel {
 		inputPanel.add(dateChooser, gbc);
 	}
 
-	
+	 
+	    
 
 }
 
