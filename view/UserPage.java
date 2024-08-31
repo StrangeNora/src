@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class UserPage extends JFrame {
 
@@ -56,7 +57,7 @@ public class UserPage extends JFrame {
 		JPanel quickLinksPanel = initializeSidebar();
 		
 		HashMap<String, SectionPanel> sections = new HashMap<String, SectionPanel>();
-		sections.put("StaffMembers", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
+		sections.put("Staff Members", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
 		sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
 		sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
 		sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
@@ -220,7 +221,10 @@ public class UserPage extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		
+		Hospital h = Hospital.getInstance();
+		h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
+		h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
+		h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
 
 	        // Create a dummy doctor
 	        @SuppressWarnings("deprecation")
@@ -243,6 +247,6 @@ public class UserPage extends JFrame {
 	            Specialization.Cardiology // specialization
 	        );
 
-		SwingUtilities.invokeLater(() -> new UserPage(Role.Doctor,dummyDoctor));
+		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin,dummyDoctor));
 	}
 }

@@ -76,6 +76,19 @@ public class Departments extends SectionPanel<Department> {
 		    	});
 		    	quickLinksPanel.add(addButton);
 	    	}
+	    	
+	    	if(userRole == Role.Admin) {
+		    	JButton addButton = UtilsMethods.createPanelButton("Add Doctor to Department");
+		    	addButton.addActionListener(e -> {
+		    		AddDoctorToDepartment addDepartment = new AddDoctorToDepartment(this, getSelectedObject());
+			        JDialog dialog = new JDialog((Frame) null, "Add Doctor To Department", true);
+			        dialog.getContentPane().add(addDepartment);
+			        dialog.pack();
+			        dialog.setLocationRelativeTo(null);
+			        dialog.setVisible(true);
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
 		}
 	}
 

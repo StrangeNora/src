@@ -54,10 +54,10 @@ public class Hospital {
 		if(department==null||doctor==null) {
 			throw new NullPointerException();
 		}
-		if(departments.containsKey(department.getNumber())){
+		if(!departments.containsKey(department.getNumber())){
 			throw new ObjectDoesNotExist(department.getNumber(), department.getClass().getSimpleName(), this.getClass().getSimpleName());
 		}
-		if(staffMembers.containsKey(doctor.getId())) {
+		if(!staffMembers.containsKey(doctor.getId())) {
 			throw new ObjectDoesNotExist(doctor.getId(), doctor.getClass().getSimpleName(), this.getClass().getSimpleName());
 		}
 				return department.addDoctor(doctor);
@@ -68,10 +68,10 @@ public class Hospital {
 		if(department==null||nurse==null) {
 			throw new NullPointerException();
 		}
-		if(departments.containsKey(department.getNumber())){
+		if(!departments.containsKey(department.getNumber())){
 			throw new ObjectDoesNotExist(department.getNumber(), department.getClass().getSimpleName(), this.getClass().getSimpleName());
 		}
-		if(staffMembers.containsKey(nurse.getId())) {
+		if(!staffMembers.containsKey(nurse.getId())) {
 			throw new ObjectDoesNotExist(nurse.getId(), nurse.getClass().getSimpleName(), this.getClass().getSimpleName());
 		}
 				return department.addNurse(nurse);

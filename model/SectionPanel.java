@@ -69,6 +69,10 @@ public abstract class SectionPanel<T>  extends JPanel {
     	return userRole == Role.Admin;
     }
     
+    public T getSelectedObject() {
+    	return genericListPanel.getSelectedObject();
+    }
+    
     protected abstract void load();
     public abstract void initializeQuickPanelButtons();
 }

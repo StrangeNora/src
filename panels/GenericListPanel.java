@@ -122,6 +122,10 @@ public class GenericListPanel<T> {
             }
         });
     }
+    
+    public T getSelectedObject() {
+    	return list.getSelectedValue();
+    }
 
     public JPanel getPanel() {
         return panel;
