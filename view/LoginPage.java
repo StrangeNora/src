@@ -23,6 +23,7 @@ import control.*;
 import enums.Role;
 import model.*;
 import java.awt.GridBagLayout;
+import java.awt.Font;
 
 
 public class LoginPage extends JFrame {
@@ -58,7 +59,7 @@ public class LoginPage extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon icon = new ImageIcon("C:\\Users\\daddysatan\\Desktop\\hanamal2_with_exceptions\\hanamal2_with_exceptions\\src\\view\\hospital_bg.gif");
+                ImageIcon icon = new ImageIcon("C:\\Users\\daddysatan\\Desktop\\hanamal2_with_exceptions\\hanamal2_with_exceptions\\src\\view\\DNA_4K_3D_Animation_Background_V1__FREE_Download_Video__Med (1).gif");
                 g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -69,43 +70,43 @@ public class LoginPage extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JPanel panel_1 = new JPanel();
-        panel_1.setBackground(new Color(64, 128, 128));
-        panel_1.setBounds(-11, 370, 5000, 2000);
-        contentPane.add(panel_1);
-        GridBagLayout gbl_panel_1 = new GridBagLayout();
-        gbl_panel_1.columnWidths = new int[]{0};
-        gbl_panel_1.rowHeights = new int[]{0};
-        gbl_panel_1.columnWeights = new double[]{Double.MIN_VALUE};
-        gbl_panel_1.rowWeights = new double[]{Double.MIN_VALUE};
-        panel_1.setLayout(gbl_panel_1);
-
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 0, true), new LineBorder(new Color(0, 0, 0), 0, true)));
-        panel.setBackground(new Color(128, 128, 128, 120));
-        panel.setBounds(28, 38, 238, 202);
+        panel.setBackground(new Color(0, 0, 0,130));
+        panel.setBounds(167, 131, 304, 280);
         contentPane.add(panel);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(10, 103, 201, 20);
+        passwordField.setForeground(new Color(255, 255, 255));
+        passwordField.setCaretColor(new Color(0, 0, 0));
+        passwordField.setBackground(new Color(0, 0, 94,110));
+        passwordField.setBounds(25, 135, 201, 28);
         panel.add(passwordField);
 
         textField = new JTextField();
+        textField.setForeground(new Color(255, 255, 255));
+        textField.setBackground(new Color(0, 0, 94,110));
         textField.setColumns(10);
-        textField.setBounds(10, 37, 201, 20);
+        textField.setBounds(25, 81, 201, 28);
         panel.add(textField);
 
         JLabel lblNewLabel = new JLabel("Enter UserName:");
-        lblNewLabel.setBounds(10, 12, 201, 14);
+        lblNewLabel.setForeground(new Color(128, 128, 128));
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblNewLabel.setBounds(25, 50, 201, 28);
         panel.add(lblNewLabel);
 
         JLabel lblNewLabel_1 = new JLabel("Enter Password:");
-        lblNewLabel_1.setBounds(10, 82, 201, 14);
+        lblNewLabel_1.setForeground(new Color(128, 128, 128));
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblNewLabel_1.setBounds(25, 106, 201, 28);
         panel.add(lblNewLabel_1);
 
         Button button = new Button("Login");
-        button.setBounds(42, 150, 141, 22);
+        button.setForeground(new Color(192, 192, 192));
+        button.setBackground(new Color(62, 62, 62,100));
+        button.setBounds(25, 198, 201, 37);
         panel.add(button);
 
         // Add action listener for the login button
@@ -137,7 +138,7 @@ public class LoginPage extends JFrame {
                 // Redirect to AdminPage
                 new UserPage(Role.Admin,null).setVisible(true);
                 dispose();
-            }
+            }else {
             StaffMember user=Hospital.getInstance().getStaffMember(userID);
 
             // Check the type of user and redirect to the appropriate page
@@ -155,6 +156,7 @@ public class LoginPage extends JFrame {
                 dispose();
            
         }
+            }
         }
          catch (IllegalArgumentException ex) {
             // Show a message dialog for empty fields

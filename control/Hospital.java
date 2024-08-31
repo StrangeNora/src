@@ -638,8 +638,9 @@ public class Hospital {
 	}
 	//Authentication method for Login page : 
 	public int authenticate(String username, String password) {
-		if(username.equals("ADMIN")&&password.equals("ADMIN"))
+		if(username.equals("ADMIN")&&password.equals("ADMIN")) {
 			return 1;
+	}
         for (StaffMember staffMember : staffMembers.values()) {
             if (staffMember.getUserName().equals(username) && staffMember.getPassword().equals(password)) {
                 return staffMember.getId();
