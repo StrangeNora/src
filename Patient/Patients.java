@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import control.Hospital;
@@ -67,5 +69,50 @@ public class Patients extends SectionPanel<Patient> {
     	}
     	
     	quickLinksPanel.repaint();
+	}
+
+	@Override
+	protected Object[][] getTable() {
+		Object[][] table = new Object[listModel.getSize()][getColumns().length];
+
+    	for(int row=0; row < listModel.getSize(); row++) {
+    		Patient patient = listModel.get(row);
+    		
+    		String[] visits = new String[patient.getVisitsList().size()];
+    		int idx = 0;
+    		for(Visit visit: patient.getVisitsList()) {
+    			visits[idx] = "" + visit.getNumber();
+    		}
+			
+    		table[row][0] = new JLabel("" + patient.getId());
+    		table[row][1] = new JLabel(patient.getFirstName());
+    		table[row][2] = new JLabel(patient.getLastName());
+    		table[row][3] = new JLabel(patient.getBirthDate().toString());
+    		table[row][4] = new JLabel(patient.getAddress());
+    		table[row][5] = new JLabel("" + patient.getPhoneNumber());
+    		table[row][6] = new JLabel(patient.getEmail());
+    		table[row][7] = new JLabel(patient.getGender());
+    		table[row][8] = new JComboBox<String>(visits);
+    		table[row][9] = new JLabel(patient.getHealthFund().toString());
+    		table[row][10] = new JLabel(patient.getBiologicalSex().toString());
+    	}
+    	return table;
+	}
+
+	@Override
+	protected String[] getColumns() {
+		return new String[] {
+				"ID",
+				"First Name",
+				"Last Name",
+				"Birth Date",
+				"Address",
+				"Phone Number",
+				"Email",
+				"Gender",
+				"Visits",
+				"Health Fund",
+				"Biological Sex"
+		};
 	}
 }

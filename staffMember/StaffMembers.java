@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -35,6 +37,7 @@ public class StaffMembers extends SectionPanel<StaffMember> {
 
     private void removeStaffMemberFromHospital(StaffMember stf) {
         Hospital.getInstance().removeStaffMember(stf);
+        genericListPanel.refreshTableData(getTable());
     }
 
     private void showAddStaffMemberDialog() {
@@ -44,6 +47,7 @@ public class StaffMembers extends SectionPanel<StaffMember> {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        genericListPanel.refreshTableData(getTable());
     }
     private void showUpdateStaffMemberDialog(StaffMember stf) {
         UpdateStaffMember updateStaffMember = new UpdateStaffMember(this, stf);
@@ -52,6 +56,7 @@ public class StaffMembers extends SectionPanel<StaffMember> {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        genericListPanel.refreshTableData(getTable());
     }
     
     public void initializeQuickPanelButtons() {
@@ -84,6 +89,50 @@ public class StaffMembers extends SectionPanel<StaffMember> {
     	
     	quickLinksPanel.repaint();
     }
+    
+    @Override
+	protected Object[][] getTable() {
+		Object[][] table = new Object[listModel.getSize()][getColumns().length];
+
+    	for(int row=0; row < listModel.getSize(); row++) {
+    		StaffMember sm = listModel.get(row);
+    		
+    		String[] deps = new String[sm.getDepartments().size()];
+    		int idx = 0;
+    		for(Department dep: sm.getDepartments()) {
+    			deps[idx] = "" + dep.getNumber();
+    		}
+			
+    		table[row][0] = new JLabel("" + sm.getId());
+    		table[row][1] = new JLabel(sm.getFirstName());
+    		table[row][2] = new JLabel(sm.getLastName());
+    		table[row][3] = new JLabel(sm.getBirthDate().toString());
+    		table[row][4] = new JLabel(sm.getAddress());
+    		table[row][5] = new JLabel("" + sm.getPhoneNumber());
+    		table[row][6] = new JLabel(sm.getEmail());
+    		table[row][7] = new JLabel(sm.getGender());
+    		table[row][8] = new JComboBox<String>(deps);
+    		table[row][9] = new JLabel(sm.getWorkStartDate().toString());
+    		table[row][10] = new JLabel("" + sm.getSalary());
+    	}
+    	return table;
+	}
+
+	@Override
+	protected String[] getColumns() {
+		return new String[] {
+				"ID",
+				"First Name",
+				"Last Name",
+				"Birth Date",
+				"Address",
+				"Phone Number",
+				"Email",
+				"Gender",
+				"Departments",
+				"Work Start Date",
+				"Salary"
+		};
+	}
+
 }
-
-
