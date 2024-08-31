@@ -29,7 +29,9 @@ import exceptions.FutureDateException;
 
 import exceptions.InvalidUserDetails;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
 import medicalProblem.UpdateMedicalProblem;
+import model.Department;
 import model.Patient;
 import model.Visit;
 import utils.UtilsMethods;
@@ -213,7 +215,15 @@ public class AddVisit extends JPanel {
 					if(startDateChooser.getDate().after(endDateChooser.getDate())) {
 						throw new InvalidUserDetails("Start Date Cannot Be After End Date.");
 					}
-					
+					Patient patient = (Patient) Hospital.getInstance().getRealPatient(Integer.parseInt(patientID.getText()));
+					Visit visit = new Visit(Integer.parseInt(number.getText())
+							,patient,startDateChooser.getDate(),endDateChooser.getDate());
+
+							Hospital.getInstance().addVisit(visit);
+							v.refreshList();
+	                if(!Hospital.getInstance().getPatients().containsKey(Integer.parseInt(patientID.getText()))) {
+						throw new ObjectDoesNotExist(patient.getId(), patient.getClass().getSimpleName(), this.getClass().getSimpleName());
+				}
 					JOptionPane.showMessageDialog(null, "Visit Added Successfully!");
 
 
@@ -226,9 +236,10 @@ public class AddVisit extends JPanel {
         			JOptionPane.showMessageDialog(AddVisit.this, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 				}catch(NullPointerException es) {
 					JOptionPane.showMessageDialog(null, es.getMessage());
+				}catch(ObjectDoesNotExist ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 
-				//TODO idk if i deleted an exceptopn calle invalidexception or am blind :D
 				//TODO why the heck is there treatments an medicalproblems, should be deleted need laylas approval
 				Patient patient = Hospital.getInstance().getRealPatient(Integer.parseInt(patientID.getText()));
 

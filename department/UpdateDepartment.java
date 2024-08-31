@@ -81,6 +81,7 @@ public class UpdateDepartment extends JPanel {
                 	Hospital.getInstance().getRealDepartment(department.getNumber()).setLocation(locationField.getSelectedText());
 
                 }
+				
                 d.refreshList();
                 
                 JOptionPane.showMessageDialog(null, "Department Updated Successfuly!");

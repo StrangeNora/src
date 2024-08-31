@@ -19,6 +19,7 @@ import enums.Specialization;
 import exceptions.InvalidUserDetails;
 import exceptions.NegativeNumberOfDosesException;
 import exceptions.ObjectAlreadyExistsException;
+import exceptions.ObjectDoesNotExist;
 import model.Department;
 import model.Doctor;
 import visit.AddVisit;
@@ -133,7 +134,8 @@ public class AddDepartment extends JPanel {
 				try {
 					Specialization specialization=(Specialization) specializationComboBox.getSelectedItem();
 
-					if(numberTextField.getText().trim().isEmpty() ||  locationTextField.getText().trim().isEmpty()) {
+					if(numberTextField.getText().trim().isEmpty() ||  locationTextField.getText().trim().isEmpty()
+							|| managerIDTextField.getText().trim().isEmpty()|| nameTextField.getText().trim().isEmpty()) {
 						throw new NullPointerException("All Fields Must Be Filled.");
 					}
 					if(!numberTextField.getText().matches("\\d+")) {
@@ -142,10 +144,9 @@ public class AddDepartment extends JPanel {
 					}
 					if(!managerIDTextField.getText().matches("\\d+")) {
 						throw new InvalidUserDetails("ID Field Must Only Contain Numbers.");
-
 					}
 					
-					JOptionPane.showMessageDialog(null, "Department Added Successfully!");
+					
 
 
 					Doctor doctor = (Doctor) Hospital.getInstance().getStaffMember(Integer.parseInt(managerIDTextField.getText()));
@@ -155,13 +156,23 @@ public class AddDepartment extends JPanel {
 
 					Hospital.getInstance().addDepartment(department);
 					d.refreshList();
+					
+					if(!Hospital.getInstance().getStaffMembers().containsKey(Integer.parseInt(managerIDTextField.getText()))) {
+							throw new ObjectDoesNotExist(doctor.getId(), doctor.getClass().getSimpleName(), this.getClass().getSimpleName());
+					}
+					
+					JOptionPane.showMessageDialog(null, "Department Added Successfully!");
 
+					
 				}catch(InvalidUserDetails ex){
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 				}catch(ObjectAlreadyExistsException ec) {
 					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}catch(NullPointerException ec) {
-					JOptionPane.showMessageDialog(null, ec.getMessage());
+					JOptionPane.showMessageDialog(null, ec.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}catch(ObjectDoesNotExist ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
 				}
 
 			}
