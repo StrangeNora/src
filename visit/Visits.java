@@ -26,9 +26,6 @@ public class Visits extends SectionPanel<Visit> {
 
 
 		private static final long serialVersionUID = 1L;
-		private GenericListPanel<Visit> genericListPanel;
-	    private DefaultListModel<Visit> listModel;
-	    private Role userRole;
 
 	    public Visits(Role userRole, String sectionName, DefaultListModel<Visit> listModel, JPanel quickLinksPanel) {
 	    	super(userRole, sectionName, listModel, quickLinksPanel);
