@@ -51,7 +51,7 @@ public class UserPage extends JFrame {
 		// Right panel for buttons and set its background color
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.setBackground(Color.decode("#547DA5"));
+		rightPanel.setBackground(Color.decode("#096bbe"));
 
 		// Initialize sidebar
 		JPanel quickLinksPanel = initializeSidebar();
@@ -80,7 +80,7 @@ public class UserPage extends JFrame {
 
 		// Center panel and set its background color
 		centerPanel = new JPanel(new BorderLayout());
-		centerPanel.setBackground(Color.decode("#A9BED2"));
+		centerPanel.setBackground(Color.decode("#096bbe"));
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 
 		// Initialize content panel with CardLayout
@@ -115,7 +115,7 @@ public class UserPage extends JFrame {
 		// Create the tool bar
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		toolBar.setBackground(Color.decode("#2a5d8f"));
+		toolBar.setBackground(Color.decode("#096bbe"));
 		JButton homeButton = createToolBarButton("Home");
 		toolBar.add(homeButton);
 
@@ -152,8 +152,9 @@ public class UserPage extends JFrame {
 		// edit account button
 		JButton accountDetailsButton = UtilsMethods.createPanelButton("Edit Personal Details");
 		accountDetailsButton.addActionListener(e -> {
-//			new UpdateStaffMember(null); // TODO: proper staffmember - what happens with update on admin?
+			
 		});
+
 		accountDetailsPanel.add(accountDetailsButton);
 		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		JButton signOutButton = UtilsMethods.createPanelButton("Sign out");
@@ -178,7 +179,7 @@ public class UserPage extends JFrame {
 	private JPanel createSidebarPanel(String title) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBackground(Color.decode("#547DA5"));
+		panel.setBackground(Color.decode("#096bbe"));
 
 		JLabel titleLabel = UtilsMethods.getRightPanelTitleLabel(title);
 		panel.add(titleLabel);
@@ -188,30 +189,29 @@ public class UserPage extends JFrame {
 
 	private JButton createToolBarButton(String title) {
 		JButton button = new JButton(title);
-		button.setBackground(Color.decode("#D4DEE8"));
+		button.setBackground(Color.decode("#7fb5de"));
 		return button;
 	}
 
 	private JPanel createHomePanel() {
-		if(staffUser instanceof Doctor) {
-			  ProfilePage doctorUser=new ProfilePage((Doctor)staffUser);
-			  return doctorUser;
-		}
-		if(staffUser instanceof Nurse) {
-			ProfilePage nurseUser=new ProfilePage((Nurse)staffUser);
-			return nurseUser;
-		}
-		else {
-		JPanel panel = new JPanel(new BorderLayout());
-		JLabel homeLabel = new JLabel("<html>Welcome Admin!<br><br>Manage all aspects of the hospital here.</html>", JLabel.CENTER);
-		homeLabel.setFont(new Font("Bell MT", Font.BOLD | Font.ITALIC, 18));
-		homeLabel.setForeground(Color.BLACK);
+	    if (staffUser instanceof Doctor) {
+	        ProfilePage doctorUser = new ProfilePage((Doctor) staffUser);
+	        return doctorUser;
+	    }
+	    if (staffUser instanceof Nurse) {
+	        ProfilePage nurseUser = new ProfilePage((Nurse) staffUser);
+	        return nurseUser;
+	    } else {
+	        JPanel panel = new JPanel(new BorderLayout());
+	        JLabel homeLabel = new JLabel("<html>Welcome Admin!<br><br>Manage all aspects of the hospital here.</html>", JLabel.CENTER);
+	        homeLabel.setFont(new Font("Bell MT", Font.BOLD | Font.ITALIC, 18));
+	        homeLabel.setForeground(Color.BLACK);
 
-		panel.add(homeLabel, BorderLayout.CENTER);
-
-		return panel;
-		}
+	        panel.add(homeLabel, BorderLayout.CENTER);
+	        return panel;
+	    }
 	}
+
 
 	private void adjustButtonFontSize(JComponent component) {
 		int newSize = getHeight() / 50;
@@ -227,37 +227,5 @@ public class UserPage extends JFrame {
 		repaint();
 	}
 
-	public static void main(String[] args) {
-		Hospital h = Hospital.getInstance();
-		h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
-		h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
-		h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
-		h.addTreatment(new Treatment(123, "desc1"));
-		h.addTreatment(new Treatment(321, "desc2"));
-		h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
-		h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
-
-	        // Create a dummy doctor
-	        @SuppressWarnings("deprecation")
-			Doctor dummyDoctor = new Doctor(
-	            1, // id
-	            "John", // firstName
-	            "Doe", // lastName
-	            new Date(01,01,1998), // birthDate
-	            "123 Main St", // address
-	            "555-1234", // phoneNumber
-	            "john.doe@example.com", // email
-	            "Male", // gender
-	            new Date(01,01,1998), // workStartDate
-	            "johndoe", // username
-	            "password123", // password
-	            "C:\\Users\\daddysatan\\Desktop\\hanamal2_with_exceptions\\hanamal2_with_exceptions\\src\\view\\HH_LOGO.png", // profilePicturePath
-	            100000.0, // salary
-	            123456, // licenseNumber
-	            true, // isFinishInternship
-	            Specialization.Cardiology // specialization
-	        );
-
-		SwingUtilities.invokeLater(() -> new UserPage(Role.Admin,dummyDoctor));
-	}
+	
 }
