@@ -9,12 +9,14 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+import treatment.AddMedicalProblemToTreatment;
 import utils.UtilsMethods;
 import visit.*;
 
@@ -85,6 +87,22 @@ public class Visits extends SectionPanel<Visit> {
 		    		showAddVisitDialog();
 		    	});
 		    	quickLinksPanel.add(addButton);
+		    	
+		    	JButton addMedicalProblem = UtilsMethods.createPanelButton("Add Medical Problem To Visit");
+		    	addMedicalProblem.addActionListener(e -> {
+		    		Visit selectedMember = getSelectedObject();
+		    		if(selectedMember == null) {
+		    			JOptionPane.showMessageDialog(null, "Please select one to add to");
+		    			return;
+		    		}
+		    		AddMedicalProblemToVisit addMedicalProblemToTreatment = new AddMedicalProblemToVisit(this, selectedMember);
+			        JDialog dialog = new JDialog((Frame) null, "Add Medical Problem To Visit", true);
+			        dialog.getContentPane().add(addMedicalProblemToTreatment);
+			        dialog.pack();
+			        dialog.setLocationRelativeTo(null);
+			        dialog.setVisible(true);
+		    	});
+		    	quickLinksPanel.add(addMedicalProblem);
 	    	}
 	    	
 	    	quickLinksPanel.repaint();

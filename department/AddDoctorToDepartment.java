@@ -92,14 +92,6 @@ public class AddDoctorToDepartment extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.EAST;
         add(btnUpdate, gbc);
-
-        // Action listener for combo box
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String selectedOption = (String) comboBox.getSelectedItem();
-                cardLayout.show(cardsPanel, selectedOption);
-            }
-        });
     }
     
     private Doctor[] getDoctors() {

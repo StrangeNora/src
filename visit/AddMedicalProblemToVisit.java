@@ -1,4 +1,4 @@
-package treatment;
+package visit;
 
 import javax.swing.*;
 
@@ -10,17 +10,18 @@ import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 import medication.UpdateMedication;
 import model.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddMedicalProblemToTreatment extends JPanel {
+public class AddMedicalProblemToVisit extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private CardLayout cardLayout;
     private JPanel cardsPanel;
 
-    public AddMedicalProblemToTreatment(Treatments d, Treatment curTreatment) {
+    public AddMedicalProblemToVisit(Visits v, Visit curVisit) {
     	this.setBackground(new Color(0xA9BED2));
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -28,7 +29,7 @@ public class AddMedicalProblemToTreatment extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title Label
-        JLabel lblTitle = new JLabel("Add Medical Problem to Treatment " + curTreatment.getSerialNumber());
+        JLabel lblTitle = new JLabel("Add Medical Problem to Visit number " + curVisit.getNumber());
         lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 22));
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.anchor = GridBagConstraints.CENTER;
@@ -72,10 +73,10 @@ public class AddMedicalProblemToTreatment extends JPanel {
         btnUpdate.addActionListener(e -> {
             try {
             	MedicalProblem selectedMedicalProblem = (MedicalProblem) comboBox.getSelectedItem();
-                curTreatment.addMedicalProblem(selectedMedicalProblem);
-                d.refreshList();
+            	curVisit.addMedicalProblem(selectedMedicalProblem);
+                v.refreshList();
                 
-                JOptionPane.showMessageDialog(null, "Added Medical Problem to Treatment successfully!");
+                JOptionPane.showMessageDialog(null, "Added Medical Problem to Visit successfully!");
                 
                 
             }catch(ObjectDoesNotExist ex) {
