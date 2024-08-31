@@ -20,7 +20,7 @@ public class Visit {
 	
 	
 	//constructors
-	public Visit(int number, Patient patient, Date startDate, Date endDate, HashSet<MedicalProblem>medicalProblemsList,
+	public Visit(int number, Patient patient, Date startDate, Date endDate, HashSet<MedicalProblem> medicalProblemsList,
 			HashSet<Treatment> treatmentsList) {
 		super();
 		this.number = number;

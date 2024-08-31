@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -12,44 +13,13 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
-public class Departments extends JPanel {
-
-
-	
-
+import utils.UtilsMethods;
+public class Departments extends SectionPanel<Department> {
 	    private static final long serialVersionUID = 1L;
-	    private GenericListPanel<Department> genericListPanel;
-	    private DefaultListModel<Department> listModel;
-	    private Role userRole;
 
-	    public Departments(Role userRole, String sectionName, DefaultListModel<Department> listModel) {	    	
-	    	this.userRole = userRole;
-	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(
-	        		sectionName,
-	        		listModel, 
-	        		canRemove() ? this::removeDepartmentFromHospital : null,
-	        		canAdd() ? this::showAddDepartmentDialog : null,
-	        		canUpdate() ? this::showUpdateDepartmentDialog : null
-	        	);
-	        loadDepartmentsFromHospital();
-	    }
-
-	    public JPanel getPanel() {
-	        return genericListPanel.getPanel();
-	    }
-
-	    private void loadDepartmentsFromHospital() {
-	        Hospital hospital = Hospital.getInstance();
-	        HashMap<Integer, Department> departments = hospital.getDepartments();
-	        for (Department department : departments.values()) {
-	            listModel.addElement(department);
-	        }
-	    }
-
-	    public void refreshList() {
-	        listModel.clear();
-	        loadDepartmentsFromHospital();
+	    public Departments(Role userRole, String sectionName, DefaultListModel<Department> listModel, JPanel quickLinksPanel) {
+	    	super(userRole, sectionName, listModel, quickLinksPanel);
+	    	this.initGenericListPanel(this::removeDepartmentFromHospital, this::showAddDepartmentDialog, this::showUpdateDepartmentDialog);
 	    }
 
 	    private void removeDepartmentFromHospital(Department department) {
@@ -74,17 +44,39 @@ public class Departments extends JPanel {
 	        dialog.setVisible(true);
 	    }
 	    
-	    private boolean canAdd() {
+	    protected void load() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<Integer, Department> departments = hospital.getDepartments();
+	        for (Department department : departments.values()) {
+	            listModel.addElement(department);
+	        }
+	    }
+	    
+	    protected boolean canAdd() {
 	    	return userRole == Role.Admin;
 	    }
 	    
-	    private boolean canRemove() {
+	    protected boolean canRemove() {
 	    	return userRole == Role.Admin;
 	    }
 	    
-	    private boolean canUpdate() {
+	    protected boolean canUpdate() {
 	    	return userRole == Role.Admin;
 	    }
+
+		@Override
+		public void initializeQuickPanelButtons() {
+			quickLinksPanel.removeAll();
+	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+	    	
+	    	if(canAdd()) {
+				JButton addButton = UtilsMethods.createPanelButton("Add Department");
+		    	addButton.addActionListener(e -> {
+		    		showAddDepartmentDialog();
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
+		}
 	}
 
 

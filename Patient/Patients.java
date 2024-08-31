@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -11,44 +12,25 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+import utils.UtilsMethods;
 
-public class Patients extends JPanel {
-
+public class Patients extends SectionPanel<Patient> {
     private static final long serialVersionUID = 1L;
-    private GenericListPanel<Patient> genericListPanel;
-    private DefaultListModel<Patient> listModel;
-    private Role userRole;
-
-    public Patients(Role userRole, String sectionName, DefaultListModel<Patient> listModel) {
-    	this.userRole = userRole;
-        this.listModel = listModel;
-        genericListPanel = new GenericListPanel<>(
-        		sectionName,
-        		listModel, 
-        		canRemove() ? this::removePatientFromHospital : null,
-        		canAdd() ? this::showAddPatientDialog : null,
-        		canUpdate() ? this::showUpdatePatientDialog : null
-        	);
-        loadPatientsFromHospital();
+    
+    public Patients(Role userRole, String sectionName, DefaultListModel<Patient> listModel, JPanel quickLinksPanel) {
+    	super(userRole, sectionName, listModel, quickLinksPanel);
+    	this.initGenericListPanel(this::removePatientFromHospital, this::showAddPatientDialog, this::showUpdatePatientDialog);
     }
 
-    public JPanel getPanel() {
-        return genericListPanel.getPanel();
-    }
-
-    private void loadPatientsFromHospital() {
+    @Override
+    protected void load() {
         Hospital hospital = Hospital.getInstance();
         HashMap<Integer, Patient> patients = hospital.getPatients();
         for (Patient patient : patients.values()) {
             listModel.addElement(patient);
         }
     }
-
-    public void refreshList() {
-        listModel.clear();
-        loadPatientsFromHospital();
-    }
-
+    
     private void removePatientFromHospital(Patient patient) {
         Hospital.getInstance().removePatient(patient);
     }
@@ -70,16 +52,20 @@ public class Patients extends JPanel {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
-    
-    private boolean canAdd() {
-    	return userRole != Role.Doctor;
-    }
-    
-    private boolean canRemove() {
-    	return userRole != Role.Doctor;
-    }
-    
-    private boolean canUpdate() {
-    	return userRole != Role.Doctor;
-    }
+
+    @Override
+    public void initializeQuickPanelButtons() {
+    	quickLinksPanel.removeAll();
+    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+    	
+    	if(canAdd()) {
+	    	JButton addButton = UtilsMethods.createPanelButton("Add Patient");
+	    	addButton.addActionListener(e -> {
+	    		showAddPatientDialog();
+	    	});
+	    	quickLinksPanel.add(addButton);
+    	}
+    	
+    	quickLinksPanel.repaint();
+	}
 }

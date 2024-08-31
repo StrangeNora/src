@@ -3,6 +3,7 @@ import panels.*;
 import panels.ProfilePage;
 import staffMember.*;
 import treatment.Treatments;
+import utils.UtilsMethods;
 import visit.Visits;
 import control.*;
 import department.Departments;
@@ -20,6 +21,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.HashMap;
 
 public class UserPage extends JFrame {
 
@@ -29,7 +31,6 @@ public class UserPage extends JFrame {
 	private JPanel contentPanel;
 	private JToolBar toolBar;
 	private JPanel rightPanel;
-	private int buttonWidth = 260;
 	private Role userRole;
 	private StaffMember staffUser;
 	// DefaultListModels for each page
@@ -46,16 +47,26 @@ public class UserPage extends JFrame {
 		this.userRole = role;
 		this.staffUser=staffUser;
 		
-		JPanel staffMemberPanel = new StaffMembers(userRole, "StaffMembers", staffMembersListModel).getPanel();
-		JPanel patientsPanel = new Patients(userRole, "Patient", patientListModel).getPanel();
-		JPanel medicationsPanel = new Medications(userRole, "Medications", medicationsListModel).getPanel();
-		JPanel medicalProblemsPanel = new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel).getPanel();
-		JPanel departmentsPanel = new Departments(userRole, "Departments", departmentsListModel).getPanel();
-		JPanel treatmentsPanel = new Treatments(userRole, "Treatments", treatmentsListModel).getPanel();
-		JPanel visitsPanel = new Visits(userRole, "Visits", visitsListModel).getPanel();
-		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel).getPanel();
+		// Right panel for buttons and set its background color
+		rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		rightPanel.setBackground(Color.decode("#547DA5"));
+
+		// Initialize sidebar
+		JPanel quickLinksPanel = initializeSidebar();
 		
-		createToolBar();
+		HashMap<String, SectionPanel> sections = new HashMap<String, SectionPanel>();
+		sections.put("StaffMembers", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
+		sections.put("Patient", new Patients(userRole, "Patient", patientListModel, quickLinksPanel));
+		sections.put("Medications", new Medications(userRole, "Medications", medicationsListModel, quickLinksPanel));
+		sections.put("Medical Problems", new MedicalProblems(userRole, "Medical Problems", medicalProblemsListModel, quickLinksPanel));
+		sections.put("Departments", new Departments(userRole, "Departments", departmentsListModel, quickLinksPanel));
+		sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
+		sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
+
+		JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel, quickLinksPanel).getPanel();
+
+		createToolBar(sections);
 		
 		setTitle("Hospital Management System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,22 +89,12 @@ public class UserPage extends JFrame {
 
 		// Add content panels
 		contentPanel.add(createHomePanel(), "Home");
-		contentPanel.add(staffMemberPanel,"StaffMembers");
-		contentPanel.add(patientsPanel,"Patients");
-		contentPanel.add(medicationsPanel,"Medications");
-		contentPanel.add(medicalProblemsPanel,"Medical Problems");
-		contentPanel.add(departmentsPanel,"Departments");
-		contentPanel.add(treatmentsPanel,"Treatments");
-		contentPanel.add(visitsPanel,"Visits");
+		for(String name : sections.keySet()) {
+			contentPanel.add(sections.get(name).getPanel(), name);			
+		}
 		//contentPanel.add(SystemQueriesPanel,"SystemQueries");
-		// Right panel for buttons and set its background color
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-		rightPanel.setBackground(Color.decode("#547DA5"));
+		
 		getContentPane().add(rightPanel, BorderLayout.EAST);
-
-		// Initialize sidebar
-		initializeSidebar();
 
 		// Make the frame visible
 		setSize(1000, 800);
@@ -105,46 +106,34 @@ public class UserPage extends JFrame {
 				adjustButtonFontSize(rightPanel);
 			}
 		});
+		
+		repaint();
 	}
 	
-	private void createToolBar() {
+	private void createToolBar(HashMap<String, SectionPanel> sections) {
 		// Create the tool bar
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		toolBar.setBackground(Color.decode("#2a5d8f"));
+		JButton homeButton = createToolBarButton("Home");
+		toolBar.add(homeButton);
 
 		// Create buttons for each section
-		JButton homeButton = createToolBarButton("Home");
-		JButton staffMemberButton = createToolBarButton("Staff Members");
-		JButton patientsButton = createToolBarButton("Patients");
-		JButton medicationsButton = createToolBarButton("Medications");
-		JButton medicalProblemsButton = createToolBarButton("Medical Problems");
-		JButton departmentsButton = createToolBarButton("Departments");
-		JButton treatmentsButton = createToolBarButton("Treatments");
-		JButton visitsButton = createToolBarButton("Visits");
-		JButton SystemQueriesButton = createToolBarButton("SystemQueries");
-
-		// Add buttons to the toolbar
-		toolBar.add(homeButton);
-		toolBar.add(staffMemberButton);
-		toolBar.add(SystemQueriesButton);
-		toolBar.add(patientsButton);
-		toolBar.add(medicationsButton);
-		toolBar.add(medicalProblemsButton);
-		toolBar.add(departmentsButton);
-		toolBar.add(treatmentsButton);
-		toolBar.add(visitsButton);
-		
-		// Add action listeners to toolbar buttons
 		homeButton.addActionListener(e -> cardLayout.show(contentPanel, "Home"));
-		staffMemberButton.addActionListener(e -> cardLayout.show(contentPanel, "StaffMembers"));
+		
+		for(String name : sections.keySet()) {
+			JButton sectionButton = createToolBarButton(name);
+			toolBar.add(sectionButton);
+			SectionPanel sectionPanel = sections.get(name);
+			sectionButton.addActionListener(e -> {
+				cardLayout.show(contentPanel, name);
+				sectionPanel.initializeQuickPanelButtons();
+			});
+		}
+		JButton SystemQueriesButton = createToolBarButton("SystemQueries");
+		
+		toolBar.add(SystemQueriesButton);
 		SystemQueriesButton.addActionListener(e -> cardLayout.show(contentPanel, "SystemQueries"));
-		patientsButton.addActionListener(e -> cardLayout.show(contentPanel, "Patients"));
-		medicationsButton.addActionListener(e -> cardLayout.show(contentPanel, "Medications"));
-		medicalProblemsButton.addActionListener(e -> cardLayout.show(contentPanel, "Medical Problems"));
-		departmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Departments"));
-		treatmentsButton.addActionListener(e -> cardLayout.show(contentPanel, "Treatments"));
-		visitsButton.addActionListener(e -> cardLayout.show(contentPanel, "Visits"));
 		
 		// hide other staff members buttons if its not an admin
 		if(userRole != Role.Admin) {
@@ -153,24 +142,19 @@ public class UserPage extends JFrame {
 	}
 
 
-	private void initializeSidebar() {
+	private JPanel initializeSidebar() {
 		rightPanel.removeAll();
 
-		// Create buttons again with the fixed width
-		JPanel quickLinksPanel = createSidebarSection("Quick Links", new String[]{
-				"Add Patient", 
-				"Add Doctor", 
-				"Add Nurse", 
-				"Add Medication", 
-				"Add Medical Problem", 
-				"Add Department", 
-				"Add Treatment", 
-				"Add Visit"
+		JPanel quickLinksPanel = createSidebarPanel("Quick Links");
+		JPanel accountDetailsPanel = createSidebarPanel("Account Details");
+		
+		// edit account button
+		JButton accountDetailsButton = UtilsMethods.createPanelButton("Edit Personal Details");
+		accountDetailsButton.addActionListener(e -> {
+//			new UpdateStaffMember(null); // TODO: proper staffmember - what happens with update on admin?
 		});
-
-		JPanel accountDetailsPanel = createSidebarSection("Account Details", new String[]{
-				"Edit Personal Details"
-		});
+		accountDetailsPanel.add(accountDetailsButton);
+		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		rightPanel.add(quickLinksPanel);
 		rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -179,43 +163,19 @@ public class UserPage extends JFrame {
 
 		rightPanel.revalidate();
 		rightPanel.repaint();
+		
+		return quickLinksPanel;
 	}
 
-	private JPanel createSidebarSection(String title, String[] buttonNames) {
+	private JPanel createSidebarPanel(String title) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setBackground(Color.decode("#547DA5"));
 
-		JLabel titleLabel = new JLabel(title);
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		JLabel titleLabel = UtilsMethods.getRightPanelTitleLabel(title);
 		panel.add(titleLabel);
 
-		// Set the fixed button size for all buttons
-		Dimension buttonSize = new Dimension(buttonWidth, 40);
-
-		for (String buttonName : buttonNames) {
-			JButton button = createUniformButton(buttonName);
-			button.setPreferredSize(buttonSize);
-			button.setMaximumSize(buttonSize);
-			button.setBackground(Color.decode("#D4DEE8"));
-			panel.add(button);
-			panel.add(Box.createRigidArea(new Dimension(0, 10))); // Add spacing between buttons
-		}
-
 		return panel;
-	}
-
-	private JButton createUniformButton(String buttonName) {
-		JButton button = new JButton(buttonName);
-		button.setBackground(Color.decode("#D4DEE8"));
-		button.setFont(new Font("Arial", Font.PLAIN, 14)); // Set a fixed font size
-
-		// Set a fixed width and height for the button
-		button.setPreferredSize(new Dimension(buttonWidth, 40));
-		button.setMaximumSize(new Dimension(buttonWidth, 40));
-
-		return button;
 	}
 
 	private JButton createToolBarButton(String title) {

@@ -7,6 +7,7 @@ import java.awt.Frame;
 import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -14,11 +15,12 @@ import control.Hospital;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
+import utils.UtilsMethods;
 import visit.*;
 
 
 
-public class Visits extends JPanel {
+public class Visits extends SectionPanel<Visit> {
 
 
 		private static final long serialVersionUID = 1L;
@@ -26,34 +28,9 @@ public class Visits extends JPanel {
 	    private DefaultListModel<Visit> listModel;
 	    private Role userRole;
 
-	    public Visits(Role userRole, String sectionName, DefaultListModel<Visit> listModel) {
-	    	this.userRole = userRole;
-	        this.listModel = listModel;
-	        genericListPanel = new GenericListPanel<>(
-	        		sectionName,
-	        		listModel, 
-	        		canRemove() ? this::removeVisitFromHospital : null,
-	        		canAdd() ? this::showAddVisitDialog : null,
-	        		canUpdate() ? this::showUpdateVisitDialog : null
-	        	);
-	        loadVisitsFromHospital();
-	    }
-
-	    public JPanel getPanel() {
-	        return genericListPanel.getPanel();
-	    }
-
-	    private void loadVisitsFromHospital() {
-	        Hospital hospital = Hospital.getInstance();
-	        HashMap<Integer, Visit> visit = hospital.getVisits();
-	        for (Visit v : visit.values()) {
-	            listModel.addElement(v);
-	        }
-	    }
-
-	    public void refreshList() {
-	        listModel.clear();
-	        loadVisitsFromHospital();
+	    public Visits(Role userRole, String sectionName, DefaultListModel<Visit> listModel, JPanel quickLinksPanel) {
+	    	super(userRole, sectionName, listModel, quickLinksPanel);
+	    	this.initGenericListPanel(this::removeVisitFromHospital, this::showAddVisitDialog, this::showUpdateVisitDialog);
 	    }
 
 	    private void removeVisitFromHospital(Visit v) {
@@ -76,18 +53,42 @@ public class Visits extends JPanel {
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
 	    }
+
+	    protected void load() {
+	        Hospital hospital = Hospital.getInstance();
+	        HashMap<Integer, Visit> visit = hospital.getVisits();
+	        for (Visit v : visit.values()) {
+	            listModel.addElement(v);
+	        }
+	    }
 	    
-	    private boolean canAdd() {
+	    protected boolean canAdd() {
 	    	return userRole != Role.Doctor;
 	    }
 	    
-	    private boolean canRemove() {
+	    protected boolean canRemove() {
 	    	return userRole != Role.Doctor;
 	    }
 	    
-	    private boolean canUpdate() {
+	    protected boolean canUpdate() {
 	    	return userRole != Role.Doctor;
 	    }
+
+		@Override
+		public void initializeQuickPanelButtons() {
+			quickLinksPanel.removeAll();
+	    	quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+	    	
+	    	if(canAdd()) {
+				JButton addButton = UtilsMethods.createPanelButton("Add Visit");
+		    	addButton.addActionListener(e -> {
+		    		showAddVisitDialog();
+		    	});
+		    	quickLinksPanel.add(addButton);
+	    	}
+	    	
+	    	quickLinksPanel.repaint();
+		}
 	}
 
 
