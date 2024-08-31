@@ -5,9 +5,11 @@ import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import control.Hospital;
+import department.AddDoctorToDepartment;
 import enums.Role;
 import model.*;
 import panels.GenericListPanel;
@@ -62,6 +64,22 @@ public class StaffMembers extends SectionPanel<StaffMember> {
 	    		showAddStaffMemberDialog();
 	    	});
 	    	quickLinksPanel.add(addButton);
+	    	
+	    	JButton addDepartment = UtilsMethods.createPanelButton("Add Department to Staff Member");
+	    	addDepartment.addActionListener(e -> {
+	    		StaffMember selectedMember = getSelectedObject();
+	    		if(selectedMember == null) {
+	    			JOptionPane.showMessageDialog(null, "Please select one to add to");
+	    			return;
+	    		}
+	    		AddDepartmentToStaffMember addDepartmentToStaffMember = new AddDepartmentToStaffMember(this, selectedMember);
+		        JDialog dialog = new JDialog((Frame) null, "Add Department to Staff Member", true);
+		        dialog.getContentPane().add(addDepartmentToStaffMember);
+		        dialog.pack();
+		        dialog.setLocationRelativeTo(null);
+		        dialog.setVisible(true);
+	    	});
+	    	quickLinksPanel.add(addDepartment);
     	}
     	
     	quickLinksPanel.repaint();
