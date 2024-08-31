@@ -117,6 +117,22 @@ public class Treatments extends SectionPanel<Treatment> {
 			        dialog.setVisible(true);
 		    	});
 		    	quickLinksPanel.add(addDoctor);
+		    	
+		    	JButton addMedicalProblem = UtilsMethods.createPanelButton("Add Medical Problem To Treatment");
+		    	addMedicalProblem.addActionListener(e -> {
+		    		Treatment selectedMember = getSelectedObject();
+		    		if(selectedMember == null) {
+		    			JOptionPane.showMessageDialog(null, "Please select one to add to");
+		    			return;
+		    		}
+		    		AddMedicalProblemToTreatment addMedicalProblemToTreatment = new AddMedicalProblemToTreatment(this, selectedMember);
+			        JDialog dialog = new JDialog((Frame) null, "Add Medical Problem To Treatment", true);
+			        dialog.getContentPane().add(addMedicalProblemToTreatment);
+			        dialog.pack();
+			        dialog.setLocationRelativeTo(null);
+			        dialog.setVisible(true);
+		    	});
+		    	quickLinksPanel.add(addMedicalProblem);
 	    	}
 	    	
 	    	
