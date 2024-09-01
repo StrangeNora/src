@@ -4,15 +4,18 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -109,6 +112,17 @@ public class AppointANewManager extends JPanel {
 		gbc_departmentsComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_departmentsComboBox.gridx = 3;
 		gbc_departmentsComboBox.gridy = 5;
+		
+		 departmentsComboBox.setRenderer(new DefaultListCellRenderer() {
+	            @Override
+	            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	                if (value instanceof Department) {
+	                    setText(((Department) value).getName());
+	                }
+	                return this;
+	            }
+		 });
 		
 		        // Add departmentsComboBox to inputPanel
 		        add(departmentsComboBox, gbc_departmentsComboBox);
