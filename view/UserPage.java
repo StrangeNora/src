@@ -43,6 +43,7 @@ public class UserPage extends JFrame {
 	private DefaultListModel<Treatment> treatmentsListModel = new DefaultListModel<>();
 	private DefaultListModel<Visit> visitsListModel = new DefaultListModel<>();
 	private DefaultListModel<Patient> patientListModel = new DefaultListModel<>();
+	private JPanel quickLinksPanel;
 
 	public UserPage(Role role, StaffMember staffUser) {
 	    this.userRole = role;
@@ -54,7 +55,8 @@ public class UserPage extends JFrame {
 	    rightPanel.setBackground(Color.decode("#096bbe"));
 
 	    // Initialize sidebar
-	    JPanel quickLinksPanel = initializeSidebar();
+	    quickLinksPanel = initializeSidebar();
+	    initHomeQuickLinks();
 
 	    HashMap<String, SectionPanel> sections = new HashMap<>();
 	    sections.put("Staff Members", new StaffMembers(userRole, "Staff Members", staffMembersListModel, quickLinksPanel));
@@ -124,7 +126,10 @@ public class UserPage extends JFrame {
 		toolBar.add(homeButton);
 
 		// Create buttons for each section
-		homeButton.addActionListener(e -> cardLayout.show(contentPanel, "Home"));
+		homeButton.addActionListener(e -> {
+			cardLayout.show(contentPanel, "Home");
+			initHomeQuickLinks();
+		});
 		
 		for(String name : sections.keySet()) {
 			JButton sectionButton = createToolBarButton(name);
@@ -133,6 +138,7 @@ public class UserPage extends JFrame {
 			sectionButton.addActionListener(e -> {
 				cardLayout.show(contentPanel, name);
 				sectionPanel.initializeQuickPanelButtons();
+				sectionPanel.refreshList();
 			});
 		}
 		JButton SystemQueriesButton = createToolBarButton("SystemQueries");
@@ -178,6 +184,21 @@ public class UserPage extends JFrame {
 		rightPanel.repaint();
 		
 		return quickLinksPanel;
+	}
+	
+	private void initHomeQuickLinks() {
+		quickLinksPanel.removeAll();
+		
+		quickLinksPanel.add(UtilsMethods.getRightPanelTitleLabel(UtilsMethods.QUICK_LINKS_TITLE));
+		JButton informationButton = UtilsMethods.createPanelButton("Information");
+		informationButton.addActionListener(e -> {
+			JDialog dialog = new JDialog((Frame) null, "Information", true);
+	        dialog.getContentPane().add(new Information());
+	        dialog.pack();
+	        dialog.setLocationRelativeTo(null);
+	        dialog.setVisible(true);
+		});
+		quickLinksPanel.add(informationButton);
 	}
 
 	private JPanel createSidebarPanel(String title) {
