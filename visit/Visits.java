@@ -34,6 +34,7 @@ public class Visits extends SectionPanel<Visit> {
 
 	    private void removeVisitFromHospital(Visit v) {
 	        Hospital.getInstance().removeVisit(v);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    private void showAddVisitDialog() {
@@ -43,6 +44,7 @@ public class Visits extends SectionPanel<Visit> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    private void showUpdateVisitDialog(Visit v) {
 	        UpdateVisit updateVisit = new UpdateVisit(this,v);
@@ -51,6 +53,7 @@ public class Visits extends SectionPanel<Visit> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    protected void load() {

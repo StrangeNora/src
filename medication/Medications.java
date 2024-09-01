@@ -36,6 +36,7 @@ public class Medications extends SectionPanel<Medication> {
 	    
 	    private void removeMedicationtFromHospital(Medication v) {
 	        Hospital.getInstance().removeMedication(v);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    private void showAddMedicationDialog() {
@@ -45,6 +46,7 @@ public class Medications extends SectionPanel<Medication> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    private void showUpdateMedicationDialog(Medication m) {
 	        UpdateMedication updateMedication = new UpdateMedication(this,m);
@@ -53,6 +55,7 @@ public class Medications extends SectionPanel<Medication> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    
 	    @Override
@@ -113,7 +116,7 @@ public class Medications extends SectionPanel<Medication> {
 	    		table[row][0] = new JLabel("" + med.getCode());
 	    		table[row][1] = new JLabel(med.getName());
 	    		table[row][2] = new JLabel("" + med.getDosage());
-	    		table[row][2] = new JLabel("" + med.getNumberOfDose());
+	    		table[row][3] = new JLabel("" + med.getNumberOfDose());
 	    	}
 	    	return table;
 		}

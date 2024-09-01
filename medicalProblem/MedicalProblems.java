@@ -31,6 +31,7 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 
 	    private void removeMedicalProblemtFromHospital(MedicalProblem v) {
 	        Hospital.getInstance().removeMedicalProblem(v);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    private void showAddMedicalProblemDialog() {
@@ -40,6 +41,7 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    private void showUpdateMedicalProblemDialog(MedicalProblem m) {
 	    	UpdateMedicalProblem updateMedicalProblem = new UpdateMedicalProblem(this,m);
@@ -48,6 +50,7 @@ public class MedicalProblems extends SectionPanel<MedicalProblem> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    
 	    protected void load() {

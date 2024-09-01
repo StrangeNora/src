@@ -27,6 +27,7 @@ public class Departments extends SectionPanel<Department> {
 
 	    private void removeDepartmentFromHospital(Department department) {
 	        Hospital.getInstance().removeDepartment(department);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    private void showAddDepartmentDialog() {
@@ -36,6 +37,7 @@ public class Departments extends SectionPanel<Department> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 
 	    private void showUpdateDepartmentDialog(Department department) {
@@ -45,6 +47,7 @@ public class Departments extends SectionPanel<Department> {
 	        dialog.pack();
 	        dialog.setLocationRelativeTo(null);
 	        dialog.setVisible(true);
+	        genericListPanel.refreshTableData(getTable());
 	    }
 	    
 	    protected void load() {
@@ -114,8 +117,9 @@ public class Departments extends SectionPanel<Department> {
 	    		Department dep = listModel.get(row);
 	    		table[row][0] = new JLabel("" + dep.getNumber());
 	    		table[row][1] = new JLabel(dep.getName());
-	    		table[row][2] = new JLabel("" + dep.getLocation());
-	    		table[row][3] = new JLabel(dep.getSpecialization().toString());
+	    		table[row][2] = new JLabel(dep.getmanager().getFirstName() + " " + dep.getmanager().getLastName());
+	    		table[row][3] = new JLabel(dep.getLocation());
+	    		table[row][4] = new JLabel(dep.getSpecialization().toString());
 	    	}
 	    	return table;
 		}

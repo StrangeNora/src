@@ -68,7 +68,7 @@ public class StaffMembers extends SectionPanel<StaffMember> {
     		JButton addButton1 = UtilsMethods.createPanelButton("Doctors By Specialization");
     		
             addButton1.addActionListener(e -> {
-                DocsBySpec docBySpec = new DocsBySpec();
+                DocsBySpec docBySpec = new DocsBySpec(this);
                 JDialog dialog = new JDialog((Frame) null, "Doctors By Specialization", true);
                 dialog.getContentPane().add(docBySpec);
                 dialog.pack();

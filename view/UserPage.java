@@ -253,5 +253,35 @@ public class UserPage extends JFrame {
 	}
 	
 
-	
+	public static void main(String[] args) {
+	    Hospital h = Hospital.getInstance();
+	    h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
+	    h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
+	    h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
+	    h.addTreatment(new Treatment(123, "desc1"));
+	    h.addTreatment(new Treatment(321, "desc2"));
+	    h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
+	    h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
+
+	    // Create a dummy nurse
+	    @SuppressWarnings("deprecation")
+	    Nurse dummyNurse = new Nurse(
+	        2, // id
+	        "Jane", // firstName
+	        "Smith", // lastName
+	        new Date(01,01,1990), // birthDate
+	        "456 Elm St", // address
+	        "555-5678", // phoneNumber
+	        "jane.smith@example.com", // email
+	        "Female", // gender
+	        new Date(01,01,2015), // workStartDate
+	        "janesmith", // username
+	        "password456", // password
+	        "C:\\Users\\layla\\OneDrive\\Desktop\\java programming\\LaylaIsGay\\hanamal2_with_exceptions\\src\\view\\norahospital.jpg", // profilePicturePath
+	        75000.0, // salary
+	        654321
+	    );
+
+	    SwingUtilities.invokeLater(() -> new UserPage(Role.Admin, dummyNurse));
+	}
 }
