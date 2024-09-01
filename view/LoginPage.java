@@ -10,7 +10,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Button;
 import java.awt.Color;
-import java.awt.Image;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
@@ -18,10 +19,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import exceptions.*;
 import control.*;
-import enums.Role;
 import model.*;
 import java.awt.GridBagLayout;
 import java.awt.Font;
+import enums.Role;
+import exceptions.InvalidUserDetails;
 
 public class LoginPage extends JFrame {
 
@@ -110,6 +112,22 @@ public class LoginPage extends JFrame {
         button.setBackground(new Color(62, 62, 62, 100));
         button.setBounds(25, 198, 201, 37);
         panel.add(button);
+        
+     // Add a checkbox to show/hide the password
+        JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
+        showPasswordCheckBox.setBounds(25, 170, 150, 20);
+        showPasswordCheckBox.setBackground(new Color(0, 0, 0, 0));
+        showPasswordCheckBox.setForeground(Color.WHITE);
+        showPasswordCheckBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (showPasswordCheckBox.isSelected()) {
+                    passwordField.setEchoChar((char) 0); // Show password
+                } else {
+                    passwordField.setEchoChar('*'); // Hide password
+                }
+            }
+        });
+        panel.add(showPasswordCheckBox);
 
         // Add action listener for the login button
         button.addActionListener(new ActionListener() {

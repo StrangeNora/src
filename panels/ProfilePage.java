@@ -20,7 +20,7 @@ public class ProfilePage extends JPanel {
 
     private void initializeProfile(StaffMember staffMember) {
         // Load and scale the background image
-        ImageIcon hBgIcon = new ImageIcon("C:/Users/layla/OneDrive/Desktop/java programming/LaylaIsGay/hanamal2_with_exceptions/src/view/norahospital.jpg");
+        ImageIcon hBgIcon = new ImageIcon(getClass().getResource("/view/norahospital.jpg"));
 
         // Create a BackgroundImagePanel with the scaled image
         BackgroundImagePanel backgroundPanel = new BackgroundImagePanel(hBgIcon);

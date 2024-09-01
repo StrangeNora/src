@@ -35,7 +35,7 @@ public class AppointANewManager extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private JComboBox departmentsComboBox;
+	private JComboBox<Department> departmentsComboBox;
 
 	/**
 	 * Create the panel.

@@ -8,8 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import enums.Role;
-import utils.CustomTableModel;
-import utils.TableCellRendererEditor;
+import utils.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
