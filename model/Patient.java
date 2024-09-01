@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import enums.HealthFund;
 import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 
-public class Patient extends Person{
+public class Patient extends Person implements Serializable {
 
 	//Fields
 	private HashSet<Visit> visitsList;

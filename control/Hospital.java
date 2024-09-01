@@ -1,5 +1,9 @@
 package control;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +20,7 @@ import utils.MyFileLogWriter;
 import utils.UtilsMethods;
 import view.*;
 
-public class Hospital {
+public class Hospital implements Serializable {
 	
 	private static Hospital instance ;
 	private HashMap<Integer,Department>departments;
@@ -43,7 +47,13 @@ public class Hospital {
 	//getInstance
 	public static Hospital getInstance() {
 		if (instance==null) {
-			instance = new Hospital();
+			try {
+				FileInputStream fileIn = new FileInputStream("Hospital.ser");
+	            ObjectInputStream in = new ObjectInputStream(fileIn); 
+	            instance = (Hospital) in.readObject();
+	        } catch (Exception i) {
+	        	instance = new Hospital();
+	        }
 		}
 		return instance;
 	}
@@ -648,10 +658,5 @@ public class Hospital {
         }
        return -1;
     }
-	
-
-
-	
-	
 }
 		

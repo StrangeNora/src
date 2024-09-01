@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import javax.lang.model.element.NestingKind;
 import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 
-public class Treatment {
+public class Treatment implements Serializable {
 	
 	private int serialNumber;
 	private String description;

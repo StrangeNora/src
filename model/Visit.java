@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 import utils.UtilsMethods;
 
-public class Visit {
+public class Visit implements Serializable {
 
 	private int number;//PK
 	private Patient patient;

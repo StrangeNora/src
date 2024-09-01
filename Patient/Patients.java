@@ -70,6 +70,13 @@ public class Patients extends SectionPanel<Patient> {
 	    	});
 	    	quickLinksPanel.add(addButton);
     	}
+    	
+    	JButton wordButton = UtilsMethods.createPanelButton("Export to Word");
+    	wordButton.addActionListener(e -> {
+    		showAddPatientDialog();
+    	});
+    	quickLinksPanel.add(wordButton);
+    	
 	}
 
 	@Override

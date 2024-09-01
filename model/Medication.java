@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import exceptions.NegativeDosageException;
 import exceptions.NegativeNumberOfDosesException;
 
-public class Medication {
+public class Medication implements Serializable  {
 
 	private int code;//PK
 	private String name;

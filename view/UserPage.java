@@ -16,6 +16,13 @@ import medication.Medications;
 import model.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -199,6 +206,20 @@ public class UserPage extends JFrame {
 	        dialog.setVisible(true);
 		});
 		quickLinksPanel.add(informationButton);
+		
+		JButton exportButton = UtilsMethods.createPanelButton("Export Data");
+		exportButton.addActionListener(e -> {
+			try (FileOutputStream fileOut = new FileOutputStream("Hospital.ser");
+	             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+	            out.writeObject(Hospital.getInstance());
+	            JOptionPane.showMessageDialog(null, "Serialized data is saved in Hospital.ser");
+	            System.out.println("Serialized data is saved in Hospital.ser");
+	        } catch (IOException i) {
+	            i.printStackTrace();
+	        }
+		});
+		quickLinksPanel.add(exportButton);
+		
 	}
 
 	private JPanel createSidebarPanel(String title) {
@@ -253,13 +274,13 @@ public class UserPage extends JFrame {
 
 	public static void main(String[] args) {
 	    Hospital h = Hospital.getInstance();
-	    h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
-	    h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
-	    h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
-	    h.addTreatment(new Treatment(123, "desc1"));
-	    h.addTreatment(new Treatment(321, "desc2"));
-	    h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
-	    h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
+//	    h.addDoctor(new Doctor(123, "first1", "name1", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Neurology));
+//	    h.addDoctor(new Doctor(321, "first2", "name2", UtilsMethods.parseDate("1/1/2020"), "addr", "3242", "asd", "M", UtilsMethods.parseDate("1/1/2020"), "asd", "asd", "C:\\Users\\Yousef\\Pictures\\Screenshots\\Screenshot 2024-08-31 052447.png", new HashSet<Department>(), 12313, 333, true, Specialization.Otolaryngology));
+//	    h.addDepartment(new Department(111, "dep1", h.getRealDoctor(123), "loc1", Specialization.Cardiology, new HashSet<StaffMember>()));
+//	    h.addTreatment(new Treatment(1223, "desc1"));
+//	    h.addTreatment(new Treatment(321, "desc2"));
+//	    h.addMedicalProblem(new Injury("inj1", h.getRealDepartment(111), 1232, "there"));
+//	    h.addMedicalProblem(new Fracture("frac1", h.getRealDepartment(111), "here", true));
 
 	    // Create a dummy nurse
 	    @SuppressWarnings("deprecation")

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -7,7 +8,7 @@ import control.Hospital;
 import enums.Specialization;
 import utils.MyFileLogWriter;
 
-public class Fracture extends MedicalProblem implements IntensiveCareMedicalProblem{
+public class Fracture extends MedicalProblem implements IntensiveCareMedicalProblem, Serializable {
 
 	private String location;
 	private boolean requiresCast;

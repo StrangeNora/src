@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import enums.BiologicalSex;
 import exceptions.FutureDateException;
 import utils.UtilsMethods;
 
-public abstract class Person {
+public abstract class Person implements Serializable {
 	
 	//Fields
 	private int id; //PK

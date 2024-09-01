@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -7,7 +8,7 @@ import java.util.HashSet;
 import enums.BiologicalSex;
 import utils.MyFileLogWriter;
 
-public class Nurse extends StaffMember{
+public class Nurse extends StaffMember implements Serializable {
 	
 	private int licenseNumber;
 	

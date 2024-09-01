@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import exceptions.ObjectDoesNotExist;
 import utils.MyFileLogWriter;
 import utils.UtilsMethods;
 
-public abstract class StaffMember extends Person{
+public abstract class StaffMember extends Person implements Serializable {
 
 	private Date workStartDate;
 	private HashSet<Department> departments;

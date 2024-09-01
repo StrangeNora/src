@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import exceptions.ObjectAlreadyExistsException;
 import exceptions.ObjectDoesNotExist;
 import utils.MyFileLogWriter;
 
-public abstract class MedicalProblem {
+public abstract class MedicalProblem implements Serializable {
 	
 	private static int SERIAL_NUMBER =1;//static parameter for counting Medical Problems
 	private String code;//PK
