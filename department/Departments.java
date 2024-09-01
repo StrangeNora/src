@@ -120,9 +120,12 @@ public class Departments extends SectionPanel<Department> {
 	    		table[row][2] = new JLabel(dep.getmanager().getFirstName() + " " + dep.getmanager().getLastName());
 	    		table[row][3] = new JLabel(dep.getLocation());
 	    		table[row][4] = new JLabel(dep.getSpecialization().toString());
+	    		
 	    	}
 	    	return table;
+	    	
 		}
+		
 
 		@Override
 		protected String[] getColumns() {
