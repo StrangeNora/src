@@ -158,7 +158,6 @@ public class AddDepartment extends JPanel {
 					,nameTextField.getText(),doctor,locationTextField.getText(),specialization);
 
 					Hospital.getInstance().addDepartment(department);
-					d.refreshList();
 					
 					if(!Hospital.getInstance().getStaffMembers().containsKey(Integer.parseInt(managerIDTextField.getText()))) {
 							throw new ObjectDoesNotExist(doctor.getId(), doctor.getClass().getSimpleName(), this.getClass().getSimpleName());
