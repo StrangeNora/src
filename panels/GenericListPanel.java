@@ -35,11 +35,11 @@ public class GenericListPanel<T> {
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(15);
         JButton searchButton = new JButton("Search");
-        JButton addButton = new JButton("Add");
 
         searchPanel.add(searchField);
         searchPanel.add(searchButton);
-        searchPanel.add(addButton);
+        
+        panel.add(searchPanel, BorderLayout.NORTH);
 
         // List and scroll pane
         tableModel = new DefaultTableModel(tableData, columns) {
@@ -86,12 +86,41 @@ public class GenericListPanel<T> {
         table.setRowSelectionAllowed(true);
         table.setColumnSelectionAllowed(false);
         JScrollPane listScrollPane = new JScrollPane(table);
-        
-//        list = new JList<>(listModel);
-//        JScrollPane listScrollPane = new JScrollPane(list);
-
-//        panel.add(searchPanel, BorderLayout.NORTH);
         panel.add(listScrollPane, BorderLayout.CENTER);
+        
+        RowFilter<DefaultTableModel, Object> txtFilter = new RowFilter<DefaultTableModel, Object>() {
+            @Override
+            public boolean include(Entry<? extends DefaultTableModel, ? extends Object> entry) {
+            	String filter = searchField.getText();
+            	if(filter.equals("")) {
+            		return true;
+            	}
+            	for(int i=0; i < table.getColumnCount(); i++) {
+            		Object value = entry.getValue(i);
+            		if(value instanceof JLabel) {
+            			if(((JLabel) value).getText().toLowerCase().contains(filter.toLowerCase())) {
+            				return true;
+            			}
+            		}
+            		else if(value instanceof JComboBox) {
+            			JComboBox<String> box = (JComboBox<String>) value;
+            			for(int j=0; j < box.getModel().getSize(); j++) {
+            				if(box.getModel().getElementAt(j).toLowerCase().contains(filter.toLowerCase())) {
+            					return true;
+            				}
+            			}
+            		}
+            	}
+                return false;
+            }
+        };
+        
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
+        
+        searchButton.addActionListener(e -> {
+        	sorter.setRowFilter(txtFilter);
+        });
 
         // Create the popup menu and the "Remove" item
         JPopupMenu popupMenu = new JPopupMenu();
@@ -141,41 +170,8 @@ public class GenericListPanel<T> {
             private void showPopup(java.awt.event.MouseEvent evt) {
                 if (shouldShowMenu && evt.isPopupTrigger()) { // This is true for right-clicks
                     int index = table.getSelectedRow();
-//                    list.setSelectedIndex(index); // Select the item that was right-clicked
                     popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
-            }
-        });
-
-        // Add action listener for the "Add" button
-        addButton.addActionListener(e -> addCallback.run());
-        
-        if(addCallback == null) {
-        	addButton.setVisible(false);
-        }
-
-        // Add action listener for the "Search" button
-        searchButton.addActionListener(e -> {
-            String searchText = searchField.getText().trim();
-            if (listModel.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "The List Is Empty At The Moment", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            boolean found = false;
-            for (int i = 0; i < listModel.size(); i++) {
-                T item = listModel.get(i);
-                if (item.toString().toLowerCase().contains(searchText.toLowerCase())) {
-                    list.ensureIndexIsVisible(i);
-                    list.setSelectedIndex(i);
-                    list.setSelectionBackground(Color.decode("#7F9DBB")); // Use the desired color
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                JOptionPane.showMessageDialog(null, "The " + sectionName + " Does Not Exist", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
