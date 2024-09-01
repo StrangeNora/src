@@ -1,6 +1,5 @@
 package view;
 import panels.*;
-import panels.ProfilePage;
 import staffMember.*;
 import treatment.Treatments;
 import utils.UtilsMethods;
@@ -12,16 +11,11 @@ import enums.Specialization;
 import exceptions.*;
 import javax.swing.*;
 import Patient.*;
-import exceptions.ObjectAlreadyExistsException;
 import medicalProblem.MedicalProblems;
 import medication.Medications;
 import model.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +32,6 @@ public class UserPage extends JFrame {
 	private StaffMember staffUser;
 	// DefaultListModels for each page
 	private DefaultListModel<StaffMember> staffMembersListModel = new DefaultListModel<>();
-	private DefaultListModel<String> SystemQueriesListModel = new DefaultListModel<>();
 	private DefaultListModel<Medication> medicationsListModel = new DefaultListModel<>();
 	private DefaultListModel<MedicalProblem> medicalProblemsListModel = new DefaultListModel<>();
 	private DefaultListModel<Department> departmentsListModel = new DefaultListModel<>();
@@ -69,8 +62,6 @@ public class UserPage extends JFrame {
 	    sections.put("Treatments", new Treatments(userRole, "Treatments", treatmentsListModel, quickLinksPanel));
 	    sections.put("Visits", new Visits(userRole, "Visits", visitsListModel, quickLinksPanel));
 
-	    JPanel SystemQueriesPanel = new SystemQueries("SystemQueries", SystemQueriesListModel, quickLinksPanel).getPanel();
-
 	    createToolBar(sections);
 
 	    setTitle("Hospital Management System");
@@ -97,7 +88,6 @@ public class UserPage extends JFrame {
 	    for (String name : sections.keySet()) {
 	        contentPanel.add(sections.get(name).getPanel(), name);
 	    }
-	    // contentPanel.add(SystemQueriesPanel,"SystemQueries");
 
 	    getContentPane().add(rightPanel, BorderLayout.EAST);
 
@@ -117,8 +107,6 @@ public class UserPage extends JFrame {
 	    repaint();
 	}
 
-
-	
 	private void createToolBar(HashMap<String, SectionPanel> sections) {
 		// Create the tool bar
 		toolBar = new JToolBar();
@@ -143,24 +131,18 @@ public class UserPage extends JFrame {
 				sectionPanel.refreshList();
 			});
 		}
-		JButton SystemQueriesButton = createToolBarButton("SystemQueries");
-		
-		toolBar.add(SystemQueriesButton);
-		SystemQueriesButton.addActionListener(e -> cardLayout.show(contentPanel, "SystemQueries"));
-		
+
 		// hide other staff members buttons if its not an admin
 		if(userRole != Role.Admin) {
 			
 		}
 	}
 
-
 	private JPanel initializeSidebar() {
 		rightPanel.removeAll();
 
 		JPanel quickLinksPanel = createSidebarPanel("Quick Links");
 		JPanel accountDetailsPanel = createSidebarPanel("Account Details");
-		
 		
 		JButton accountDetailsButton = UtilsMethods.createPanelButton("Edit Personal Details");
 		accountDetailsButton.addActionListener(e -> {
@@ -182,7 +164,6 @@ public class UserPage extends JFrame {
 		        JOptionPane.showMessageDialog(null, "Admins cannot edit personal details.", "Access Denied", JOptionPane.WARNING_MESSAGE);
 		    }
 		});
-
 
 		accountDetailsPanel.add(accountDetailsButton);
 		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -256,7 +237,6 @@ public class UserPage extends JFrame {
 	    }
 	}
 
-
 	private void adjustButtonFontSize(JComponent component) {
 		int newSize = getHeight() / 50;
 		Font newFont = new Font(component.getFont().getName(), Font.PLAIN, newSize);
@@ -270,7 +250,6 @@ public class UserPage extends JFrame {
 		revalidate();
 		repaint();
 	}
-	
 
 	public static void main(String[] args) {
 	    Hospital h = Hospital.getInstance();
