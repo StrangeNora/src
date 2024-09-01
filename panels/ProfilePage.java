@@ -200,4 +200,7 @@ public class ProfilePage extends JPanel {
         Image scaledImage = originalImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
+    public JPanel getProfilePagePanel() {
+        return this;
+    }
 }

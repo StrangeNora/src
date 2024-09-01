@@ -127,7 +127,7 @@ public class UpdateMedicalProblem extends JPanel {
                     Hospital.getInstance().getMedicalProblem(medicalProblem.getCode()).setDepartment((Department)departmentsComboBox.getSelectedItem());
                     Hospital.getInstance().getMedicalProblem(medicalProblem.getCode()).setName(textFieldName.getText());
                 
-m.refreshList();
+                     m.refreshList();
 
                    
                     JOptionPane.showMessageDialog(null, "Update Successful");

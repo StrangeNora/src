@@ -20,6 +20,8 @@ import model.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,11 +161,28 @@ public class UserPage extends JFrame {
 		JPanel quickLinksPanel = createSidebarPanel("Quick Links");
 		JPanel accountDetailsPanel = createSidebarPanel("Account Details");
 		
-		// edit account button
+		
 		JButton accountDetailsButton = UtilsMethods.createPanelButton("Edit Personal Details");
 		accountDetailsButton.addActionListener(e -> {
-			
+		    if (userRole != Role.Admin) {
+		        if (staffUser != null) {
+		            // Create an instance of UpdateStaffMember using the staffUser
+		            UpdateStaffMember updateStaffMember = new UpdateStaffMember(null, staffUser);
+		            
+		            // Create and set up the dialog
+		            JDialog dialog = new JDialog((Frame) null, "Update StaffMember", true);
+		            dialog.getContentPane().add(updateStaffMember);
+		            dialog.pack();
+		            dialog.setLocationRelativeTo(null);
+		            dialog.setVisible(true);
+		        } else {
+		            JOptionPane.showMessageDialog(null, "No staff member selected.", "Error", JOptionPane.ERROR_MESSAGE);
+		        }
+		    } else {
+		        JOptionPane.showMessageDialog(null, "Admins cannot edit personal details.", "Access Denied", JOptionPane.WARNING_MESSAGE);
+		    }
 		});
+
 
 		accountDetailsPanel.add(accountDetailsButton);
 		accountDetailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -282,6 +301,7 @@ public class UserPage extends JFrame {
 	        654321
 	    );
 
-	    SwingUtilities.invokeLater(() -> new UserPage(Role.Admin, dummyNurse));
+	    SwingUtilities.invokeLater(() -> new UserPage(Role.Nurse, dummyNurse));
 	}
+
 }

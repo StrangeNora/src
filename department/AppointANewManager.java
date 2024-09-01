@@ -132,6 +132,7 @@ public class AppointANewManager extends JPanel {
 					
 					Hospital.getInstance().AppointANewManager((Department) departmentsComboBox.getSelectedItem());
         			JOptionPane.showMessageDialog(null, "Doctor Appointed Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        	        d.refreshList();
 
 					
 				}catch(NullPointerException ex) {

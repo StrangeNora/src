@@ -6,9 +6,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-
-import enums.Role;
 import utils.*;
+import enums.Role;
+
+import utils.*;
+
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

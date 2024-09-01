@@ -240,7 +240,10 @@ public class UpdateVisit extends JPanel {
                             throw new NullPointerException("Field cannot be empty.");
                         }
                         break;
+        				
+
                 }
+                visits.refreshList();
                 JOptionPane.showMessageDialog(null, "Visit updated successfully.");
 
             }catch (FutureDateException ec) {

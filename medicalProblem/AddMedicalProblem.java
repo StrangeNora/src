@@ -34,7 +34,7 @@ public class AddMedicalProblem extends JPanel {
 	private ButtonGroup group;
 
 	public AddMedicalProblem(MedicalProblems m) {
-
+ 
 		this.setBackground(new Color(0xA9BED2));
 		 this.setPreferredSize(new Dimension(500, 350)); 
 

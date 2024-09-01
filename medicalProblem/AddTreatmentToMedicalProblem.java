@@ -77,7 +77,7 @@ public class AddTreatmentToMedicalProblem extends JPanel {
             try {
                 Treatment selectedTreatment = (Treatment) comboBox.getSelectedItem();
                 medicalProb.addTreatment(selectedTreatment);
-                m.refreshList();
+                m.refreshList(); 
                 
                 JOptionPane.showMessageDialog(null, "Treatment added to Medical Problem successfully!");
                 

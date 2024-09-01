@@ -165,6 +165,7 @@ public class AddDepartment extends JPanel {
 					}
 					
 					JOptionPane.showMessageDialog(null, "Department Added Successfully!");
+			        d.refreshList();
 
 					
 				}catch(InvalidUserDetails ex){

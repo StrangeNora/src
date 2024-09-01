@@ -274,7 +274,7 @@ public class AddStaffMember extends JPanel {
                     staffMembers.refreshList();
                     Window window = SwingUtilities.getWindowAncestor(AddStaffMember.this);
                     if (window != null) {
-                        window.dispose();
+                        window.dispose(); 
                     }
                 } catch (ObjectAlreadyExistsException o) {
                     JOptionPane.showMessageDialog(null, "Staff Member Already Exists!");

@@ -98,7 +98,7 @@ public class Visits extends SectionPanel<Visit> {
 		            dialog.setVisible(true);
 		        });
 		        quickLinksPanel.add(HowManyVButton);
-		    	JButton addMedicalProblem = UtilsMethods.createPanelButton("Add Medical Problem To Visit");
+	 	    	JButton addMedicalProblem = UtilsMethods.createPanelButton("Add Medical Problem To Visit");
 		    	addMedicalProblem.addActionListener(e -> {
 		    		Visit selectedMember = getSelectedObject();
 		    		if(selectedMember == null) {
