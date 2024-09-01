@@ -73,13 +73,13 @@ public class UpdateDepartment extends JPanel {
                         throw new NullPointerException("This Field Cannot Be Empty.");
 
                 	}
-                	Hospital.getInstance().getRealDepartment(department.getNumber()).setName(nameField.getSelectedText());
+                	Hospital.getInstance().getRealDepartment(department.getNumber()).setName(nameField.getText());
                 }
                 if(selectedItem == "Location") {
                 	if(locationField.getText().trim().isEmpty()) {
                         throw new NullPointerException("This Field Cannot Be Empty.");
                 	}
-                	Hospital.getInstance().getRealDepartment(department.getNumber()).setLocation(locationField.getSelectedText());
+                	Hospital.getInstance().getRealDepartment(department.getNumber()).setLocation(locationField.getText());
 
                 }
 				

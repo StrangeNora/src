@@ -39,7 +39,7 @@ public class AddTreatmentToVisit extends JPanel {
         JComboBox<Treatment> comboBox = new JComboBox<>();
         comboBox.setBackground(new Color(0x698DB0));
         
-        comboBox.setModel(new DefaultComboBoxModel<>((Treatment[]) Hospital.getInstance().getVisits().values().toArray(new Treatment[0])));
+        comboBox.setModel(new DefaultComboBoxModel<>((Treatment[]) Hospital.getInstance().getTreatments().values().toArray(new Treatment[0])));
         comboBox.setRenderer(new ListCellRenderer<Treatment>() {
 
 			@Override
@@ -76,7 +76,7 @@ public class AddTreatmentToVisit extends JPanel {
             	curVisit.addTreatment(selectedTreatment);
                 v.refreshList();
                 
-                JOptionPane.showMessageDialog(null, "Added Medical Problem to Visit successfully!");
+                JOptionPane.showMessageDialog(null, "Added Treatment to Visit successfully!");
                 
                 
             }catch(ObjectDoesNotExist ex) {
