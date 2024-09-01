@@ -131,7 +131,7 @@ public class Visits extends SectionPanel<Visit> {
 		    	quickLinksPanel.add(addTreatment);
 	    	}
 	    	
-	    	quickLinksPanel.repaint();
+	    	
 		}
 
 		@Override
