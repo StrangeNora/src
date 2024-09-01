@@ -70,8 +70,6 @@ public class Patients extends SectionPanel<Patient> {
 	    	});
 	    	quickLinksPanel.add(addButton);
     	}
-    	
-    	quickLinksPanel.repaint();
 	}
 
 	@Override

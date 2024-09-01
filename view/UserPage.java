@@ -301,7 +301,7 @@ public class UserPage extends JFrame {
 	        654321
 	    );
 
-	    SwingUtilities.invokeLater(() -> new UserPage(Role.Nurse, dummyNurse));
+	    SwingUtilities.invokeLater(() -> new UserPage(Role.Admin, dummyNurse));
 	}
 
 }

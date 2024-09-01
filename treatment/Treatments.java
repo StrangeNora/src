@@ -139,9 +139,6 @@ public class Treatments extends SectionPanel<Treatment> {
 		    	});
 		    	quickLinksPanel.add(addMedicalProblem);
 	    	}
-	    	
-	    	
-	    	quickLinksPanel.repaint();
 		}
 
 		@Override

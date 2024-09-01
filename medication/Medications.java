@@ -102,8 +102,6 @@ public class Medications extends SectionPanel<Medication> {
 		    	});
 		    	quickLinksPanel.add(addButton);
 	    	}
-	    	
-	    	quickLinksPanel.repaint();
 		}
 
 		@Override

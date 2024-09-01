@@ -100,8 +100,6 @@ public class StaffMembers extends SectionPanel<StaffMember> {
 	    	});
 	    	quickLinksPanel.add(addDepartment);
     	}
-    	
-    	quickLinksPanel.repaint();
     }
     
     @Override
